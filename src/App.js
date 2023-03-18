@@ -5,12 +5,16 @@ import Jugadores from "./VerJugadores";
 import Equipos from "./VerEquipos";
 import Movimientos from "./Movimientos";
 import Estadisticas from "./Estadisticas";
+import Inicio from "./Inicio";
+import RegistrarJugador from "./RegistrarJugador";
+import RegistrarEquipo from "./RegistrarEquipo";
+import RegistrarPartido from "./RegistrarPartido";
 
 
 const router = createBrowserRouter([
   {
     path : "/",
-    element: <NavBar /> ,
+    element: <Inicio /> ,
     errorElement : <ErrorPage />
   },
   {
@@ -19,8 +23,23 @@ const router = createBrowserRouter([
     errorElement : <ErrorPage />,
   },
   {
+    path : "/registrar_jugador",
+    element: <><RegistrarJugador /> </>,
+    errorElement : <ErrorPage />,
+  },
+  {
+    path : "/registrar_equipo",
+    element: <><RegistrarEquipo /> </>,
+    errorElement : <ErrorPage />,
+  },
+  {
     path : "/verEquipos",
     element: <><NavBar /><Equipos/></>,
+    errorElement : <ErrorPage />,
+  },
+  {
+    path : "/registar_partido",
+    element: <RegistrarPartido/>,
     errorElement : <ErrorPage />,
   },
   {
@@ -41,6 +60,7 @@ export default function App() {
     <>
       <RouterProvider router={router} />
     </>
+    
   );
 }
 

@@ -1,3 +1,5 @@
+import './css/styles.css';
+
 //Función encargada de crear un NavItem
 function NavItem({ info, esDropdown }) {
 
@@ -45,7 +47,7 @@ function BarraNavegacion({ datosNavBar }) {
     });
 
     return (
-        <nav className="navbar navbar-expand-lg bg-light">
+        <nav className="navbar navbar-expand-lg">
             <div className="container-fluid">
                 <a className="navbar-brand" href={datosNavBar.url}>{datosNavBar.titulo}</a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,7 +73,7 @@ export default function NavBar() {
                 titulo: "Jugadores",
                 listaItems :[
                     {
-                        url: "/verJugadores",
+                        url: "/registrar_jugador",
                         id: "registrarJugador",
                         titulo: "Registrar Jugador"
                     },
@@ -88,8 +90,8 @@ export default function NavBar() {
                 titulo: "Equipos",
                 listaItems :[
                     {
-                    url: "/verEquipos",
-                    id: "equipos",
+                    url: "/registrar_equipo",
+                    id: "registrarEquipo",
                     titulo: "Registrar Equipo"
                     },
                     {
@@ -98,6 +100,11 @@ export default function NavBar() {
                         titulo: "Ver equipos"                        
                     },            
                 ]
+            },
+            {
+                url: "/registar_partido",
+                id: "registrarPartidos",
+                titulo: "Registrar partido"
             },
             {
                 url: "/movimientos",

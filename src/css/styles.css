@@ -1,0 +1,27 @@
+body{
+    background-color: whitesmoke;
+}
+
+nav{
+    background-color: #182E3E;
+}
+
+.navbar-brand,.nav-link,.dropdown-menu{
+    color: whitesmoke;
+    background-color: #182E3E;
+}
+
+.navbar-brand:hover,.nav-link:hover,.dropdown-item:hover{
+    color: whitesmoke;
+    background-color: #182E3E;
+}
+  
+.navbar-brand:hover,.nav-link:hover{
+   border-bottom: 3px solid rgb(244, 157, 18);
+   animation-duration: 1s;
+}
+
+.footer{
+    color: white;
+    background-color: #182E3E;
+}
