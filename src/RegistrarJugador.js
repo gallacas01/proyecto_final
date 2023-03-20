@@ -20,7 +20,15 @@ export default function RegistrarJugador() {
                     <label for="txtEdad" class="form-label">Edad </label>
                     <input type="number" class="form-control shadow-none" id="txtEdad" name="txtEdad" min={0} required/>
                 </div>
-                <div class="my-3 row mx-0"      >
+                <div class="my-2 row mx-0">
+                    <label for="txtPeso" class="form-label">Peso</label>
+                    <input type="number" class="form-control shadow-none" id="txtPeso" name="txtPeso" min={0} required/>
+                </div>
+                <div class="my-2 row mx-0">
+                    <label for="txtAltura" class="form-label">Altura (cm) </label>
+                    <input type="number" class="form-control shadow-none" id="txtAltura" name="txtAltura" min={0} required/>
+                </div>
+                <div class="my-3 row mx-0">
                     <label for="txtPosicion" class="form-label">Posición</label>
                     <select class="form-select shadow-none" id="txtPosicion" name="txtPosicion" aria-label="Default select example" required>
                         <option value="portero">Portero</option>
@@ -30,14 +38,10 @@ export default function RegistrarJugador() {
                     </select>
                 </div>
                 <div class="my-2 row mx-0">
-                    <label for="txtPeso" class="form-label">Peso</label>
-                    <input type="number" class="form-control shadow-none" id="txtPeso" name="txtPeso" min={0} required/>
-                </div>
-                <div class="my-2 row mx-0">
-                    <label for="txtIdEquipo" class="form-label">Edad</label>
+                    <label for="txtIdEquipo" class="form-label">Equipo</label>
                     <input type="number" class="form-control shadow-none" id="txtIdEquipo" name="txtIdEquipo" min={0} required/>
                 </div>
-                <input type="submit" class="btn btn-primary" value={"ENVIAR"}/>
+                <input type="text" class="btn btn-primary" value={"ENVIAR"}/>
             </form>
         </>
     );
