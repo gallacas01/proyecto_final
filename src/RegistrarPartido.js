@@ -1,17 +1,14 @@
 import { useState } from "react";
 import NavBar from "./NavBar";
 
-// Función que genera un formulario para almacenar algún evento de un partido (goles, asistencias, tarjetas,etc)
-// function OptionJugador(){
+function Evento({ info }) {
 
-// }
-
-function Evento({info}) {
+    const [eventoAceptado, setEventoAceptado] = useState(false);
 
     return (
         <div className="my-2 row mx-0 p-0">
 
-            <div className="container-fluid">  
+            <div className="container-fluid">
 
                 <div className="row">
                     <label for="txtNombreJugador" className="form-label col-5 my-auto text-start">Jugador</label>
@@ -19,29 +16,36 @@ function Evento({info}) {
                 </div>
                 <div className="row mt-2 border-white me-1">
                     <input type="text" className="form-control shadow-none p-0 col" id="txtNombreJugador" name="txtNombreJugador" required />
-                    <select class="form-select shadow-none col p-0" id="txtPosicion" name="txtPosicion" required>
+                    <select className="form-select shadow-none col p-0" id="txtPosicion" name="txtPosicion" required>
                         <option value="gol">Gol</option>
                         <option value="asistencia">Asistencia</option>
                         <option value="tarjetaAmarilla">Tarjeta amarilla</option>
                         <option value="tarjetaRoja">Tarjeta roja</option>
-                    </select>     
+                    </select>
                     <div className="col-2 ms-lg-3 p-0">
-                        <div className=" container-fluid p-0">                     
-                            <div className="row p-0">
-                                <button className="p-1 col-6"><i class="fa-solid fa-circle-check fs-3"></i></button> 
-                                <button className="p-1 col-6" onClick={info[0]}><i class="fa-sharp fa-solid fa-circle-xmark fs-3"></i></button> 
-                            </div>      
-                        </div>                  
+                        <div className=" container-fluid p-0">
+
+                            {/* Se renderizarán los botones para aceptar o eliminar el evento o un texto de confirmación */}
+                            {eventoAceptado === false &&
+                                      <div className="row p-0">
+                                            <button className="p-1 col-6" onClick={() => setEventoAceptado(true)}><i class="fa-solid fa-circle-check fs-3"></i></button>
+                                            <button className="p-1 col-6" onClick={info[0]}><i class="fa-sharp fa-solid fa-circle-xmark fs-3"></i></button>
+                                      </div>
+                                }
+                                {eventoAceptado === true &&
+                                    <div className="row p-0">
+                                        <span>Guardado</span>
+                                    </div>
+                                }                            
+                        </div>
                     </div>
-                </div>    
+                </div>
 
             </div>
 
         </div>
     );
 }
-
-
 
 
 export default function RegistrarPartido() {
@@ -53,9 +57,9 @@ export default function RegistrarPartido() {
     // componente evento. Le pasamos el array con todos lo métodos que deberán llamarse
     //cuando se produzcan los diferentes eventos del componente.
     const eventos = [];
-    const accionesEventos = [DeleteEvent, AcceptEvent];
+    const accionesEventos = [EliminarEvento];
     for (let i = 0; i < numEventos; i++) {
-        eventos.push(<Evento key={i} info={accionesEventos}/>);
+        eventos.push(<Evento key={i} info={accionesEventos} />);
     }
 
     //Cuando se pulse el botón de añadir evento, se actualizará la variable que 
@@ -64,12 +68,8 @@ export default function RegistrarPartido() {
         setNumEventos(numEventos + 1);
     }
 
-    function AcceptEvent(){
-        alert("aceptado");
-    }
-
     //Decrementamos el contador de eventos y eliminamos el último evento del array.
-    function DeleteEvent(){
+    function EliminarEvento() {
         setNumEventos(numEventos - 1);
         eventos.pop();
     }
