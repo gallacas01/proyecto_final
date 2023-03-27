@@ -12,15 +12,32 @@ nav{
     background-color: #182E3E;
 }
 
-.navbar-brand:hover,.nav-link:hover,.dropdown-item:hover{
+.navbar-brand:hover,.nav-link:hover{
+    border-bottom: 3px solid rgb(244, 157, 18);
+    color: white;
+}
+
+.dropdown-item:hover{
+    background-color:  #182E3E;
     color: whitesmoke;
-    background-color: #182E3E;
 }
   
-.navbar-brand:hover,.nav-link:hover{
+.navbar-brand:focus,.nav-link:focus{
    border-bottom: 3px solid rgb(244, 157, 18);
-   animation-duration: 1s;
+   color: whitesmoke;
 }
+
+/* Opacidad de los placeholder */
+input[type="text"]::placeholder {
+    color: #182E3E;
+    opacity:0.7;
+  }
+
+  /* Clase que controla que el elemento seleccionado de la navbar mantenga su border-bottom */
+  .isFocused{
+    border-bottom: 3px solid rgb(244, 157, 18);
+    color: whitesmoke; 
+  }
 
 .footer{
     color: white;

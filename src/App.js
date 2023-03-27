@@ -9,6 +9,7 @@ import Inicio from "./Inicio";
 import RegistrarJugador from "./RegistrarJugador";
 import RegistrarEquipo from "./RegistrarEquipo";
 import RegistrarPartido from "./RegistrarPartido";
+import './css/styles.css';
 
 
 const router = createBrowserRouter([

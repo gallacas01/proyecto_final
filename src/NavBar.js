@@ -1,12 +1,14 @@
-import './css/styles.css';
+import { useState } from 'react';
 
 //Función encargada de crear un NavItem
 function NavItem({ info, esDropdown }) {
+    const [isFocused, setIsFocused] = useState(false);
 
     return (
-        <li key={info.id} className={esDropdown ? "dropdown-item" : "nav-item"}>
-            <a className="nav-link" id={info.id} href={info.url}>{info.titulo}</a>
+         <li key={info.id} className={esDropdown ? "dropdown-item" : "nav-item"}>
+            <a className={isFocused ? "nav-link isFocused" : "nav-link"} onClick={() => setIsFocused(!isFocused)} onBlur={() => setIsFocused(false)} id={info.id} href={info.url}>{info.titulo}</a>
         </li>
+         /*El evento onBlur se desencadena cuando un elemento pierde el foco */
     );
 }
 
@@ -33,6 +35,7 @@ function NavItemDropdown({ info }) {
 
 function BarraNavegacion({ datosNavBar }) {
 
+   
     let listaNavItem = datosNavBar.listaItems.map((elemInfo) => {
 
         if (elemInfo.url) { // Si está definida la url se trara de un NavItem
