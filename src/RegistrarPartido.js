@@ -15,16 +15,14 @@ function Evento({ info }) {
     const [eventoAceptado, setEventoAceptado] = useState(false);
     const [tipoEvento, setTipoEvento] = useState('');
     const [nombreJugador, setNombreJugador] = useState('');
-    //Le asignamos al useRef el valor de la variable que se pasa en info que controla cuando se cambia uno de los equipos seleccionados.
-    const cambioEquipo = useRef(info[2]);
-    const jugadores = info[3];
+    const jugadores = useRef(info[2]);
 
     function handleNombreJugador(event) {
         setNombreJugador(event.target.value);
     }
 
     function handleTipoEvento(event) {
-        setTipoEvento(event.target.selectedOptions[0].textContent);
+        setTipoEvento(event.target.value);
     }
 
     async function rellenarDesplegableJugadores() {
@@ -34,7 +32,7 @@ function Evento({ info }) {
         //Anidamos a nuestro select una primera opción, que tendrá el valor '-'
         listadoJugadores.appendChild(createOptionElement("-", "-"));
 
-        for (let jugador of jugadores) {
+        for (let jugador of jugadores.current) {
             //Creamos un elemento de tipo option por cada jugador y lo anidamos al select.
             let idJugador = jugador.id_jugador;
             let nombreJugador = jugador.nombre_completo;
@@ -46,11 +44,19 @@ function Evento({ info }) {
     //useEffect que se ejecutará cuando se produzca un cambio en algunos de los equipos seleccionados.
     useEffect( () => {
 
-        if (cambioEquipo.current === true){
+        // if (cambioEquipo.current === true){
             rellenarDesplegableJugadores();
-        }
+        // }
 
-    },[cambioEquipo.current]);
+    },[]);
+
+    useEffect( () => {
+
+        // if (cambioEquipo.current === true){
+            rellenarDesplegableJugadores();
+        // }
+
+    },[jugadores]);
 
     return (
         <div className="my-2 row mx-0" id={info[1]}>
@@ -96,6 +102,9 @@ function Evento({ info }) {
                 }
 
             </div>
+            <div className="row">
+                <div className="col">Jguadores:  {jugadores.current.value} </div>
+            </div>
         </div>
 
     );
@@ -111,7 +120,7 @@ export default function RegistrarPartido() {
     const [cambiandoEquipo, setCambiandoEquipo] = useState(false);
     const [jugadores,setJugadores] = useState([]);
 
-
+    //Función que rellena los dos campos select con los nombres de los equipos.
     async function rellenarDesplegableEquipos() {
 
         let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getEquipos.php");
@@ -125,24 +134,18 @@ export default function RegistrarPartido() {
             listadoEquiposVisitante.innerHTML = " ";
 
             //Creamos el primer option de cada select, el cual estará vacío.
-            let optionSinValor = document.createElement("option");
-            optionSinValor.value = "-";
-            optionSinValor.textContent = "-";
+            let optionSinValor1 = createOptionElement("-","-");
+            let optionSinValor2 = createOptionElement("-","-");
 
             // Anidamos los elementos option a los dos select.
-            listadoEquiposLocal.appendChild(optionSinValor);
-            listadoEquiposVisitante.appendChild(optionSinValor);
+            listadoEquiposLocal.appendChild(optionSinValor1);
+            listadoEquiposVisitante.appendChild(optionSinValor2);
 
             for (let equipo of respuesta.datos) {
                 // Creamos un elemento de tipo option por cada equipo.
-                let optionLocal = document.createElement("option");
-                optionLocal.value = equipo.id_equipo;
-                optionLocal.textContent = equipo.nombre;                
-
-                let optionVisitante = document.createElement("option");
-                optionVisitante.value = equipo.id_equipo;
-                optionVisitante.textContent = equipo.nombre;
-
+                let optionLocal = createOptionElement(equipo.id_equipo,equipo.nombre);
+                let optionVisitante = createOptionElement(equipo.id_equipo,equipo.nombre);
+              
                 listadoEquiposLocal.appendChild(optionLocal);
                 listadoEquiposVisitante.appendChild(optionVisitante);
             }
@@ -151,59 +154,45 @@ export default function RegistrarPartido() {
 
     async function getJugadoresDeUnEquipo(idEquipo) {
 
-        console.log(idEquipo);
-        if (idEquipo !== '-') {
+        if (idEquipo !== "-") {
 
             let parametros = new FormData();
             parametros.append("id_equipo", idEquipo);          
-            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getJugadoresDeUnEquipo.php", parametros);
+            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getJugadoresDeUnEquipo.php", {
+                method : 'POST',
+                body : parametros
+            });
 
             if (response.ok) {
 
                 let respuesta = await response.json();
-                console.log(respuesta);
                 if (respuesta.datos.length === 0) {
-                    alert("El equipo con id = " + idEquipo + " no tiene jugadores.")
                 } else if (!respuesta.datos.length >= 0 && !respuesta.error) {
-                    alert("Se ha recuperado correctamente los jugadores de un equipo.");
-                    console.log(respuesta);
                     return respuesta.datos;
                 }
             }
         }
-
     }//Fin de la función
 
-    function actualizarJugadoresDeAmbosEquipos() {
-        //El ...descompone el array en cada uno de sus elementos individuales.  De esta forma se añade cada elemento individual del array y no todo el array en sí
-        setJugadores([...jugadoresEquipoLocal, ...jugadoresEquipoVisitante]);
-    }
-
     async function handleChangeEquipoLocal(idEquipo) {
-        setCambiandoEquipo(true);
-        let jugadoresEquipoLocal = getJugadoresDeUnEquipo(idEquipo);
-        setJugadoresEquipoLocal(jugadoresEquipoLocal);
-        actualizarJugadoresDeAmbosEquipos();
-        setCambiandoEquipo(false);
-    }
+    
+        if (idEquipo !== "-"){
+            let jugadoresLocales = await getJugadoresDeUnEquipo(idEquipo);
+            // console.log("Jugadores obtenidos: " +  jugadoresLocales);
+            setJugadoresEquipoLocal(jugadoresLocales);
+            setCambiandoEquipo(!setCambiandoEquipo);
+        }       
+    }//Fin de la función.
 
     async function handleChangeEquipoVisitante(idEquipo) {
-        setCambiandoEquipo(true);
-        let jugadores = getJugadoresDeUnEquipo(idEquipo);
-        setJugadoresEquipoVisitante(jugadores);
-        actualizarJugadoresDeAmbosEquipos();
-        setCambiandoEquipo(false);
-    }
-    //Cada vez que se pulse en añadir un nuevo evento, se creará y añadirá un nuevo
-    // componente evento. Le pasamos el array con todos lo métodos que deberán llamarse
-    //cuando se produzcan los diferentes eventos del componente.
-    const eventos = [];
 
-    for (let i = 0; i < numEventos; i++) {
-        const numEvento = "evento" + i;
-        const info = [eliminarEvento, numEvento, cambiandoEquipo, jugadores];
-        eventos.push(<Evento key={i} info={info} />);
-    }
+        if (idEquipo !== "-"){
+            let jugadoresVisitantes = await getJugadoresDeUnEquipo(idEquipo);
+            setJugadoresEquipoVisitante(jugadoresVisitantes);
+            console.log("JUGADORES VISITANTES: " + jugadoresEquipoVisitante);
+            setCambiandoEquipo(!setCambiandoEquipo);
+        }
+    }//Fin de la función.
 
     //Cuando se pulse el botón de añadir evento, se actualizará la variable que 
     //los cuenta y se renderizará un nuevo componente.
@@ -222,19 +211,56 @@ export default function RegistrarPartido() {
         rellenarDesplegableEquipos();
     }, [])
 
+    //UseEffect que hará que se renderice el componente sólo cuando cuando se produzca un cambio en alguna
+    //de las dos variables.
+    useEffect(() => {
+
+        function actualizarJugadoresDeAmbosEquipos() {
+
+            //El ...descompone el array en cada uno de sus elementos individuales.  De esta forma se añade cada elemento individual del array y no todo el array en sí
+            if (jugadoresEquipoLocal.length > 0 && jugadoresEquipoVisitante.length > 0){
+                setJugadores([...jugadoresEquipoLocal, ...jugadoresEquipoVisitante]);
+            }else{
+                setJugadores([]);
+            }
+          
+                
+        }//Fin de la función.
+        actualizarJugadoresDeAmbosEquipos();
+        // console.log("Jugadores del equipo local: " + jugadoresEquipoLocal);
+        // console.log("Jugadores del equipo visitante: " + jugadoresEquipoVisitante);
+        console.log("Jugadores de ambos equipos: " + jugadores + "Fin de los jugadores de ambos equipos.");
+    }, [jugadoresEquipoLocal, jugadoresEquipoVisitante]);
+
+
+    
+
+    //Cada vez que se pulse en añadir un nuevo evento, se creará y añadirá un nuevo
+    // componente evento. Le pasamos el array con todos lo métodos que deberán llamarse
+    //cuando se produzcan los diferentes eventos del componente.
+    const eventos = [];
+
+    for (let i = 0; i < numEventos; i++) {
+        const numEvento = "evento" + i;
+        //Mandamos a cada componente evento el método que elimina el evento del componente principal,
+        //el método que maneja el cambio de equipo, y los jugadores de los equipos seleccionados.
+        const info = [eliminarEvento, numEvento, jugadores];
+        eventos.push(<Evento key={i} info={info} />);
+    }
+
     return (
         <>
             <NavBar />
             <form className="bg-transparent col-lg-5 mx-auto p-0" name="frmRegistrarEquipo">
 
-                <h3 className="text-center">Información del partido</h3>
+                <h3 className="text-center mt-1">Información del partido</h3>
                 <div className="my-2 row mx-0">
                     <label htmlFor="txtCompeticion" className="form-label my-auto">Competición</label>
                     <input type="text" className="form-control shadow-none" id="txtCompeticion" name="txtCompeticion" required />
                 </div>
                 <div className="my-2 row mx-0">
                     <label htmlFor="txtEquipoLocal" className="form-label">Equipo local</label>
-                    <select className="form-select shadow-none" id="txtEquipoLocal" onChange={(event) => handleChangeEquipoLocal(event.target.value)} name="txtEquipoLocal" required >
+                        <select className="form-select shadow-none" id="txtEquipoLocal" onChange={(event) => handleChangeEquipoLocal(event.target.value)} name="txtEquipoLocal" required >
 
                     </select>
                 </div>
@@ -262,6 +288,12 @@ export default function RegistrarPartido() {
                 </div>
 
             </form>
+            <div className="row">
+                <div className="col">Jugadores locales: {jugadoresEquipoLocal.toString()}</div>
+                <div className="col">Jugadores visitantes: {jugadoresEquipoVisitante.toString()}</div>
+                <div className="col">Jugadores de ambos equipos: {jugadores.toString()}</div>
+
+            </div>
         </>
     );
 }

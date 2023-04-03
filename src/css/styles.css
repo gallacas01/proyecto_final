@@ -1,5 +1,5 @@
 body{
-    background-color: whitesmoke;
+    background-color: white;
     padding: 0;
 }
 
@@ -13,7 +13,7 @@ nav{
 }
 
 .navbar-brand:hover,.nav-link:hover{
-    border-bottom: 3px solid rgb(244, 157, 18);
+    border-bottom: 3px solid rgb(226, 148, 24);
     color: white;
 }
 
@@ -27,11 +27,34 @@ nav{
    color: whitesmoke;
 }
 
+/* Color del borde de los input */
+.form-control, .form-select{
+    border: 0.6px solid #182E3E;
+    color: #182E3E;
+}
+
+.form-control:focus, .form-select:focus{
+    border: 2px solid #182E3E;
+    /* border: 2px solid rgb(226, 148, 24); */
+}
+
 /* Opacidad de los placeholder */
 input[type="text"]::placeholder {
     color: #182E3E;
     opacity:0.7;
   }
+
+.btn1{
+    border-color: transparent;
+    border-radius: 6px;
+    color: rgb(255, 191, 88);
+    background-color: #182E3E;
+}
+
+/* Columnas laterales de la página */
+.lateral{
+    background-color: whitesmoke;
+}
 
   /* Clase que controla que el elemento seleccionado de la navbar mantenga su border-bottom */
   .isFocused{

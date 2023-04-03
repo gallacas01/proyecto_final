@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import NavBar from "./NavBar";
+import Footer from "./Footer";
 import './css/styles.css';
 
 function createOptionElement(value, textContent) {
@@ -116,16 +117,16 @@ export default function RegistrarJugador() {
             if (altura === "")
                 alert("Introduce un valor numérico en el campo 'altura'");
             if (idEquipo === "-")
-                alert("Introduce un equipo para el juador.");
+                alert("Introduce un equipo para el jugador.");
         }
     }//Fin de la función.
 
     return (
         <>
             <NavBar />
-            <form className="bg-transparent col-lg-5 mx-auto p-0" name="frmRegistrarJugador" id="frmRegistrarJugador">
+            <form className="bg-transparent col-lg-5 mx-auto mb-4 p-0" name="frmRegistrarJugador" id="frmRegistrarJugador">
 
-                <h3 className="text-center">Datos del jugador</h3>
+                <h3 className="text-center mt-1">Datos del jugador</h3>
                 <div className="my-2 row mx-0">
                     <label htmlFor="txtDni" className="form-label my-auto">DNI / INE</label>
                     <input type="text" className="form-control shadow-none" id="txtDni" name="txtDni" minLength={9} maxLength={9} required />
@@ -165,8 +166,9 @@ export default function RegistrarJugador() {
 
                     </select>
                 </div>
-                <input type="text" className="btn btn-primary" value={"REGISTRAR"} onClick={guardarJugadorEnBD} />
+                <button className="btn1 p-1" onClick={guardarJugadorEnBD}> REGISTRAR</button>
             </form>
+            <Footer/>
         </>
     );
 }
