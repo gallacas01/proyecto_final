@@ -69,7 +69,7 @@ export default function RegistrarJugador() {
             let response1 = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarJugador.php",
                 {
                     body: parametrosJugador,
-                    method: "POST"
+                    method: 'POST'
                 });
 
             if (response1.ok) {
@@ -166,7 +166,7 @@ export default function RegistrarJugador() {
 
                     </select>
                 </div>
-                <button className="btn1 p-1" onClick={guardarJugadorEnBD}> REGISTRAR</button>
+                <input type="button" className="btn1 p-2" onClick={guardarJugadorEnBD} value={"ENVIAR"}/>
             </form>
             <Footer/>
         </>

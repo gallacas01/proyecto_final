@@ -15,10 +15,11 @@ function Evento({ info }) {
     const [eventoAceptado, setEventoAceptado] = useState(false);
     const [tipoEvento, setTipoEvento] = useState('');
     const [nombreJugador, setNombreJugador] = useState('');
-    const jugadores = useRef(info[2]);
 
     function handleNombreJugador(event) {
-        setNombreJugador(event.target.value);
+        //El value del option del campo select tiene la siguiente estructura: nombre-1
+        let nombre = event.target.value.split("-")[0];
+        setNombreJugador(nombre);
     }
 
     function handleTipoEvento(event) {
@@ -27,39 +28,30 @@ function Evento({ info }) {
 
     async function rellenarDesplegableJugadores() {
 
-        let listadoJugadores = document.getElementById('txtJugadores');
+        let id = "txtJugadores" + info.numEvento
+        let listadoJugadores = document.getElementById(id);
+        listadoJugadores.innerHTML = "";
 
         //Anidamos a nuestro select una primera opción, que tendrá el valor '-'
         listadoJugadores.appendChild(createOptionElement("-", "-"));
 
-        for (let jugador of jugadores.current) {
+        for (let jugador of info.jugadores) {
             //Creamos un elemento de tipo option por cada jugador y lo anidamos al select.
             let idJugador = jugador.id_jugador;
             let nombreJugador = jugador.nombre_completo;
-            let option = createOptionElement(idJugador, nombreJugador);
+            let option = createOptionElement((nombreJugador + "-" + idJugador), nombreJugador);
             listadoJugadores.appendChild(option);
         }
     }
 
     //useEffect que se ejecutará cuando se produzca un cambio en algunos de los equipos seleccionados.
     useEffect( () => {
-
-        // if (cambioEquipo.current === true){
+       
             rellenarDesplegableJugadores();
-        // }
-
-    },[]);
-
-    useEffect( () => {
-
-        // if (cambioEquipo.current === true){
-            rellenarDesplegableJugadores();
-        // }
-
-    },[jugadores]);
+    },[info.jugadores]);
 
     return (
-        <div className="my-2 row mx-0" id={info[1]}>
+        <div className="my-2 row mx-0" id={info.numEvento}>
             <div className="container-fluid">
 
                 <div className="row p-0">
@@ -70,7 +62,7 @@ function Evento({ info }) {
                 {eventoAceptado === false &&
                     <div className="row mt-2 p-0">
                         <div className="col-5 p-0 m-auto">
-                            <select className="form-select shadow-none" onChange={handleNombreJugador} id="txtJugadores" name="txtJugadores" required>
+                            <select className="form-select shadow-none" onChange={handleNombreJugador} id={"txtJugadores" + info.numEvento} name="txtJugadores" required>
 
                             </select>
                         </div>
@@ -87,7 +79,7 @@ function Evento({ info }) {
                             <div className="container-fluid">
                                 <div className="row p-0">
                                     <button className="p-1 col-6" onClick={() => setEventoAceptado(true)}><i className="fa-solid fa-circle-check fs-3"></i></button>
-                                    <button className="p-1 col-6" onClick={info[0]}><i className="fa-sharp fa-solid fa-circle-xmark fs-3"></i></button>
+                                    <button className="p-1 col-6" onClick={info.eliminarEvento}><i className="fa-sharp fa-solid fa-circle-xmark fs-3"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -102,9 +94,6 @@ function Evento({ info }) {
                 }
 
             </div>
-            <div className="row">
-                <div className="col">Jguadores:  {jugadores.current.value} </div>
-            </div>
         </div>
 
     );
@@ -117,7 +106,6 @@ export default function RegistrarPartido() {
     const [numEventos, setNumEventos] = useState(0);
     const [jugadoresEquipoLocal, setJugadoresEquipoLocal] = useState([]);
     const [jugadoresEquipoVisitante, setJugadoresEquipoVisitante] = useState([]);
-    const [cambiandoEquipo, setCambiandoEquipo] = useState(false);
     const [jugadores,setJugadores] = useState([]);
 
     //Función que rellena los dos campos select con los nombres de los equipos.
@@ -175,12 +163,11 @@ export default function RegistrarPartido() {
     }//Fin de la función
 
     async function handleChangeEquipoLocal(idEquipo) {
-    
+       
         if (idEquipo !== "-"){
             let jugadoresLocales = await getJugadoresDeUnEquipo(idEquipo);
             // console.log("Jugadores obtenidos: " +  jugadoresLocales);
             setJugadoresEquipoLocal(jugadoresLocales);
-            setCambiandoEquipo(!setCambiandoEquipo);
         }       
     }//Fin de la función.
 
@@ -189,8 +176,8 @@ export default function RegistrarPartido() {
         if (idEquipo !== "-"){
             let jugadoresVisitantes = await getJugadoresDeUnEquipo(idEquipo);
             setJugadoresEquipoVisitante(jugadoresVisitantes);
-            console.log("JUGADORES VISITANTES: " + jugadoresEquipoVisitante);
-            setCambiandoEquipo(!setCambiandoEquipo);
+            console.log("Jugadores visitantes actualizados.");
+            // console.log("JUGADORES VISITANTES: " + jugadoresEquipoVisitante);
         }
     }//Fin de la función.
 
@@ -217,23 +204,17 @@ export default function RegistrarPartido() {
 
         function actualizarJugadoresDeAmbosEquipos() {
 
+            // console.log("jugadores del equipo local sin actualizar: " + jugadoresEquipoLocal);
             //El ...descompone el array en cada uno de sus elementos individuales.  De esta forma se añade cada elemento individual del array y no todo el array en sí
             if (jugadoresEquipoLocal.length > 0 && jugadoresEquipoVisitante.length > 0){
                 setJugadores([...jugadoresEquipoLocal, ...jugadoresEquipoVisitante]);
-            }else{
-                setJugadores([]);
-            }
-          
-                
+            }         
+            // console.log("jugadores del equipo local actualizados: " + jugadoresEquipoLocal);
+     
         }//Fin de la función.
+
         actualizarJugadoresDeAmbosEquipos();
-        // console.log("Jugadores del equipo local: " + jugadoresEquipoLocal);
-        // console.log("Jugadores del equipo visitante: " + jugadoresEquipoVisitante);
-        console.log("Jugadores de ambos equipos: " + jugadores + "Fin de los jugadores de ambos equipos.");
     }, [jugadoresEquipoLocal, jugadoresEquipoVisitante]);
-
-
-    
 
     //Cada vez que se pulse en añadir un nuevo evento, se creará y añadirá un nuevo
     // componente evento. Le pasamos el array con todos lo métodos que deberán llamarse
@@ -244,7 +225,7 @@ export default function RegistrarPartido() {
         const numEvento = "evento" + i;
         //Mandamos a cada componente evento el método que elimina el evento del componente principal,
         //el método que maneja el cambio de equipo, y los jugadores de los equipos seleccionados.
-        const info = [eliminarEvento, numEvento, jugadores];
+        const info = {eliminarEvento, numEvento, jugadores};
         eventos.push(<Evento key={i} info={info} />);
     }
 
