@@ -13,7 +13,7 @@ nav{
 }
 
 .navbar-brand:hover,.nav-link:hover{
-    border-bottom: 3px solid rgb(226, 148, 24);
+    border-bottom: 3px solid rgb(255, 191, 88);
     color: white;
 }
 

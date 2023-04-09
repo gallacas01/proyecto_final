@@ -1,7 +1,7 @@
 export default function Footer(){
     return(
-        <div className="container-fluid footer mb-0">
-            <h1 className="text-center">FOOTER</h1>
+        <div className="bg-dark footer">
+            <h1 className="text-center m-0 p-0">FOOTER</h1>
         </div>
     );
 }

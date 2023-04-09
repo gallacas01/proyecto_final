@@ -7,9 +7,9 @@ export default function RegistrarEquipo() {
             <NavBar />
             <form className="bg-transparent col-lg-5 mx-auto p-0" name="frmRegistrarEquipo">
                 
-                <h3 className="text-center">Datos del equipo</h3>
+                <h3 className="text-center mt-2">Datos del equipo</h3>
                 <div className="my-2 row mx-0">
-                    <label for="txdNombreEqiupo" className="form-label my-auto">Nombre</label>
+                    <label for="txdNombreEqiupo" className="form-label">Nombre</label>
                     <input type="text" className="form-control shadow-none" id="txdNombreEqiupo" name="txdNombreEqiupo" required/>
                 </div>
                 <div className="my-2 row mx-0">
@@ -25,7 +25,7 @@ export default function RegistrarEquipo() {
                     <input type="text" className="form-control shadow-none" id="txtEscudo" name="txtEscudo" min={0} required/>
                 </div>
              
-                <input type="submit" className="btn btn-primary" value={"ENVIAR"}/>
+                <input type="button" className="btn1 p-1" value={"ENVIAR"}/>
             </form>
         </>
     );

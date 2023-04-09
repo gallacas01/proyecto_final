@@ -23,7 +23,10 @@ function Evento({ info }) {
     }
 
     function handleTipoEvento(event) {
-        setTipoEvento(event.target.value);
+        //Recuperamos el textContent de la etiqueta option del select que contiene los tipos de eventos.
+        let optionSeleccionado = event.target.options[event.target.selectedIndex];
+        let tipoEvento = optionSeleccionado.text;
+        setTipoEvento(tipoEvento);
     }
 
     async function rellenarDesplegableJugadores() {
@@ -55,18 +58,18 @@ function Evento({ info }) {
             <div className="container-fluid">
 
                 <div className="row p-0">
-                    <div className="col-5"><label htmlFor="txtNombreJugador" className="form-label my-auto text-start">Jugador</label></div>
-                    <div className="col-5"><label htmlFor="txtTipoEvento" className="form-label my-auto ms-lg-3">Evento</label></div>
+                    <div className="col-lg-6"><label htmlFor="txtNombreJugador" className="form-label my-auto text-start">Jugador</label></div>
+                    <div className="col-lg"><label htmlFor="txtTipoEvento" className="form-label my-auto ms-lg-3">Evento</label></div>
                 </div>
 
                 {eventoAceptado === false &&
                     <div className="row mt-2 p-0">
-                        <div className="col-5 p-0 m-auto">
+                        <div className="col-lg-6 p-0 my-auto">
                             <select className="form-select shadow-none" onChange={handleNombreJugador} id={"txtJugadores" + info.numEvento} name="txtJugadores" required>
 
                             </select>
                         </div>
-                        <div className="p-0 m-auto col-4">
+                        <div className="p-0 my-auto mx-2 col">
                             <select className="form-select shadow-none" onChange={handleTipoEvento} id="txtPosicion" name="txtPosicion" required>
                                 <option value="-" selected>-</option>
                                 <option value="Gol">Gol</option>
@@ -75,11 +78,11 @@ function Evento({ info }) {
                                 <option value="tarjetaRoja">Tarjeta roja</option>
                             </select>
                         </div>
-                        <div className="col-3 m-auto">
-                            <div className="container-fluid">
-                                <div className="row p-0">
-                                    <button className="p-1 col-6" onClick={() => setEventoAceptado(true)}><i className="fa-solid fa-circle-check fs-3"></i></button>
-                                    <button className="p-1 col-6" onClick={info.eliminarEvento}><i className="fa-sharp fa-solid fa-circle-xmark fs-3"></i></button>
+                        <div className="col-lg-2 my-auto">
+                            <div className="container-fluid p-0">
+                                <div className="row">
+                                    <div className="col-6 m-0 p-0 text-start"> <button className="p-1" onClick={() => setEventoAceptado(true)}><i className="fa-solid fa-circle-check fs-3"></i></button> </div>
+                                    <div className="col-6 m-0 p-0"> <button className="p-1" onClick={info.eliminarEvento}><i className="fa-sharp fa-solid fa-circle-xmark fs-3"></i></button> </div>
                                 </div>
                             </div>
                         </div>
@@ -239,6 +242,7 @@ export default function RegistrarPartido() {
         actualizarJugadoresDeAmbosEquipos();
     }, [jugadoresEquipoLocal, jugadoresEquipoVisitante]);
 
+    //MIGUEL CONTINÚA POR AQUÍ
     async function registrarPartido() {
 
         let competicion = document.getElementById('txtCompeticion');
@@ -323,11 +327,10 @@ export default function RegistrarPartido() {
                 {eventos}
 
                 <div className="my-2 row mx-0">
-                    <input type="submit" className="btn btn-primary col-3" value={"ENVIAR"} onClick={registrarPartido} />
+                    <input type="submit" className="btn1 p-lg-2 col-3" value={"ENVIAR"} onClick={registrarPartido} />
                     <div className="col"></div>
-                    <input type="button" className="btn btn-primary col-3" value={"EVENTO"} onClick={incNumEventos} />
+                    <input type="button" className="btn1 p-lg-2 col-3" value={"EVENTO"} onClick={incNumEventos} />
                 </div>
-
             </form>
         </>
     );

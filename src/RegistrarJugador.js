@@ -150,6 +150,7 @@ export default function RegistrarJugador() {
                 <div className="my-3 row mx-0">
                     <label htmlFor="txtPosicion" className="form-label">Posición</label>
                     <select className="form-select shadow-none" id="txtPosicion" name="txtPosicion" aria-label="Default select example" required>
+                        <option value="-">-</option>
                         <option value="portero">Portero</option>
                         <option value="defensa">Defensa</option>
                         <option value="centrocampista">Centrocampista</option>
@@ -166,7 +167,7 @@ export default function RegistrarJugador() {
 
                     </select>
                 </div>
-                <input type="button" className="btn1 p-2" onClick={guardarJugadorEnBD} value={"ENVIAR"}/>
+                <input type="button" className="btn1 p-1" onClick={guardarJugadorEnBD} value={"ENVIAR"}/>
             </form>
             <Footer/>
         </>
