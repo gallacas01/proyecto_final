@@ -111,38 +111,8 @@ export default function RegistrarPartido() {
     const [jugadoresEquipoVisitante, setJugadoresEquipoVisitante] = useState([]);
     const [jugadores, setJugadores] = useState([]);
     const [estadioEquipoLocal, setEstadioEquipoLocal] = useState('');
-
-    //Función que rellena los dos campos select con los nombres de los equipos.
-    async function rellenarDesplegableEquipos() {
-
-        let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getEquipos.php");
-        if (response.ok) {
-
-            let respuesta = await response.json();
-
-            let listadoEquiposLocal = document.getElementById('txtEquipoLocal');
-            listadoEquiposLocal.innerHTML = " ";
-            let listadoEquiposVisitante = document.getElementById('txtEquipoVisitante');
-            listadoEquiposVisitante.innerHTML = " ";
-
-            //Creamos el primer option de cada select, el cual estará vacío.
-            let optionSinValor1 = createOptionElement("-", "-");
-            let optionSinValor2 = createOptionElement("-", "-");
-
-            // Anidamos los elementos option a los dos select.
-            listadoEquiposLocal.appendChild(optionSinValor1);
-            listadoEquiposVisitante.appendChild(optionSinValor2);
-
-            for (let equipo of respuesta.datos) {
-                // Creamos un elemento de tipo option por cada equipo.
-                let optionLocal = createOptionElement(equipo.id_equipo, equipo.nombre);
-                let optionVisitante = createOptionElement(equipo.id_equipo, equipo.nombre);
-
-                listadoEquiposLocal.appendChild(optionLocal);
-                listadoEquiposVisitante.appendChild(optionVisitante);
-            }
-        }
-    }
+    const [idEquipoLocal, setIdEquipoLocal] = useState('');
+    const [idEquipoVisitante, setIdEquipoVisitante] = useState('');
 
     async function getJugadoresDeUnEquipo(idEquipo) {
 
@@ -166,20 +136,20 @@ export default function RegistrarPartido() {
         }
     }//Fin de la función
 
-    async function getEstadioDeUnEquipo(idEquipo){
+    async function getEstadioDeUnEquipo(idEquipo) {
 
         let parametros = new FormData();
         parametros.append('id_equipo', idEquipo);
-         //Obtenemos el estadio
+        //Obtenemos el estadio
         let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getEstadioDeUnEquipo.php", {
-                method : 'POST',
-                body : parametros
+            method: 'POST',
+            body: parametros
         });
 
-        if (response.ok){
+        if (response.ok) {
 
             let respuesta = await response.json();
-            if (!respuesta.error){
+            if (!respuesta.error) {
 
                 let estadio = respuesta.datos.estadio;
                 return estadio;
@@ -190,6 +160,8 @@ export default function RegistrarPartido() {
     async function handleChangeEquipoLocal(idEquipo) {
 
         if (idEquipo !== "-") {
+
+            setIdEquipoLocal(idEquipo);
             //Obtenemos los jugadores
             let jugadoresLocales = await getJugadoresDeUnEquipo(idEquipo);
             setJugadoresEquipoLocal(jugadoresLocales);
@@ -203,10 +175,12 @@ export default function RegistrarPartido() {
     async function handleChangeEquipoVisitante(idEquipo) {
 
         if (idEquipo !== "-") {
+
+            setIdEquipoVisitante(idEquipo);
+            //Obtenemos los jugadores.
             let jugadoresVisitantes = await getJugadoresDeUnEquipo(idEquipo);
             setJugadoresEquipoVisitante(jugadoresVisitantes);
             console.log("Jugadores visitantes actualizados.");
-            // console.log("JUGADORES VISITANTES: " + jugadoresEquipoVisitante);
         }
     }//Fin de la función.
 
@@ -224,8 +198,60 @@ export default function RegistrarPartido() {
     //UseEffect que se ejecutará la primera vez que se renderice el componente.
     useEffect(() => {
 
+        async function rellenarDesplegableCompeticiones() {
+
+            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getCompeticiones.php");
+            if (response.ok) {
+
+                let respuesta = await response.json();
+                console.log(respuesta.datos);
+                let desplegableCompeticiones = document.getElementById('txtCompeticion');
+                desplegableCompeticiones.innerHTML = " ";
+                let primerOption = createOptionElement("-", "-");
+                desplegableCompeticiones.appendChild(primerOption);
+
+                for (let competicion of respuesta.datos) {
+                    let option = createOptionElement(competicion.id_competicion, competicion.nombre);
+                    desplegableCompeticiones.appendChild(option);
+                }
+            }
+        }//Fin de la función.
+
+        //Función que rellena los dos campos select con los nombres de los equipos.
+        async function rellenarDesplegableEquipos() {
+
+            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getEquipos.php");
+            if (response.ok) {
+
+                let respuesta = await response.json();
+
+                let listadoEquiposLocal = document.getElementById('txtEquipoLocal');
+                listadoEquiposLocal.innerHTML = " ";
+                let listadoEquiposVisitante = document.getElementById('txtEquipoVisitante');
+                listadoEquiposVisitante.innerHTML = " ";
+
+                //Creamos el primer option de cada select, el cual estará vacío.
+                let optionSinValor1 = createOptionElement("-", "-");
+                let optionSinValor2 = createOptionElement("-", "-");
+
+                // Anidamos los elementos option a los dos select.
+                listadoEquiposLocal.appendChild(optionSinValor1);
+                listadoEquiposVisitante.appendChild(optionSinValor2);
+
+                for (let equipo of respuesta.datos) {
+                    // Creamos un elemento de tipo option por cada equipo.
+                    let optionLocal = createOptionElement(equipo.id_equipo, equipo.nombre);
+                    let optionVisitante = createOptionElement(equipo.id_equipo, equipo.nombre);
+
+                    listadoEquiposLocal.appendChild(optionLocal);
+                    listadoEquiposVisitante.appendChild(optionVisitante);
+                }
+            }
+        }//Fin de la función.
+
+        rellenarDesplegableCompeticiones();
         rellenarDesplegableEquipos();
-    }, [])
+    }, []);
 
     //UseEffect que hará que se renderice el componente sólo cuando cuando se produzca un cambio en alguna
     //de las dos variables.
@@ -245,31 +271,43 @@ export default function RegistrarPartido() {
     //MIGUEL CONTINÚA POR AQUÍ
     async function registrarPartido() {
 
-        let competicion = document.getElementById('txtCompeticion');
-        let equipoLocal = document.getElementById('txtEquipoLocal');
-        let equipoVisitante = document.getElementById('txtEquipoVisitante');
-        let fecha = document.getElementById('txtFechaPartido');
-        let golesEquipoLocal = document.getElementById('txtGolesEquipoLocal');
-        let golesEquipoVisitante = document.getElementById('txtGolesEquipoVisitante');
-        let parametros = new FormData();
-        parametros.append("competicion", competicion);
-        parametros.append("equipo_local", equipoLocal);
-        parametros.append("equipo_visitante", equipoVisitante);
-        parametros.append("fecha", fecha);
-        parametros.append("goles_equipo_local", golesEquipoLocal);
-        parametros.append("goles_equipo_visitante", golesEquipoVisitante);
+        let idCompeticion = document.getElementById('txtCompeticion').value;
+        let fecha = document.getElementById('txtFechaPartido').value;
+        let golesEquipoLocal = document.getElementById('txtGolesEquipoLocal').value;
+        let golesEquipoVisitante = document.getElementById('txtGolesEquipoVisitante').value;
 
-        let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/registrarPartido.php", {
-            method: 'POST',
-            body: parametros
-        });
+        if (idCompeticion !== "-" && idEquipoLocal !== "-" && idEquipoVisitante !== "-") {
 
-        if (response.ok) {
+            if (idEquipoLocal === idEquipoVisitante) {
+                alert("ERROR: El equipo local y el visitante no pueden ser el mismo.");
+            } else {
 
-            let respuesta = await response.json();
-            alert(respuesta.datos);
+                let parametros = new FormData();
+                parametros.append("id_equipo_local", idEquipoLocal);
+                parametros.append("id_equipo_visitante", idEquipoVisitante);
+                parametros.append("id_competicion", idCompeticion);
+                parametros.append("estadio", estadioEquipoLocal);
+                parametros.append("goles_equipo_local", golesEquipoLocal);
+                parametros.append("goles_equipo_visitante", golesEquipoVisitante);
+                parametros.append("fecha", fecha);
+
+                let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarPartido.php", {
+                    method: 'POST',
+                    body: parametros
+                });
+
+                if (response.ok) {
+
+                    let respuesta = await response.json();
+                    if (!respuesta.error){
+                        alert(respuesta.datos);
+                    }
+                }
+            }
+
+        } else {
+            alert("ERROR: Por favor, selecciona datos válidos.");
         }
-
 
     }//Fin de la función.
 
@@ -293,8 +331,10 @@ export default function RegistrarPartido() {
 
                 <h3 className="text-center mt-1">Información del partido</h3>
                 <div className="my-2 row mx-0">
-                    <label htmlFor="txtCompeticion" className="form-label my-auto">Competición</label>
-                    <input type="text" className="form-control shadow-none" id="txtCompeticion" name="txtCompeticion" required />
+                    <label htmlFor="txtCompeticion" className="form-label">Competicion</label>
+                    <select className="form-select shadow-none" id="txtCompeticion" name="txtCompeticion" required >
+
+                    </select>
                 </div>
                 <div className="my-2 row mx-0">
                     <label htmlFor="txtEquipoLocal" className="form-label">Equipo local</label>
@@ -314,22 +354,21 @@ export default function RegistrarPartido() {
                 </div>
                 <div className="my-2 row mx-0">
                     <div className="col-4  m-auto p-0 text-center"><p className="my-auto">Resultado del partido</p> </div>
-                    <div className="col-3"><input type="number" className="form-control shadow-none" id="txtGolesEquipoLocal" name="txtGolesEquipoLocal" required /></div>
+                    <div className="col-3"><input type="number" className="form-control shadow-none" id="txtGolesEquipoLocal" name="txtGolesEquipoLocal" min={0} minLength={0} maxLength={3} required /></div>
                     <div className="col-1 m-auto">-</div>
-                    <div className="col-3"><input type="number" className="form-control shadow-none" id="txtGolesEquipoVisitante" name="txtGolesEquipoVisitante" required /></div>
+                    <div className="col-3"><input type="number" className="form-control shadow-none" id="txtGolesEquipoVisitante" name="txtGolesEquipoVisitante" min={0} minLength={0} maxLength={3} required /></div>
 
                     {/* Caracteres del patron: ^ indica el comienzo de la cadena, \d{1,2} indica que se permiten de 1 a 2 dígitos, - indica el carácter - literal, $ indica el final de la cadena. */}
                 </div>
                 <div className="my-2 row mx-0">
                     <p>Estadio del partido: {estadioEquipoLocal}</p>
                 </div>
-
                 {eventos}
 
                 <div className="my-2 row mx-0">
-                    <input type="submit" className="btn1 p-lg-2 col-3" value={"ENVIAR"} onClick={registrarPartido} />
+                    <input type="button" className="btn1 p-lg-2 col-2" value={"ENVIAR"} onClick={registrarPartido} />
                     <div className="col"></div>
-                    <input type="button" className="btn1 p-lg-2 col-3" value={"EVENTO"} onClick={incNumEventos} />
+                    <button className="btn1 p-lg-2 col-2" value={"EVENTO"} onClick={incNumEventos}>EVENTO </button>
                 </div>
             </form>
         </>

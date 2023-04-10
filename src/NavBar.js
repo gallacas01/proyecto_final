@@ -93,9 +93,9 @@ export default function NavBar() {
                 titulo: "Equipos",
                 listaItems :[
                     {
-                    url: "/registrar_equipo",
-                    id: "registrarEquipo",
-                    titulo: "Registrar Equipo"
+                        url: "/registrar_equipo",
+                        id: "registrarEquipo",
+                        titulo: "Registrar Equipo"
                     },
                     {
                         url: "/verEquipos",
@@ -118,7 +118,23 @@ export default function NavBar() {
                 url : "/estadisticas",
                 id: "stats",
                 titulo: "Estadísticas"
-            },           
+            },    
+            {
+                id: "competiciones",
+                titulo: "Competiciones",
+                listaItems :[
+                    {
+                        url: "/registrar_competicion",
+                        id: "registrarCompeticion",
+                        titulo: "Registrar Competición"
+                    },
+                    {
+                        url: "/clasificacion",
+                        id: "clasificacion",
+                        titulo: "Clasificación"                        
+                    },            
+                ]
+            },            
         ]
     };
 

@@ -51,16 +51,22 @@ input[type="text"]::placeholder {
     background-color: #182E3E;
 }
 
-/* Columnas laterales de la página */
-.lateral{
-    background-color: whitesmoke;
+.btn1:hover{
+    text-decoration: underline;
+    /* border: 1.7px solid rgb(255, 191, 88); */
 }
 
-  /* Clase que controla que el elemento seleccionado de la navbar mantenga su border-bottom */
-  .isFocused{
-    border-bottom: 3px solid rgb(244, 157, 18);
-    color: whitesmoke; 
-  }
+.btn1:active{
+    background-color: rgb(255, 191, 88);
+    color: #182E3E;
+    border: 1.7px solid #182E3E;
+}
+
+/* Clase que controla que el elemento seleccionado de la navbar mantenga su border-bottom */
+.isFocused{
+border-bottom: 3px solid rgb(244, 157, 18);
+color: whitesmoke; 
+}
 
 .footer{
     color: white;
