@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import NavBar from "./NavBar";
 import './css/styles.css';
 
@@ -15,11 +15,15 @@ function Evento({ info }) {
     const [eventoAceptado, setEventoAceptado] = useState(false);
     const [tipoEvento, setTipoEvento] = useState('');
     const [nombreJugador, setNombreJugador] = useState('');
+    const [idJugador, setIdJugador] = useState(false);
 
     function handleNombreJugador(event) {
-        //El value del option del campo select tiene la siguiente estructura: nombre-1
+        //El value del option del campo select tiene la siguiente estructura: nombre-id
         let nombre = event.target.value.split("-")[0];
         setNombreJugador(nombre);
+
+        let id = event.target.value.split("-")[1];
+        setIdJugador(id);
     }
 
     function handleTipoEvento(event) {
@@ -52,6 +56,50 @@ function Evento({ info }) {
 
         rellenarDesplegableJugadores();
     }, [info.jugadores]);
+
+
+    useEffect(() => {
+
+        async function registrarEvento(){
+            
+            let idPartido = info.idPartido.current;
+            let idDelJugador = idJugador;
+            let tipo = tipoEvento;
+            let parametros = new FormData();
+            parametros.append("id_partido", idPartido);
+            parametros.append("id_jugador", idDelJugador);
+            parametros.append("tipo", tipo);
+
+            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarEvento.php", {
+                method: 'POST',
+                body: parametros
+            });
+
+            if (response.ok){
+
+                let respuesta = await response.json();
+                if (!respuesta.error){
+                    console.log(respuesta.datos);
+                }else{
+                    alert(respuesta.datos);
+                }
+            }
+        }
+
+        //Si no se ha aceptado el evento, se preguntará al usuario si desea aceptarlo.
+        if (info.guardarDatosEnBD === true && eventoAceptado === false){
+            if (window.confirm("¿Deseas guardar el evento número " + (info.numEvento + 1) + "?")){
+                setEventoAceptado(true);
+            }else{
+                info.eliminarEvento();
+            }
+        }
+        if (info.guardarDatosEnBD === true && eventoAceptado === true){
+            registrarEvento();
+        }
+
+    }, [info.guardarDatosEnBD]);
+
 
     return (
         <div className="my-2 row mx-0" id={info.numEvento}>
@@ -113,6 +161,9 @@ export default function RegistrarPartido() {
     const [estadioEquipoLocal, setEstadioEquipoLocal] = useState('');
     const [idEquipoLocal, setIdEquipoLocal] = useState('');
     const [idEquipoVisitante, setIdEquipoVisitante] = useState('');
+    const [guardarDatosEnBD, setGuardarDatosEnBD] = useState(false);
+    //id del partido que se va a registrar y al que harán referencia los eventos cuando se guarden en la BD.
+    const idPartido = useRef('');
 
     async function getJugadoresDeUnEquipo(idEquipo) {
 
@@ -195,7 +246,7 @@ export default function RegistrarPartido() {
         setNumEventos(numEventos - 1);
     }
 
-    //UseEffect que se ejecutará la primera vez que se renderice el componente.
+    //useEffect que rellena el desplegable de competiciones y equipos.
     useEffect(() => {
 
         async function rellenarDesplegableCompeticiones() {
@@ -268,6 +319,19 @@ export default function RegistrarPartido() {
         actualizarJugadoresDeAmbosEquipos();
     }, [jugadoresEquipoLocal, jugadoresEquipoVisitante]);
 
+    async function getIdPartido (){
+
+        let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getUltimoIdDePartido.php");
+        if (response.ok){
+
+            let respuesta = await response.json();
+            if (!respuesta.error){
+                let idPartido = respuesta.datos.id_partido;
+                return idPartido;
+            }
+        }
+    }
+
     //MIGUEL CONTINÚA POR AQUÍ
     async function registrarPartido() {
 
@@ -300,7 +364,12 @@ export default function RegistrarPartido() {
 
                     let respuesta = await response.json();
                     if (!respuesta.error){
-                        alert(respuesta.datos);
+                        idPartido.current = await getIdPartido();
+                        setGuardarDatosEnBD(true);     
+                        setTimeout(function() {
+                            alert(respuesta.datos);
+                            window.location.reload(false);
+                          }, 1000)  ;                 
                     }
                 }
             }
@@ -320,7 +389,7 @@ export default function RegistrarPartido() {
         const numEvento = "evento" + i;
         //Mandamos a cada componente evento el método que elimina el evento del componente principal,
         //el método que maneja el cambio de equipo, y los jugadores de los equipos seleccionados.
-        const info = { eliminarEvento, numEvento, jugadores };
+        const info = { eliminarEvento, numEvento, jugadores, guardarDatosEnBD, idPartido};
         eventos.push(<Evento key={i} info={info} />);
     }
 
@@ -354,7 +423,7 @@ export default function RegistrarPartido() {
                 </div>
                 <div className="my-2 row mx-0">
                     <div className="col-4  m-auto p-0 text-center"><p className="my-auto">Resultado del partido</p> </div>
-                    <div className="col-3"><input type="number" className="form-control shadow-none" id="txtGolesEquipoLocal" name="txtGolesEquipoLocal" min={0} minLength={0} maxLength={3} required /></div>
+                    <div className="col-3"><input type="number" className="form-control shadow-none" id="txtGolesEquipoLocal" name="txtGolesEquipoLocal" min={0} max={999} minLength={0} maxLength={3} required /></div>
                     <div className="col-1 m-auto">-</div>
                     <div className="col-3"><input type="number" className="form-control shadow-none" id="txtGolesEquipoVisitante" name="txtGolesEquipoVisitante" min={0} minLength={0} maxLength={3} required /></div>
 
@@ -368,7 +437,7 @@ export default function RegistrarPartido() {
                 <div className="my-2 row mx-0">
                     <input type="button" className="btn1 p-lg-2 col-2" value={"ENVIAR"} onClick={registrarPartido} />
                     <div className="col"></div>
-                    <button className="btn1 p-lg-2 col-2" value={"EVENTO"} onClick={incNumEventos}>EVENTO </button>
+                    <button className="btn1 p-lg-2 col-2" value={"EVENTO"} onClick={(event) => {event.preventDefault(); incNumEventos();}}>EVENTO </button>
                 </div>
             </form>
         </>
