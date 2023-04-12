@@ -1,6 +1,8 @@
 body{
     background-color: white;
     padding: 0;
+    /* background-color: #182E3E;
+    color: white; */
 }
 
 nav{
@@ -44,7 +46,7 @@ input[type="text"]::placeholder {
     opacity:0.7;
   }
 
-.btn1{
+.btn1, .btnAceptarEvento, .btnEliminarEvento{
     border-color: transparent;
     border-radius: 6px;
     color: rgb(255, 191, 88);
@@ -60,6 +62,14 @@ input[type="text"]::placeholder {
     background-color: rgb(255, 191, 88);
     color: #182E3E;
     border: 1.7px solid #182E3E;
+}
+
+.btnAceptarEvento:hover{
+    color: green;
+}
+
+.btnEliminarEvento:hover{
+    color: red;
 }
 
 /* Clase que controla que el elemento seleccionado de la navbar mantenga su border-bottom */

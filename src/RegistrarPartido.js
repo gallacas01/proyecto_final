@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWhistle } from '@fortawesome/free-solid-svg-icons';
 import NavBar from "./NavBar";
 import './css/styles.css';
 
@@ -33,6 +35,25 @@ function Evento({ info }) {
         setTipoEvento(tipoEvento);
     }
 
+    function handleEventoAceptado(event){
+
+        if (nombreJugador === "" || tipoEvento === ""){
+
+            if (nombreJugador === ""){
+                alert("Selecciona un jugador.");
+            }
+            if (tipoEvento === ""){
+                alert("Selecciona un evento para el jugador.");
+            }
+            if (nombreJugador === "" && tipoEvento === ""){
+                alert("Selecciona un jugador y un evento.");
+            }
+
+        }else{
+            setEventoAceptado(true);
+        }
+    }
+
     async function rellenarDesplegableJugadores() {
 
         let id = "txtJugadores" + info.numEvento
@@ -55,8 +76,8 @@ function Evento({ info }) {
     useEffect(() => {
 
         rellenarDesplegableJugadores();
+        console.log(info.numEvento.charAt(info.numEvento.length-1));
     }, [info.jugadores]);
-
 
     useEffect(() => {
 
@@ -88,7 +109,7 @@ function Evento({ info }) {
 
         //Si no se ha aceptado el evento, se preguntará al usuario si desea aceptarlo.
         if (info.guardarDatosEnBD === true && eventoAceptado === false){
-            if (window.confirm("¿Deseas guardar el evento número " + (info.numEvento + 1) + "?")){
+            if (window.confirm("¿Deseas guardar el evento número " + (parseInt((info.numEvento.charAt(info.numEvento.length - 1))) + 1) +  "?")){
                 setEventoAceptado(true);
             }else{
                 info.eliminarEvento();
@@ -129,8 +150,8 @@ function Evento({ info }) {
                         <div className="col-lg-2 my-auto">
                             <div className="container-fluid p-0">
                                 <div className="row">
-                                    <div className="col-6 m-0 p-0 text-start"> <button className="p-1" onClick={() => setEventoAceptado(true)}><i className="fa-solid fa-circle-check fs-3"></i></button> </div>
-                                    <div className="col-6 m-0 p-0"> <button className="p-1" onClick={info.eliminarEvento}><i className="fa-sharp fa-solid fa-circle-xmark fs-3"></i></button> </div>
+                                    <div className="col-6 m-0 p-0 text-start"> <button className="btnAceptarEvento p-lg-1" onClick={(event) => handleEventoAceptado(event)}><i className="fa-solid fa-circle-check fs-3"></i></button> </div>
+                                    <div className="col-6 m-0 p-0"> <button className="btnEliminarEvento p-lg-1 ms-lg-1" onClick={info.eliminarEvento}><i className="fa-sharp fa-solid fa-circle-xmark fs-3"></i></button> </div>
                                 </div>
                             </div>
                         </div>
@@ -218,7 +239,7 @@ export default function RegistrarPartido() {
             setJugadoresEquipoLocal(jugadoresLocales);
 
             let estadio = await getEstadioDeUnEquipo(idEquipo);
-            console.log(estadio);
+            // console.log(estadio);
             setEstadioEquipoLocal(estadio);
         }
     }//Fin de la función.
@@ -231,7 +252,7 @@ export default function RegistrarPartido() {
             //Obtenemos los jugadores.
             let jugadoresVisitantes = await getJugadoresDeUnEquipo(idEquipo);
             setJugadoresEquipoVisitante(jugadoresVisitantes);
-            console.log("Jugadores visitantes actualizados.");
+            // console.log("Jugadores visitantes actualizados.");
         }
     }//Fin de la función.
 
@@ -255,7 +276,6 @@ export default function RegistrarPartido() {
             if (response.ok) {
 
                 let respuesta = await response.json();
-                console.log(respuesta.datos);
                 let desplegableCompeticiones = document.getElementById('txtCompeticion');
                 desplegableCompeticiones.innerHTML = " ";
                 let primerOption = createOptionElement("-", "-");
@@ -435,9 +455,9 @@ export default function RegistrarPartido() {
                 {eventos}
 
                 <div className="my-2 row mx-0">
-                    <input type="button" className="btn1 p-lg-2 col-2" value={"ENVIAR"} onClick={registrarPartido} />
+                    <input type="button" className="btn1 p-lg-2 col-3" value={"ACEPTAR"} onClick={registrarPartido} />
                     <div className="col"></div>
-                    <button className="btn1 p-lg-2 col-2" value={"EVENTO"} onClick={(event) => {event.preventDefault(); incNumEventos();}}>EVENTO </button>
+                    <button className="btn1 p-lg-2 col-3" onClick={(event) => {event.preventDefault(); incNumEventos();}}>EVENTO <i class="fa-solid fa-flag ms-lg-1"></i></button>
                 </div>
             </form>
         </>
