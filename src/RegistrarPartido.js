@@ -1,6 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWhistle } from '@fortawesome/free-solid-svg-icons';
 import NavBar from "./NavBar";
 import './css/styles.css';
 
@@ -41,11 +39,9 @@ function Evento({ info }) {
 
             if (nombreJugador === ""){
                 alert("Selecciona un jugador.");
-            }
-            if (tipoEvento === ""){
+            }else if (tipoEvento === ""){
                 alert("Selecciona un evento para el jugador.");
-            }
-            if (nombreJugador === "" && tipoEvento === ""){
+            }else if(nombreJugador === "" && tipoEvento === ""){
                 alert("Selecciona un jugador y un evento.");
             }
 
@@ -416,7 +412,7 @@ export default function RegistrarPartido() {
     return (
         <>
             <NavBar />
-            <form className="bg-transparent col-lg-5 mx-auto p-0" name="frmRegistrarEquipo">
+            <form className="col-lg-5 mx-auto p-0" name="frmRegistrarEquipo">
 
                 <h3 className="text-center mt-1">Información del partido</h3>
                 <div className="my-2 row mx-0">
