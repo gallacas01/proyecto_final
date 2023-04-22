@@ -12,11 +12,11 @@ function createOptionElement(value, textContent) {
 
 export default function RegistrarJugador() {
 
-    const [file, setFile] = useState(null);
+    const [imagenJugador, setImagenJugador] = useState(null);
 
-    function handleChangeFile(file){
+    function handleChangeFile(imagen){
 
-        setFile(file);
+        setImagenJugador(imagen);
     }//Fin de la función.
 
     //useEffect que rellena el desplegable de equipos la primera vez que se renderice el componente.
@@ -49,39 +49,8 @@ export default function RegistrarJugador() {
         rellenarDesplegableEquipos();
     }, [])
 
-    async function guardarImagen(){
-
-        let imagen = file;
-        let respuesta;
-        if (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.png') || file.name.endsWith('.webp') || file.name.endsWith('.jpe')) {
-        
-            let parametros = new FormData();
-            parametros.append("file", imagen);
-
-            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/guardarImagen.php",{
-                body : parametros,
-                method : 'POST'
-            } );
-
-            if (response.ok){
-                respuesta = await response.json();
-                
-                if (!respuesta.includes("C:")){
-                    alert("Error al almacenar la imagen.");
-                    respuesta = null;
-                }
-            }
-        }else{
-            alert("El archivo que selecciones debe ser una imagen.");
-            respuesta = "Imagen no seleccionada";
-        }
-        return respuesta;
-    }//Fin de la función.
-
     async function guardarJugadorEnBD() {
 
-        let rutaImagen = await guardarImagen();
-        if (rutaImagen.includes("C:")){
             
             let dniJugador = document.getElementById('txtDni').value;
             let nombreCompleto = document.getElementById('txtNombreCompleto').value;
@@ -104,7 +73,7 @@ export default function RegistrarJugador() {
                 parametrosJugador.append("posicion", posicion);
                 parametrosJugador.append("pais", pais);
                 parametrosJugador.append("id_equipo", idEquipo);
-                parametrosJugador.append("ruta_imagen", rutaImagen);
+                parametrosJugador.append("imagen", imagenJugador);
 
                 //Primero registramos el jugador.
                 let response1 = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarJugador.php",
@@ -160,7 +129,7 @@ export default function RegistrarJugador() {
                 if (idEquipo === "-")
                     alert("Introduce un equipo para el jugador.");
             }
-        }    
+          
     }//Fin de la función.
 
     return (
@@ -210,8 +179,8 @@ export default function RegistrarJugador() {
                     </select>
                 </div>
                 <div className="my-2 row mx-0">
-                    <label for="formFile" class="form-label">Imagen</label>
-                    <input class="form-control shadow-none" type="file" id="formFile" onChange={(event) => handleChangeFile(event.target.files[0])} required/>
+                    <label for="imagenJugador" class="form-label">Imagen</label>
+                    <input class="form-control shadow-none" type="file" id="imagenJugador" onChange={(event) => handleChangeFile(event.target.files[0])} required/>
                 </div>
                 <input type="button" className="btn1 p-lg-2 col-3" value={"ACEPTAR"} onClick={guardarJugadorEnBD} />
             </form>

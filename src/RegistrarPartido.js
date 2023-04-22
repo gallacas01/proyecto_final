@@ -391,7 +391,7 @@ export default function RegistrarPartido() {
             }
 
         } else {
-            alert("ERROR: Por favor, selecciona datos válidos.");
+            alert("ERROR: Por favor, introduce datos válidos.");
         }
 
     }//Fin de la función.
