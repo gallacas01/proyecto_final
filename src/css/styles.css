@@ -25,7 +25,7 @@ nav{
 }
   
 .navbar-brand:focus,.nav-link:focus{
-   border-bottom: 3px solid rgb(244, 157, 18);
+   border-bottom: 3px solid rgb(252, 192, 96);
    color: whitesmoke;
 }
 
@@ -72,9 +72,27 @@ input[type="text"]::placeholder {
     color: red;
 }
 
+/* Título que se muestra cuando se añade algún evento en el componente RegistrarPartido.btn1 */
+#tituloEventos{
+    background-color: rgb(252, 192, 96);
+    color: #182E3E;
+    /* border: 1.7px solid #182E3E; */
+}
+
+/* Se muestran cuando se guarda un evento en el componente Registrarpartido, son el jugador y el evento. */
+#infoEvento{
+    background-color: #182E3E;
+    color: whitesmoke;
+    border: 1.7px solid #182E3E;
+}
+
+.card{
+    border: 2px solid rgb(252, 192, 96);
+}
+
 /* Clase que controla que el elemento seleccionado de la navbar mantenga su border-bottom */
 .isFocused{
-border-bottom: 3px solid rgb(244, 157, 18);
+border-bottom: 3px solid rgb(252, 192, 96);
 color: whitesmoke; 
 }
 

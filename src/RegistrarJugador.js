@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import './css/styles.css';
@@ -12,7 +12,17 @@ function createOptionElement(value, textContent) {
 
 export default function RegistrarJugador() {
 
+    const frmRegistrarJugador = useRef(null);
     const [imagenJugador, setImagenJugador] = useState(null);
+    const dniJugador = useRef(null);
+    const nombreCompleto = useRef(null);
+    const fechaNacimiento = useRef(null);
+    const peso = useRef(null);
+    const altura = useRef(null);
+    const posicion = useRef(null);
+    const pais = useRef(null);
+    const desplegableEquipos = useRef(null);
+    
 
     function handleChangeFile(imagen){
 
@@ -29,19 +39,18 @@ export default function RegistrarJugador() {
 
                 let respuesta = await response.json();
 
-                let listadoEquipos = document.getElementById('txtEquipo');
-                listadoEquipos.innerHTML = " ";
+                desplegableEquipos.current.innerHTML = " ";
 
                 //Creamos el primer option de cada select, el cual estará vacío.
                 let optionSinValor = createOptionElement("-","-");
 
                 // Anidamos rl option al select.
-                listadoEquipos.appendChild(optionSinValor);
+                desplegableEquipos.current.appendChild(optionSinValor);
 
                 for (let equipo of respuesta.datos) {
                     // Creamos un elemento de tipo option por cada equipo y lo añadimos al select.
                     let option = createOptionElement(equipo.id_equipo, equipo.nombre);
-                    listadoEquipos.appendChild(option);
+                    desplegableEquipos.current.appendChild(option);
                 }
             }
         }
@@ -51,74 +60,78 @@ export default function RegistrarJugador() {
 
     async function guardarJugadorEnBD() {
 
-            
-            let dniJugador = document.getElementById('txtDni').value;
-            let nombreCompleto = document.getElementById('txtNombreCompleto').value;
-            let fechaNacimiento = document.getElementById('txtFechaNacimiento').value;
-            let peso = document.getElementById('txtPeso').value;
-            let altura = document.getElementById('txtAltura').value;
-            let posicion = document.getElementById('txtPosicion').value;
-            let pais = document.getElementById('txtPais').value;
-            let idEquipo = document.getElementById('txtEquipo').value; 
+            if (peso !== "" && peso !== "" && desplegableEquipos !== "") {
 
-            if (peso !== "" && peso !== "" && idEquipo !== "") {
+                //Si el archivo es una imagen, se introducirá en la base de datos.
+                if (imagenJugador.name.endsWith('.jpg') || imagenJugador.name.endsWith('.jpeg') || imagenJugador.name.endsWith('.png') || imagenJugador.name.endsWith('.webp') || imagenJugador.name.endsWith('.jpe')) {
 
-                //Parametros para la inserción del jugador
-                let parametrosJugador = new FormData();
-                parametrosJugador.append("dni_jugador", dniJugador);
-                parametrosJugador.append("nombre_completo", nombreCompleto);
-                parametrosJugador.append("fecha_nacimiento", fechaNacimiento);
-                parametrosJugador.append("peso", peso);
-                parametrosJugador.append("altura", altura);
-                parametrosJugador.append("posicion", posicion);
-                parametrosJugador.append("pais", pais);
-                parametrosJugador.append("id_equipo", idEquipo);
-                parametrosJugador.append("imagen", imagenJugador);
+                    const reader = new FileReader();
+                    reader.onloadend = async () => {
+                    let base64Imagen = reader.result.replace('data:', '').replace(/^.+,/, '');
 
-                //Primero registramos el jugador.
-                let response1 = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarJugador.php",
-                    {
-                        body: parametrosJugador,
-                        method: 'POST'
-                    });
+                    //Parametros para la inserción del jugador
+                    let parametrosJugador = new FormData();
+                    parametrosJugador.append("dni_jugador", dniJugador.current.value);
+                    parametrosJugador.append("nombre_completo", nombreCompleto.current.value);
+                    parametrosJugador.append("fecha_nacimiento", fechaNacimiento.current.value);
+                    parametrosJugador.append("peso", peso.current.value);
+                    parametrosJugador.append("altura", altura.current.value);
+                    parametrosJugador.append("posicion", posicion.current.value);
+                    parametrosJugador.append("pais", pais.current.value);
+                    parametrosJugador.append("id_equipo", desplegableEquipos.current.value);
+                    parametrosJugador.append("imagen", base64Imagen);
 
-                if (response1.ok) {
+                    //Primero registramos el jugador.
+                    let response1 = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarJugador.php",
+                        {
+                            body: parametrosJugador,
+                            method: 'POST'
+                        });
 
-                    let respuesta1 = await response1.json();
-                    console.log(respuesta1);
-                    //Si la inserción en la tabla jugador ha sido satisfactoria, se registra el movimiento.
-                    if (!respuesta1.error) {
+                    if (response1.ok) {
 
-                    //Parámetros para la inserción del movimiento (la primera vez que se inserte un jugador,
-                    //no tendrá equipo antiguo).
-                    let parametrosMovimiento = new FormData();
-                    parametrosMovimiento.append("dni_jugador", dniJugador);
-                    parametrosMovimiento.append("id_equipo_antiguo",0);
-                    parametrosMovimiento.append("id_equipo_nuevo",idEquipo);
-                    parametrosMovimiento.append("fecha", null);
-                    parametrosMovimiento.append("mercado", null);
+                        let respuesta1 = await response1.json();
+                        console.log(respuesta1);
+                        //Si la inserción en la tabla jugador ha sido satisfactoria, se registra el movimiento.
+                        if (!respuesta1.error) {
 
-                        let response2 = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarMovimiento.php",
-                            {
-                                body: parametrosMovimiento,
-                                method: "POST"
-                            });
+                        //Parámetros para la inserción del movimiento (la primera vez que se inserte un jugador,
+                        //no tendrá equipo antiguo).
+                        let parametrosMovimiento = new FormData();
+                        parametrosMovimiento.append("dni_jugador", dniJugador.current.value);
+                        parametrosMovimiento.append("id_equipo_antiguo",0);
+                        parametrosMovimiento.append("id_equipo_nuevo",desplegableEquipos.current.value);
+                        parametrosMovimiento.append("fecha", null);
+                        parametrosMovimiento.append("mercado", null);
 
-                        let respuesta2 = await response2.json();
-                        if (!respuesta2.error) {
-                            alert("Se ha realizado la inserción del jugador y del movimiento en la base de datos.")
-                            let formulario = document.getElementById('frmRegistrarJugador');
-                            formulario.reset();
+                            let response2 = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarMovimiento.php",
+                                {
+                                    body: parametrosMovimiento,
+                                    method: "POST"
+                                });
+
+                            let respuesta2 = await response2.json();
+                            if (!respuesta2.error) {
+                                alert("Se ha realizado la inserción del jugador y del movimiento en la base de datos.")
+                                let formulario = document.getElementById('frmRegistrarJugador');
+                                formulario.reset();
+                            } else {
+                                alert(respuesta2.datos);
+                            }
                         } else {
-                            alert(respuesta2.datos);
+                            alert("Error: " + respuesta1.datos);
                         }
                     } else {
-                        alert("Error: " + respuesta1.datos);
-                    }
-                } else {
-                    alert(response1.datos)
+                        alert(response1.datos)
+                    }       
+                    
                 }
+                reader.readAsDataURL(imagenJugador);
 
+                }else{
+                    alert("El archivo que selecciones debe ser una imagen.");
+                }           
+             
             //Cuando se introduce texto en un campo numérico, al recoger su valor con un .value
             //se interpreta como una cadena vacía.
             } else {
@@ -126,7 +139,7 @@ export default function RegistrarJugador() {
                     alert("Introduce un valor numérico en el campo 'peso'");
                 if (altura === "")
                     alert("Introduce un valor numérico en el campo 'altura'");
-                if (idEquipo === "-")
+                if (desplegableEquipos === "-")
                     alert("Introduce un equipo para el jugador.");
             }
           
@@ -135,32 +148,32 @@ export default function RegistrarJugador() {
     return (
         <>
             <NavBar />
-            <form className="bg-transparent col-lg-5 mx-auto mb-4 p-0" name="frmRegistrarJugador" id="frmRegistrarJugador">
+            <form className="bg-transparent col-lg-5 mx-auto mb-4 p-0" ref={frmRegistrarJugador}>
 
                 <h3 className="text-center mt-1">Datos del jugador</h3>
                 <div className="my-2 row mx-0">
-                    <label htmlFor="txtDni" className="form-label my-auto">DNI / INE</label>
-                    <input type="text" className="form-control shadow-none" id="txtDni" name="txtDni" minLength={9} maxLength={9} required />
+                    <label className="form-label my-auto">DNI / INE</label>
+                    <input type="text" className="form-control shadow-none" ref={dniJugador} minLength={9} maxLength={9} required />
                 </div>
                 <div className="my-2 row mx-0">
-                    <label htmlFor="txtNombreCompleto" className="form-label my-auto">Nombre completo </label>
-                    <input type="text" className="form-control shadow-none" maxLength={35} id="txtNombreCompleto" name="txtNombreCompleto" required />
+                    <label className="form-label my-auto">Nombre completo </label>
+                    <input type="text" className="form-control shadow-none" ref={nombreCompleto} maxLength={35} required />
                 </div>
                 <div className="my-2 row mx-0">
-                    <label htmlFor="txtFechaNacimiento" className="form-label my-auto">Fecha de nacimiento </label>
-                    <input type="date" className="form-control shadow-none" id="txtFechaNacimiento" name="txtFechaNacimiento" min={0} required />
+                    <label className="form-label my-auto">Fecha de nacimiento </label>
+                    <input type="date" className="form-control shadow-none" ref={fechaNacimiento} min={0} required />
                 </div>
                 <div className="my-2 row mx-0">
-                    <label htmlFor="txtPeso" className="form-label my-auto">Peso (Kg)</label>
-                    <input type="number" className="form-control shadow-none" id="txtPeso" name="txtPeso" minLength={2} maxLength={5} step="0.1" min={50} required />
+                    <label className="form-label my-auto">Peso (Kg)</label>
+                    <input type="number" className="form-control shadow-none" ref={peso} minLength={2} maxLength={5} step="0.1" min={50} required />
                 </div>
                 <div className="my-2 row mx-0">
-                    <label htmlFor="txtAltura" className="form-label my-auto">Altura (cm) </label>
-                    <input type="number" className="form-control shadow-none" id="txtAltura" name="txtAltura" min={0} required />
+                    <label className="form-label my-auto">Altura (cm) </label>
+                    <input type="number" className="form-control shadow-none" ref={altura} min={0} required />
                 </div>
                 <div className="my-3 row mx-0">
-                    <label htmlFor="txtPosicion" className="form-label my-auto">Posición</label>
-                    <select className="form-select shadow-none" id="txtPosicion" name="txtPosicion" aria-label="Default select example" required>
+                    <label className="form-label my-auto">Posición</label>
+                    <select className="form-select shadow-none" ref={posicion} aria-label="Default select example" required>
                         <option value="-">-</option>
                         <option value="portero">Portero</option>
                         <option value="defensa">Defensa</option>
@@ -169,18 +182,18 @@ export default function RegistrarJugador() {
                     </select>
                 </div>
                 <div className="my-2 row mx-0">
-                    <label htmlFor="txtPais" className="form-label my-auto">País</label>
-                    <input type="text" className="form-control shadow-none" id="txtPais" name="txtPais" required />
+                    <label className="form-label my-auto">País</label>
+                    <input type="text" className="form-control shadow-none" ref={pais} required />
                 </div>
                 <div className="my-2 row mx-0">
-                    <label htmlFor="txtEquipo" className="form-label my-auto">Equipo</label>
-                    <select className="form-control shadow-none" id="txtEquipo" name="txtEquipo" required>
+                    <label className="form-label my-auto">Equipo</label>
+                    <select className="form-control shadow-none" ref={desplegableEquipos} required>
 
                     </select>
                 </div>
                 <div className="my-2 row mx-0">
-                    <label for="imagenJugador" class="form-label">Imagen</label>
-                    <input class="form-control shadow-none" type="file" id="imagenJugador" onChange={(event) => handleChangeFile(event.target.files[0])} required/>
+                    <label className="form-label">Imagen</label>
+                    <input className="form-control shadow-none" type="file" ref={imagenJugador} onChange={(event) => handleChangeFile(event.target.files[0])} required/>
                 </div>
                 <input type="button" className="btn1 p-lg-2 col-3" value={"ACEPTAR"} onClick={guardarJugadorEnBD} />
             </form>

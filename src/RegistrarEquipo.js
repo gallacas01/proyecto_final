@@ -48,7 +48,7 @@ export default function RegistrarEquipo() {
     return (
         <>
             <NavBar />
-            <form className="bg-transparent col-lg-5 mx-auto p-0" name="frmRegistrarEquipo">
+            <form className="bg-transparent col-lg-5 mx-auto p-0">
                 <h3 className="text-center mt-2">Datos del equipo </h3>
                 <div className="my-2 row mx-0">
                     <label htmlFor="txtNombreEquipo" className="form-label">Nombre</label>

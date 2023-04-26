@@ -38,11 +38,15 @@ function Evento({ info }) {
         if (nombreJugador === "" || tipoEvento === ""){
 
             if (nombreJugador === ""){
+                event.preventDefault();
                 alert("Selecciona un jugador.");
             }else if (tipoEvento === ""){
+                event.preventDefault();
                 alert("Selecciona un evento para el jugador.");
-            }else if(nombreJugador === "" && tipoEvento === ""){
-                alert("Selecciona un jugador y un evento.");
+            }else{ 
+                if(nombreJugador === "" && tipoEvento === ""){
+                    alert("Selecciona un jugador y un evento.");
+                }
             }
 
         }else{
@@ -72,8 +76,7 @@ function Evento({ info }) {
     useEffect(() => {
 
         rellenarDesplegableJugadores();
-        console.log(info.numEvento.charAt(info.numEvento.length-1));
-    }, [info.jugadores]);
+    }, [info.jugadores]); //Si se produce un cambio en la variable info.jugadores que pasa del componente padre al hijo, se ejecuta el useState.
 
     useEffect(() => {
 
@@ -122,11 +125,6 @@ function Evento({ info }) {
         <div className="my-2 row mx-0" id={info.numEvento}>
             <div className="container-fluid">
 
-                <div className="row p-0">
-                    <div className="col-lg-6"><label htmlFor="txtNombreJugador" className="form-label my-auto text-start">Jugador</label></div>
-                    <div className="col-lg"><label htmlFor="txtTipoEvento" className="form-label my-auto ms-lg-3">Evento</label></div>
-                </div>
-
                 {eventoAceptado === false &&
                     <div className="row mt-2 p-0">
                         <div className="col-lg-6 p-0 my-auto">
@@ -154,13 +152,12 @@ function Evento({ info }) {
                     </div>
                 }
                 {eventoAceptado === true &&
+                    
                     <div className="row p-0">
-                        <div className="col-5">{nombreJugador}</div>
-                        <div className="col-5">{tipoEvento}</div>
-                        <div className="col-2">Guardado</div>
-                    </div>
+                        <div className="col-7 rounded-2 fs-6 p-lg-1" id="infoEvento">{nombreJugador}</div>
+                        <div className="col-lg rounded-2 fs-6 ms-lg-2 p-lg-1" id="infoEvento">{tipoEvento}</div>
+                    </div>                
                 }
-
             </div>
         </div>
 
@@ -255,12 +252,24 @@ export default function RegistrarPartido() {
     //Cuando se pulse el botón de añadir evento, se actualizará la variable que 
     //los cuenta y se renderizará un nuevo componente.
     function incNumEventos() {
+        console.log(numEventos);
+
+        if (numEventos === 0){
+            let tituloEventos = document.getElementById('tituloEventos');
+            tituloEventos.classList.remove('d-none');
+            // tituloEventos.classList.remove('d-block');
+        }
         setNumEventos(numEventos + 1);
     }
 
     //Decrementamos el contador de eventos y eliminamos el último evento del array.
     function eliminarEvento() {
         setNumEventos(numEventos - 1);
+        console.log(numEventos);
+        if (numEventos === 1){
+            let tituloEventos = document.getElementById('tituloEventos');
+            tituloEventos.classList.add('d-none');
+        }
     }
 
     //useEffect que rellena el desplegable de competiciones y equipos.
@@ -412,7 +421,7 @@ export default function RegistrarPartido() {
     return (
         <>
             <NavBar />
-            <form className="col-lg-5 mx-auto p-0" name="frmRegistrarEquipo">
+            <form className="col-lg-5 mx-auto p-0 bg-light" name="frmRegistrarEquipo">
 
                 <h3 className="text-center mt-1">Información del partido</h3>
                 <div className="my-2 row mx-0">
@@ -448,12 +457,14 @@ export default function RegistrarPartido() {
                 <div className="my-2 row mx-0">
                     <p>Estadio del partido: {estadioEquipoLocal}</p>
                 </div>
+                
+                <h2 className="text-center d-none rounded-2"  id="tituloEventos">EVENTOS DEL PARTIDO</h2>
                 {eventos}
 
                 <div className="my-2 row mx-0">
                     <input type="button" className="btn1 p-lg-2 col-3" value={"ACEPTAR"} onClick={registrarPartido} />
                     <div className="col"></div>
-                    <button className="btn1 p-lg-2 col-3" onClick={(event) => {event.preventDefault(); incNumEventos();}}>EVENTO <i class="fa-solid fa-flag ms-lg-1"></i></button>
+                    <button className="btn1 p-lg-2 col-3" onClick={(event) => {event.preventDefault(); incNumEventos();}}>EVENTO <i className="fa-solid fa-flag ms-lg-1"></i></button>
                 </div>
             </form>
         </>
