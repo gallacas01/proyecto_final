@@ -74,40 +74,12 @@ export default function NavBar() {
             {
                 id: "jugadores",
                 titulo: "Jugadores",
-                listaItems :[
-                    {
-                        url: "/registrar_jugador",
-                        id: "registrarJugador",
-                        titulo: "Registrar Jugador"
-                    },
-                    {
-                        url: "/verJugadores",
-                        id: "verJugadores",                       
-                        titulo: "Ver Jugadores"
-                    },
-            
-                ]
+                url : "/ver_jugadores"
             },
             {
                 id: "equipos",
                 titulo: "Equipos",
-                listaItems :[
-                    {
-                        url: "/registrar_equipo",
-                        id: "registrarEquipo",
-                        titulo: "Registrar Equipo"
-                    },
-                    {
-                        url: "/verEquipos",
-                        id: "verEquipos",
-                        titulo: "Ver equipos"                        
-                    },            
-                ]
-            },
-            {
-                url: "/registar_partido",
-                id: "registrarPartidos",
-                titulo: "Registrar partido"
+                url : "/ver_equipos"
             },
             {
                 url: "/movimientos",
@@ -134,7 +106,12 @@ export default function NavBar() {
                         titulo: "Clasificación"                        
                     },            
                 ]
-            },            
+            },   
+            {
+                url : "/panel_de_registro",
+                id: "panelDeregistro",
+                titulo: "Panel de registro"
+            }         
         ]
     };
 

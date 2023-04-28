@@ -37,18 +37,15 @@ function Evento({ info }) {
 
         if (nombreJugador === "" || tipoEvento === ""){
 
-            if (nombreJugador === ""){
+            if(nombreJugador === "" && tipoEvento === ""){
+                alert("Selecciona un jugador y un evento.");
+            }else if (nombreJugador === ""){
                 event.preventDefault();
                 alert("Selecciona un jugador.");
             }else if (tipoEvento === ""){
                 event.preventDefault();
                 alert("Selecciona un evento para el jugador.");
-            }else{ 
-                if(nombreJugador === "" && tipoEvento === ""){
-                    alert("Selecciona un jugador y un evento.");
-                }
             }
-
         }else{
             setEventoAceptado(true);
         }
@@ -128,12 +125,12 @@ function Evento({ info }) {
                 {eventoAceptado === false &&
                     <div className="row mt-2 p-0">
                         <div className="col-lg-6 p-0 my-auto">
-                            <select className="form-select shadow-none" onChange={handleNombreJugador} id={"txtJugadores" + info.numEvento} name="txtJugadores" required>
+                            <select className="form-select shadow-none" onChange={handleNombreJugador} id={"txtJugadores" + info.numEvento} required>
 
                             </select>
                         </div>
                         <div className="p-0 my-auto mx-2 col">
-                            <select className="form-select shadow-none" onChange={handleTipoEvento} id="txtPosicion" name="txtPosicion" required>
+                            <select className="form-select shadow-none" onChange={handleTipoEvento} required>
                                 <option value="-" selected>-</option>
                                 <option value="Gol">Gol</option>
                                 <option value="asistencia">Asistencia</option>
@@ -145,7 +142,7 @@ function Evento({ info }) {
                             <div className="container-fluid p-0">
                                 <div className="row">
                                     <div className="col-6 m-0 p-0 text-start"> <button className="btnAceptarEvento p-lg-1" onClick={(event) => handleEventoAceptado(event)}><i className="fa-solid fa-circle-check fs-3"></i></button> </div>
-                                    <div className="col-6 m-0 p-0"> <button className="btnEliminarEvento p-lg-1 ms-lg-1" onClick={info.eliminarEvento}><i className="fa-sharp fa-solid fa-circle-xmark fs-3"></i></button> </div>
+                                    <div className="col-6 m-0 p-0"> <button className="btnEliminarEvento p-lg-1 ms-lg-1" onClick={(event)  => {event.preventDefault(); info.eliminarEvento(); }}><i className="fa-sharp fa-solid fa-circle-xmark fs-3"></i></button> </div>
                                 </div>
                             </div>
                         </div>
@@ -165,9 +162,9 @@ function Evento({ info }) {
 }
 
 
-export default function RegistrarPartido() {
+export default function FrmRegistrarPartido() {
 
-    //Estados
+    //Variables de estado.
     const [numEventos, setNumEventos] = useState(0);
     const [jugadoresEquipoLocal, setJugadoresEquipoLocal] = useState([]);
     const [jugadoresEquipoVisitante, setJugadoresEquipoVisitante] = useState([]);
@@ -178,6 +175,14 @@ export default function RegistrarPartido() {
     const [guardarDatosEnBD, setGuardarDatosEnBD] = useState(false);
     //id del partido que se va a registrar y al que harán referencia los eventos cuando se guarden en la BD.
     const idPartido = useRef('');
+
+    //Referencias al DOM
+    const desplegableCompeticionesRef = useRef(null);
+    const desplegableEquipoLocalRef = useRef(null);
+    const desplegableEquipoVisitanteRef = useRef(null);
+    const fechaPartidoRef = useRef(null);
+    const golesEquipoLocalRef = useRef(null);
+    const golesEquipoVisitanteRef = useRef(null);
 
     async function getJugadoresDeUnEquipo(idEquipo) {
 
@@ -281,14 +286,13 @@ export default function RegistrarPartido() {
             if (response.ok) {
 
                 let respuesta = await response.json();
-                let desplegableCompeticiones = document.getElementById('txtCompeticion');
-                desplegableCompeticiones.innerHTML = " ";
+                desplegableCompeticionesRef.current.innerHTML = " ";
                 let primerOption = createOptionElement("-", "-");
-                desplegableCompeticiones.appendChild(primerOption);
+                desplegableCompeticionesRef.current.appendChild(primerOption);
 
                 for (let competicion of respuesta.datos) {
                     let option = createOptionElement(competicion.id_competicion, competicion.nombre);
-                    desplegableCompeticiones.appendChild(option);
+                    desplegableCompeticionesRef.current.appendChild(option);
                 }
             }
         }//Fin de la función.
@@ -301,26 +305,24 @@ export default function RegistrarPartido() {
 
                 let respuesta = await response.json();
 
-                let listadoEquiposLocal = document.getElementById('txtEquipoLocal');
-                listadoEquiposLocal.innerHTML = " ";
-                let listadoEquiposVisitante = document.getElementById('txtEquipoVisitante');
-                listadoEquiposVisitante.innerHTML = " ";
+                desplegableEquipoLocalRef.current.innerHTML = " ";
+                desplegableEquipoVisitanteRef.current.innerHTML = " ";
 
                 //Creamos el primer option de cada select, el cual estará vacío.
                 let optionSinValor1 = createOptionElement("-", "-");
                 let optionSinValor2 = createOptionElement("-", "-");
 
                 // Anidamos los elementos option a los dos select.
-                listadoEquiposLocal.appendChild(optionSinValor1);
-                listadoEquiposVisitante.appendChild(optionSinValor2);
+                desplegableEquipoLocalRef.current.appendChild(optionSinValor1);
+                desplegableEquipoVisitanteRef.current.appendChild(optionSinValor2);
 
                 for (let equipo of respuesta.datos) {
                     // Creamos un elemento de tipo option por cada equipo.
                     let optionLocal = createOptionElement(equipo.id_equipo, equipo.nombre);
                     let optionVisitante = createOptionElement(equipo.id_equipo, equipo.nombre);
 
-                    listadoEquiposLocal.appendChild(optionLocal);
-                    listadoEquiposVisitante.appendChild(optionVisitante);
+                    desplegableEquipoLocalRef.current.appendChild(optionLocal);
+                    desplegableEquipoVisitanteRef.current.appendChild(optionVisitante);
                 }
             }
         }//Fin de la función.
@@ -357,13 +359,12 @@ export default function RegistrarPartido() {
         }
     }
 
-    //MIGUEL CONTINÚA POR AQUÍ
     async function registrarPartido() {
 
-        let idCompeticion = document.getElementById('txtCompeticion').value;
-        let fecha = document.getElementById('txtFechaPartido').value;
-        let golesEquipoLocal = document.getElementById('txtGolesEquipoLocal').value;
-        let golesEquipoVisitante = document.getElementById('txtGolesEquipoVisitante').value;
+        let idCompeticion = desplegableCompeticionesRef.current.value;
+        let fecha = fechaPartidoRef.current.value;
+        let golesEquipoLocal = golesEquipoLocalRef.current.value;
+        let golesEquipoVisitante = golesEquipoVisitanteRef.current.value;
 
         if (idCompeticion !== "-" && idEquipoLocal !== "-" && idEquipoVisitante !== "-") {
 
@@ -412,61 +413,59 @@ export default function RegistrarPartido() {
 
     for (let i = 0; i < numEventos; i++) {
         const numEvento = "evento" + i;
-        //Mandamos a cada componente evento el método que elimina el evento del componente principal,
+        //Pasamos a cada componente evento el método que elimina el evento del componente principal,
         //el método que maneja el cambio de equipo, y los jugadores de los equipos seleccionados.
-        const info = { eliminarEvento, numEvento, jugadores, guardarDatosEnBD, idPartido};
+        const info = {eliminarEvento, numEvento, jugadores, guardarDatosEnBD, idPartido};
         eventos.push(<Evento key={i} info={info} />);
     }
 
     return (
-        <>
-            <NavBar />
-            <form className="col-lg-5 mx-auto p-0 bg-light" name="frmRegistrarEquipo">
+        
+        <form className="mx-auto p-0">
+            <h3 className="text-center mt-1">Información del partido</h3>
+            <div className="my-2 row mx-0">
+                <label className="form-label">Competicion</label>
+                <select className="form-select shadow-none" ref={desplegableCompeticionesRef} id="txtCompeticion" name="txtCompeticion" required >
 
-                <h3 className="text-center mt-1">Información del partido</h3>
-                <div className="my-2 row mx-0">
-                    <label htmlFor="txtCompeticion" className="form-label">Competicion</label>
-                    <select className="form-select shadow-none" id="txtCompeticion" name="txtCompeticion" required >
+                </select>
+            </div>
+            <div className="my-2 row mx-0">
+                <label className="form-label">Equipo local</label>
+                <select className="form-select shadow-none" ref={desplegableEquipoLocalRef} onChange={(event) => handleChangeEquipoLocal(event.target.value)} required >
 
-                    </select>
-                </div>
-                <div className="my-2 row mx-0">
-                    <label htmlFor="txtEquipoLocal" className="form-label">Equipo local</label>
-                    <select className="form-select shadow-none" id="txtEquipoLocal" onChange={(event) => handleChangeEquipoLocal(event.target.value)} name="txtEquipoLocal" required >
+                </select>
+            </div>
+            <div className="my-2 row mx-0">
+                <label htmlFor="txtEquipoVisitante" className="form-label">Equipo visitante</label>
+                <select className="form-control shadow-none" ref={desplegableEquipoVisitanteRef} onChange={(event) => handleChangeEquipoVisitante(event.target.value)} required>
 
-                    </select>
-                </div>
-                <div className="my-2 row mx-0">
-                    <label htmlFor="txtEquipoVisitante" className="form-label">Equipo visitante</label>
-                    <select className="form-control shadow-none" id="txtEquipoVisitante" onChange={(event) => handleChangeEquipoVisitante(event.target.value)} name="txtEquipoVisitante" required>
+                </select>
+            </div>
+            <div className="my-2 row mx-0">
+                <label className="form-label">Fecha del partido</label>
+                <input type="date" className="form-control shadow-none" ref={fechaPartidoRef} min={0} required />
+            </div>
+            <div className="my-2 row mx-0">
+                <div className="col-4  m-auto p-0 text-center"><p className="my-auto">Resultado del partido</p> </div>
+                <div className="col-3"><input type="number" className="form-control shadow-none" ref={golesEquipoLocalRef}  min={0} max={999} minLength={0} maxLength={3} required /></div>
+                <div className="col-1 m-auto">-</div>
+                <div className="col-3"><input type="number" className="form-control shadow-none" ref={golesEquipoVisitanteRef} min={0} minLength={0} maxLength={3} required /></div>
 
-                    </select>
-                </div>
-                <div className="my-2 row mx-0">
-                    <label htmlFor="txtFechaPartido" className="form-label">Fecha del partido</label>
-                    <input type="date" className="form-control shadow-none" id="txtFechaPartido" name="txtFechaPartido" min={0} required />
-                </div>
-                <div className="my-2 row mx-0">
-                    <div className="col-4  m-auto p-0 text-center"><p className="my-auto">Resultado del partido</p> </div>
-                    <div className="col-3"><input type="number" className="form-control shadow-none" id="txtGolesEquipoLocal" name="txtGolesEquipoLocal" min={0} max={999} minLength={0} maxLength={3} required /></div>
-                    <div className="col-1 m-auto">-</div>
-                    <div className="col-3"><input type="number" className="form-control shadow-none" id="txtGolesEquipoVisitante" name="txtGolesEquipoVisitante" min={0} minLength={0} maxLength={3} required /></div>
+                {/* Caracteres del patron: ^ indica el comienzo de la cadena, \d{1,2} indica que se permiten de 1 a 2 dígitos, - indica el carácter - literal, $ indica el final de la cadena. */}
+            </div>
+            <div className="my-2 row mx-0">
+                <p>Estadio del partido: {estadioEquipoLocal}</p>
+            </div>
+            
+            <h2 className="text-center d-none rounded-2 p-1"  id="tituloEventos">EVENTOS DEL PARTIDO</h2>
+            {eventos}
 
-                    {/* Caracteres del patron: ^ indica el comienzo de la cadena, \d{1,2} indica que se permiten de 1 a 2 dígitos, - indica el carácter - literal, $ indica el final de la cadena. */}
-                </div>
-                <div className="my-2 row mx-0">
-                    <p>Estadio del partido: {estadioEquipoLocal}</p>
-                </div>
-                
-                <h2 className="text-center d-none rounded-2"  id="tituloEventos">EVENTOS DEL PARTIDO</h2>
-                {eventos}
-
-                <div className="my-2 row mx-0">
-                    <input type="button" className="btn1 p-lg-2 col-3" value={"ACEPTAR"} onClick={registrarPartido} />
-                    <div className="col"></div>
-                    <button className="btn1 p-lg-2 col-3" onClick={(event) => {event.preventDefault(); incNumEventos();}}>EVENTO <i className="fa-solid fa-flag ms-lg-1"></i></button>
-                </div>
-            </form>
-        </>
+            <div className="my-2 row mx-0">
+                <input type="button" className="btn1 p-lg-2 col-3" value={"GUARDAR"} onClick={registrarPartido} />
+                <div className="col"></div>
+                <button className="btn1 p-lg-2 col-3" onClick={(event) => {event.preventDefault(); incNumEventos();}}>EVENTO <i className="fa-solid fa-flag ms-lg-1"></i></button>
+            </div>
+        </form>
+      
     );
 }

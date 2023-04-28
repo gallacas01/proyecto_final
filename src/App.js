@@ -6,9 +6,12 @@ import Equipos from "./VerEquipos";
 import Movimientos from "./Movimientos";
 import Estadisticas from "./Estadisticas";
 import Inicio from "./Inicio";
-import RegistrarJugador from "./RegistrarJugador";
-import RegistrarEquipo from "./RegistrarEquipo";
-import RegistrarPartido from "./RegistrarPartido";
+import FrmRegistrarJugador from "./FrmRegistrarJugador";
+import FrmRegistrarEquipo from "./FrmRegistrarEquipo";
+import FrmRegistrarPartido from "./FrmRegistrarPartido";
+import Panel from "./PanelDeRegistro";
+import './css/styles.css';
+import 'animate.css';
 
 const router = createBrowserRouter([
   {
@@ -17,28 +20,28 @@ const router = createBrowserRouter([
     errorElement : <ErrorPage />
   },
   {
-    path : "/verJugadores",
+    path : "/ver_jugadores",
     element: <><NavBar /> <Jugadores /> </>,
     errorElement : <ErrorPage />,
   },
   {
     path : "/registrar_jugador",
-    element: <><RegistrarJugador /> </>,
+    element: <><FrmRegistrarJugador /> </>,
     errorElement : <ErrorPage />,
   },
   {
     path : "/registrar_equipo",
-    element: <><RegistrarEquipo /> </>,
+    element: <><FrmRegistrarEquipo /> </>,
     errorElement : <ErrorPage />,
   },
   {
-    path : "/verEquipos",
+    path : "/ver_equipos",
     element: <><NavBar /><Equipos/></>,
     errorElement : <ErrorPage />,
   },
   {
     path : "/registar_partido",
-    element: <RegistrarPartido/>,
+    element: <FrmRegistrarPartido/>,
     errorElement : <ErrorPage />,
   },
   {
@@ -49,6 +52,11 @@ const router = createBrowserRouter([
   {
     path : "/estadisticas",
     element: <><NavBar /><Estadisticas/></>,
+    errorElement : <ErrorPage />,
+  },
+  {
+    path : "/panel_de_registro",
+    element: <><NavBar /><Panel/></>,
     errorElement : <ErrorPage />,
   }
 ]);

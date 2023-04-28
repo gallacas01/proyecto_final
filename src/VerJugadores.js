@@ -51,57 +51,71 @@ export default function Jugadores() {
         let optionSeleccionado = event.target.options[event.target.selectedIndex];
         let id = optionSeleccionado.value;
 
-        if (id !== '-'){
-            console.log(idCompeticion);
+            console.log("ID de la competición antes" + idCompeticion);
             setIdCompeticion(id);   
-    
-            //Cuando cambie la competición, se recuperarán aquellos equipos pertenecientes a esa competicion.
-            rellenarDesplegableEquipos(id);
-        }
+            console.log("ID de la competición despues" + idCompeticion);
+
+            if (id !== "-"){
+                /*Cuando cambie la competición y adopte un valor válido, se recuperarán aquellos equipos
+                pertenecientes a esa competicion. */
+                rellenarDesplegableEquipos(id);
+            }          
     });
 
     const arrayJugadores = [];
     const getJugadores = ( async () => {
-        
-        //Escribimos el nombre del equipo dentro del h2 del div donde se encuentran los jugadores.
-        let nombreDelEquipo = desplegableEquipos.current.options[desplegableEquipos.current.selectedIndex].textContent;
-        nombreEquipo.current.textContent = nombreDelEquipo;
 
-        let idEquipo = desplegableEquipos.current.value; 
-        let parametros = new FormData();
-        parametros.append("id_equipo", idEquipo);     
+        if (idCompeticion !== "-" && desplegableEquipos.current.value !== "-"){
 
-        let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getJugadoresDeUnEquipo.php",
-        {
-            method : 'POST',
-            body : parametros
-        });
+            //Escribimos el nombre del equipo dentro del h2 del div donde se encuentran los jugadores.
+            let nombreDelEquipo = desplegableEquipos.current.options[desplegableEquipos.current.selectedIndex].textContent;
+            nombreEquipo.current.textContent = nombreDelEquipo;
 
-        if (response.ok){
+            let idEquipo = desplegableEquipos.current.value; 
+            let parametros = new FormData();
+            parametros.append("id_equipo", idEquipo);     
 
-            let respuesta = await response.json();
-            if(!respuesta.error){
+            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getJugadoresDeUnEquipo.php",
+            {
+                method : 'POST',
+                body : parametros
+            });
 
-                for (let jugador of respuesta.datos){
+            if (response.ok){
 
-                    //Obtenemos la url de la imagen de la base de datos, que se encuentra en formato base 64.
-                    let imagenDB = "data:image/png;base64," + jugador.imagen;
-                    const blob = await fetch(imagenDB).then((res) => res.blob());
-                    let urlImagen = URL.createObjectURL(blob);
+                let respuesta = await response.json();
+                if(!respuesta.error){
 
-                    let info = { id_jugador : jugador.id_jugador, dni_jugador: jugador.dni_jugador, 
-                        nombre_completo : jugador.nombre_completo, fecha_nacimiento : jugador.fecha_nacimiento, 
-                        peso : jugador.peso, altura: jugador.altura, posicion : jugador.posicion,
-                        pais : jugador.pais, equipo : jugador.equipo, imagen : urlImagen};
-                    console.log(info);
-                    arrayJugadores.push(< CardJugador  key={jugador.id_jugador} info={info} />);
+                    for (let jugador of respuesta.datos){
+
+                        //Obtenemos la url de la imagen de la base de datos, que se encuentra en formato base 64.
+                        let imagenDB = "data:image/png;base64," + jugador.imagen;
+                        const blob = await fetch(imagenDB).then((res) => res.blob());
+                        let urlImagen = URL.createObjectURL(blob);
+
+                        let info = { id_jugador : jugador.id_jugador, dni_jugador: jugador.dni_jugador, 
+                            nombre_completo : jugador.nombre_completo, fecha_nacimiento : jugador.fecha_nacimiento, 
+                            peso : jugador.peso, altura: jugador.altura, posicion : jugador.posicion, dorsal: jugador.dorsal,
+                            pais : jugador.pais, equipo : jugador.equipo, imagen : urlImagen};
+                        console.log(info);
+                        arrayJugadores.push(< CardJugador  key={jugador.id_jugador} info={info} />);
+                    }
                 }
             }
-        }
 
-        //Mostramos el contenedor de los jugadores y guardamos los jugadores del array dentro de la variable de estado.
-        containerJugadores.current.classList.remove('d-none');
-        setJugadores(...[arrayJugadores]);
+            //Mostramos el contenedor de los jugadores y guardamos los jugadores del array dentro de la variable de estado.
+            containerJugadores.current.classList.remove('d-none');
+            setJugadores(...[arrayJugadores]);
+
+        }else{
+
+            if (idCompeticion === "-"){
+                alert("Selecciona una competición.");
+            }
+            if (desplegableEquipos.current.value === "-" ){
+                alert("Selecciona un equipo.");
+            }
+        }     
         
     })//Fin de la función.
 
@@ -136,7 +150,7 @@ export default function Jugadores() {
         <>
             <form className="col-lg-9 mx-auto p-0">
                 <div className="row mx-auto mt-lg-3">
-                    <label className="form-label my-auto text-lg-end col-lg-2">Competicion</label>
+                    <label className="form-label my-auto text-lg-end col-lg-2">Competición</label>
                     <div className="col-lg-3 p-0 my-auto">
                         <select className="form-select shadow-none" ref={desplegableCompeticiones} onChange={(event) => (handleChangeCompeticion(event))} required>
 
@@ -152,8 +166,8 @@ export default function Jugadores() {
                 </div>
             </form>
 
-            <div className='col-lg-9 mx-auto mt-lg-4 p-1 d-none' ref={containerJugadores} style={{ backgroundColor: '#182E3E'}}>
-                <div className='row p-0 m-0'> <h2 className="text-center mt-lg-2" ref={nombreEquipo} style={{color : 'rgb(252, 192, 96)'}}></h2></div>
+            <div className='col-lg-9 mx-auto mt-lg-4 p-1 d-none' ref={containerJugadores}>
+                <div className='row p-0 m-auto'> <h2 className="text-center mt-lg-1" ref={nombreEquipo} style={{color : '#182E3E'}}></h2></div>
                 <div className='row p-0 m-0'>
                     {jugadores}
                 </div>
