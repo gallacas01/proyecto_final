@@ -12,6 +12,7 @@ import FrmRegistrarPartido from "./FrmRegistrarPartido";
 import Panel from "./PanelDeRegistro";
 import './css/styles.css';
 import 'animate.css';
+import Clasificacion from "./Clasificacion";
 
 const router = createBrowserRouter([
   {
@@ -22,16 +23,6 @@ const router = createBrowserRouter([
   {
     path : "/ver_jugadores",
     element: <><NavBar /> <Jugadores /> </>,
-    errorElement : <ErrorPage />,
-  },
-  {
-    path : "/registrar_jugador",
-    element: <><FrmRegistrarJugador /> </>,
-    errorElement : <ErrorPage />,
-  },
-  {
-    path : "/registrar_equipo",
-    element: <><FrmRegistrarEquipo /> </>,
     errorElement : <ErrorPage />,
   },
   {
@@ -47,6 +38,11 @@ const router = createBrowserRouter([
   {
     path : "/movimientos",
     element: <><NavBar /><Movimientos/></>,
+    errorElement : <ErrorPage />,
+  },
+  {
+    path : "/clasificacion",
+    element: <><Clasificacion/></>,
     errorElement : <ErrorPage />,
   },
   {

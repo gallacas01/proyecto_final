@@ -10,7 +10,7 @@ export default function FrmRegistrarCompeticion (){
 
     const guardarCompeticion = ( async () => {
 
-        if (nombreCompeticionRef.current.value !== "" && /^\d{4}-\d{4}$/.test(temporadaCompeticionRef.current.value)){
+        if (nombreCompeticionRef.current.value !== "" && /^\d{4}\d{4}$/.test(temporadaCompeticionRef.current.value)){
 
             let parametros = new FormData();
             parametros.append("nombre", nombreCompeticionRef.current.value);

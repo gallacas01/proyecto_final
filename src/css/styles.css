@@ -1,25 +1,21 @@
 nav{
     background-color: #182E3E;
+    color: rgb(252, 224, 179);
 }
 
 .navbar-brand,.nav-link,.dropdown-menu{
-    color: whitesmoke;
+    color: rgb(252, 224, 179);
     background-color: #182E3E;
 }
 
 .navbar-brand:hover,.nav-link:hover{
-    border-bottom: 3px solid rgb(252, 192, 96);
-    color: white;
+    border-bottom: 3px solid white;
+    color: rgb(252, 224, 179);
 }
 
-.dropdown-item:hover{
-    background-color: #182E3E;
-    color: whitesmoke;
-}
   
 .navbar-brand:focus,.nav-link:focus{
-   border-bottom: 3px solid rgb(252, 192, 96);
-   color: whitesmoke;
+   border-bottom: 3px solid white;
 }
 
 /* Color del borde de los input */
@@ -30,7 +26,6 @@ nav{
 
 .form-control:focus, .form-select:focus{
     border: 2px solid #182E3E;
-    /* border: 2px solid rgb(226, 148, 24); */
 }
 
 /* Opacidad de los placeholder */
@@ -42,7 +37,7 @@ input[type="text"]::placeholder {
 .btn1, .btnAceptarEvento, .btnEliminarEvento{
     border-color: transparent;
     border-radius: 6px;
-    color: rgb(252, 192, 96);
+    color: rgb(252, 224, 179);
     background-color: #182E3E;
 }
 
@@ -52,7 +47,7 @@ input[type="text"]::placeholder {
 }
 
 .btn1:active{
-    background-color: rgb(252, 192, 96);
+    background-color: rgb(252, 224, 179);
     color: #182E3E;
     border: 1.7px solid #182E3E;
     text-decoration: none;
@@ -86,7 +81,7 @@ input[type="text"]::placeholder {
 /* Título que se muestra cuando se añade algún evento en el componente RegistrarPartido.btn1 */
 #tituloEventos{
     background-color: #182E3E;
-    color: rgb(252, 192, 96);
+    color: rgb(252, 224, 179);
     /* border: 1.7px solid #182E3E; */
 }
 
@@ -108,7 +103,7 @@ input[type="text"]::placeholder {
 
 /* Clase que controla que el elemento seleccionado de la navbar mantenga su border-bottom */
 .isFocused{
-border-bottom: 3px solid rgb(252, 192, 96);
+border-bottom: 3px solid rgb(252, 224, 179);
 color: whitesmoke; 
 }
 

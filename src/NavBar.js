@@ -92,20 +92,9 @@ export default function NavBar() {
                 titulo: "Estadísticas"
             },    
             {
-                id: "competiciones",
-                titulo: "Competiciones",
-                listaItems :[
-                    {
-                        url: "/registrar_competicion",
-                        id: "registrarCompeticion",
-                        titulo: "Registrar Competición"
-                    },
-                    {
-                        url: "/clasificacion",
-                        id: "clasificacion",
-                        titulo: "Clasificación"                        
-                    },            
-                ]
+                id: "clasificacion",
+                titulo: "Clasificación",
+                url : "/clasificacion"
             },   
             {
                 url : "/panel_de_registro",
