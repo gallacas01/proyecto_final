@@ -1,7 +1,8 @@
 import { useState,useRef } from 'react';
+import './css/bootstrap.css';
 import './css/styles.css';
 import 'animate.css';
-// import {Animation} from 'react-animate-style';
+// import {Animation} from 'react-animate-style'; 
 
 export default function Card({ info }) {
 

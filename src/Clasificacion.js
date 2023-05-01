@@ -1,6 +1,7 @@
-import { useState,useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import NavBar from "./NavBar";
-import { color } from "@mui/system";
+import './css/bootstrap.css';
+import './css/styles.css';
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {
@@ -37,6 +38,7 @@ export default function Clasificacion (){
     
                     //Visibilizamos la tabla.
                     tablaRef.current.classList.remove('d-none');
+                    tbodyRef.current.innerHTML = " ";
                    
                     //Recorremos los equipos creando un td por cada equipo y añadiendolo a la tabla.
                     let contadorEquipos = 1;
@@ -47,8 +49,7 @@ export default function Clasificacion (){
                         let fontColor = contadorEquipos % 2 === 0 ? "rgb(252, 224, 179)" : "#182E3E";   
                         tr.style.backgroundColor = backgroundColor;
                         tr.style.color = fontColor;
-                        tr.style.borderBottom = "4px solid whitesmoke";
-
+                        tr.style.borderBottom = "4px solid white";
 
                         let td;
                         td = document.createElement('td');
@@ -144,7 +145,7 @@ export default function Clasificacion (){
 
             <div className="row"><NavBar /></div>
             <div className="row">
-                <form className="col-lg-5 mx-auto mt-lg-4 p-0">
+                <form className="col-lg-6 mx-auto mt-lg-4 p-0">
                     <div className="row mx-auto">
                         <label className="form-label text-end my-auto col-lg-3">Competición</label>
                         <div className="col-lg p-0 my-auto">

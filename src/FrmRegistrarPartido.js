@@ -104,14 +104,9 @@ function Evento({ info }) {
         }
 
         //Si no se ha aceptado el evento, se preguntará al usuario si desea aceptarlo.
-        if (info.guardarDatosEnBD === true && eventoAceptado === false){
-            if (window.confirm("¿Deseas guardar el evento número " + (parseInt((info.numEvento.charAt(info.numEvento.length - 1))) + 1) +  "?")){
-                setEventoAceptado(true);
-            }else{
+        if (info.guardarDatosEnBD === true && eventoAceptado === false){           
                 info.eliminarEvento();
-            }
-        }
-        if (info.guardarDatosEnBD === true && eventoAceptado === true){
+        }else if (info.guardarDatosEnBD === true && eventoAceptado === true){
             registrarEvento();
         }
 

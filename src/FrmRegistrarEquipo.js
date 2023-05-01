@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import './css/bootstrap.css';
+import './css/styles.css';
 
 export default function FrmRegistrarEquipo() {
 
@@ -52,7 +54,7 @@ export default function FrmRegistrarEquipo() {
     return (
 
         <form className="bg-transparent p-0" ref={frmRegistrarEquipo}>
-            <h3 className="text-center mt-2">Registro de equipo </h3>
+            <h3 className="text-center mt-2">Datos del equipo </h3>
             <div className="my-2 row mx-0">
                 <label htmlFor="txtNombreEquipo" className="form-label">Nombre</label>
                 <input type="text" className="form-control shadow-none" id="txtNombreEquipo" name="txtNombreEquipo" required />

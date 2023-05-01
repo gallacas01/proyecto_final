@@ -1,5 +1,6 @@
 import { useRef } from "react";
-
+import './css/bootstrap.css';
+import './css/styles.css';
 
 export default function FrmRegistrarCompeticion (){
 
@@ -49,7 +50,7 @@ export default function FrmRegistrarCompeticion (){
 
         <>
             <form className="mx-auto p-0" ref={frmRegistrarCompeticionRef}>
-                <h3 className="text-center mt-1">Registrar competición</h3>
+                <h3 className="text-center mt-1">Datos de la competición</h3>
                 <div className="my-2 row mx-0">
                     <label className="form-label my-auto">Nombre</label>
                     <input type="text" className="form-control shadow-none" ref={nombreCompeticionRef} required />

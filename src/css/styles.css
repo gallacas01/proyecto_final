@@ -1,21 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap');
+body{
+    font-family: 'Oswald', sans-serif;
+}
+
 nav{
     background-color: #182E3E;
-    color: rgb(252, 224, 179);
+    color: white;
+    font-size: 1.3em;
 }
 
 .navbar-brand,.nav-link,.dropdown-menu{
-    color: rgb(252, 224, 179);
+    color: white;
     background-color: #182E3E;
 }
 
 .navbar-brand:hover,.nav-link:hover{
-    border-bottom: 3px solid white;
-    color: rgb(252, 224, 179);
+    border-bottom: 3px solid rgb(252, 224, 179);
+    color: white;
 }
 
   
 .navbar-brand:focus,.nav-link:focus{
-   border-bottom: 3px solid white;
+   border-bottom: 3px solid rgb(252, 224, 179);
 }
 
 /* Color del borde de los input */
@@ -26,6 +32,10 @@ nav{
 
 .form-control:focus, .form-select:focus{
     border: 2px solid #182E3E;
+}
+
+select {
+    font-family: 'Oswald', sans-serif;
 }
 
 /* Opacidad de los placeholder */

@@ -6,11 +6,8 @@ import Equipos from "./VerEquipos";
 import Movimientos from "./Movimientos";
 import Estadisticas from "./Estadisticas";
 import Inicio from "./Inicio";
-import FrmRegistrarJugador from "./FrmRegistrarJugador";
-import FrmRegistrarEquipo from "./FrmRegistrarEquipo";
 import FrmRegistrarPartido from "./FrmRegistrarPartido";
 import Panel from "./PanelDeRegistro";
-import './css/styles.css';
 import 'animate.css';
 import Clasificacion from "./Clasificacion";
 
@@ -62,8 +59,7 @@ export default function App() {
   return (
     <>
       <RouterProvider router={router} />
-    </>
-    
+    </>    
   );
 }
 
