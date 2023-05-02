@@ -1,14 +1,12 @@
 import { useRef, useState } from "react";
-import './css/bootstrap.css';
-import './css/styles.css';
+import '../css/bootstrap.css';
+import '../css/styles.css';
 
 export default function FrmRegistrarEquipo() {
 
     //Variables de estado
     const [file, setFile] = useState(null);
-
-    //Referencias al DOM
-    const frmRegistrarEquipo = useRef(null);
+    const frmRegistrarEquipoRef = useRef(null);
 
     function handleChangeFile(file) {
 
@@ -43,7 +41,7 @@ export default function FrmRegistrarEquipo() {
 
                     let respuesta = await response.json();
                     alert(respuesta.datos);
-                    frmRegistrarEquipo.current.reset();
+                    frmRegistrarEquipoRef.current.reset();
                 }
             }
             reader.readAsDataURL(file);
@@ -53,7 +51,7 @@ export default function FrmRegistrarEquipo() {
 
     return (
 
-        <form className="bg-transparent p-0" ref={frmRegistrarEquipo}>
+        <form className="bg-transparent p-0" ref={frmRegistrarEquipoRef}>
             <h3 className="text-center mt-2">Datos del equipo </h3>
             <div className="my-2 row mx-0">
                 <label htmlFor="txtNombreEquipo" className="form-label">Nombre</label>

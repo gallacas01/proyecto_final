@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { IconBallFootball } from '@tabler/icons-react';
 import { IconShoe } from '@tabler/icons-react';
-import './css/bootstrap.css';
-import './css/styles.css';
+import '../css/bootstrap.css';
+import '../css/styles.css';
 
 const convertirImagenDB = ( async (img) => {
 

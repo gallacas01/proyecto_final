@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import './css/bootstrap.css';
-import './css/styles.css';
+import '../css/bootstrap.css';
+import '../css/styles.css';
 
 function createOptionElement(value, textContent) {
     let option = document.createElement("option");

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import './css/bootstrap.css';
-import './css/styles.css';
+import '../css/bootstrap.css';
+import '../css/styles.css';
 
 //Función encargada de crear un NavItem
 function NavItem({ info, esDropdown }) {

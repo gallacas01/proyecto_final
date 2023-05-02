@@ -1,8 +1,8 @@
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import { useEffect, useState } from "react";
-import './css/bootstrap.css';
-import './css/styles.css';
+import '../css/bootstrap.css';
+import '../css/styles.css';
 
 
 export default function Inicio() {

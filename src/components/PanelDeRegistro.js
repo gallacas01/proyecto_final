@@ -3,8 +3,8 @@ import FrmRegistrarEquipo from "./FrmRegistrarEquipo";
 import FrmRegistrarJugador from "./FrmRegistrarJugador";
 import FrmRegistrarPartido from "./FrmRegistrarPartido";
 import FrmRegistrarCompeticion from "./FrmRegistrarCompeticion";
-import './css/bootstrap.css';
-import './css/styles.css';
+import '../css/bootstrap.css';
+import '../css/styles.css';
 
 
 export default function Panel(){

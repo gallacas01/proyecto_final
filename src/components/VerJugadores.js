@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import CardJugador from './CardJugador';
-import './css/bootstrap.css';
-import './css/styles.css';
+import '../css/bootstrap.css';
+import '../css/styles.css';
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {

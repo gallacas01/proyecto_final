@@ -1,20 +1,25 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import ErrorPage from "./ErrorPage";
-import NavBar from "./NavBar";
-import Jugadores from "./VerJugadores";
-import Equipos from "./VerEquipos";
-import Movimientos from "./Movimientos";
-import Estadisticas from "./Estadisticas";
-import Inicio from "./Inicio";
-import FrmRegistrarPartido from "./FrmRegistrarPartido";
-import Panel from "./PanelDeRegistro";
-import 'animate.css';
-import Clasificacion from "./Clasificacion";
+import ErrorPage from "./components/ErrorPage";
+import NavBar from "./components/NavBar";
+import Jugadores from "./components/VerJugadores";
+import Equipos from "./components/VerEquipos";
+import Movimientos from "./components/Movimientos";
+import Estadisticas from "./components/Estadisticas";
+import FrmRegistrarPartido from "./components/FrmRegistrarPartido";
+import Panel from "./components/PanelDeRegistro";
+import Clasificacion from "./components/Clasificacion";
+import LoginScreen from "./components/SignIn";
+import SignUpScreen from "./components/SignUp";
 
 const router = createBrowserRouter([
   {
     path : "/",
-    element: <Inicio /> ,
+    element: <LoginScreen /> ,
+    errorElement : <ErrorPage />
+  },
+  {
+    path : "/register",
+    element: <SignUpScreen /> ,
     errorElement : <ErrorPage />
   },
   {
@@ -57,9 +62,7 @@ const router = createBrowserRouter([
 export default function App() {
 
   return (
-    <>
       <RouterProvider router={router} />
-    </>    
   );
 }
 

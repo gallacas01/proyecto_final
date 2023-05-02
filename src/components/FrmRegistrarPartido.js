@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import NavBar from "./NavBar";
-import './css/styles.css';
+import '../css/styles.css';
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {
