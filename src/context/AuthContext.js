@@ -1,6 +1,12 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    GoogleAuthProvider, 
+    signInWithPopup, 
+    signOut,
+    onAuthStateChanged } from "firebase/auth";
 import {auth} from "../firebase/firebase.config";
-import {createContext, useContext} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 
 //Creamos el contexto.
 export const authContext = createContext();
@@ -16,14 +22,54 @@ export const useAuth = () => {
 }
 
 export function AuthProvider({children}){
+
+    //Variable de estado para almacenar el usuario que haya iniciado sesión.
+    const [user, setUser] = useState('');
+
+    //UseEffect que comprueba si hay una sesión iniciada y almacena el usuario de la sesión si se ha iniciado sesión.
+    useEffect ( () => {
+
+    //Función que devuelve el current user.
+        const suscribed = onAuthStateChanged(auth, (currentUser) => {
+            if (!currentUser){
+                console.log("No se ha iniciado sesión.")
+            }else{
+                setUser(currentUser);
+            }
+        });
+        //Llamamos a la función.
+        suscribed();
+    },[]);
     
     const register = async (email, password) =>{
-        const response = await createUserWithEmailAndPassword (auth, email, password);
-        console.log(response);
+        try{
+            const response = await createUserWithEmailAndPassword (auth, email, password);
+            console.log(response);
+        }catch (error){    
+
+            if (error.message === "FirebaseError: Firebase: Error (auth/email-already-in-use)."){
+                alert("El correo " + email + " ya está en.");
+            }else {
+                alert("Se ha producido un error: " + error);
+            }
+        }
     }
+
     const login = async (email, password) =>{
-        const response = await signInWithEmailAndPassword(auth, email,password);
-        console.log(response);
+
+        try{
+            const response = await signInWithEmailAndPassword(auth, email,password);
+            console.log(response);
+
+        }catch (error){            
+            if (error.message === "Firebase: Error (auth/user-not-found)."){
+                alert("El correo no es correcto.");
+            }else if (error.message === "Firebase: Error (auth/wrong-password)."){
+                alert("La contraseña no es correcta.");
+            }else {
+                alert("Se ha producido un error: " + error);
+            }
+        }
     }
     //Login con Google, que es un proveedor externo.
     const loginWithGoogle = async () => {
@@ -38,13 +84,14 @@ export function AuthProvider({children}){
     }
 
     //La propiedad value sirve para exportar por defecto las funciones y el contenido (como el valor del usaurio y la contraseña) que se indiquen en el value.
-    //Exportamos nuestras funciones.
+    //Exportamos nuestras funciones y variables para usarlas en el resto de componentes.
     return <authContext.Provider 
         value={{
             register,
             login,
             loginWithGoogle,
-            logOut
+            logOut,
+            user
         }}>
         {children}
     </authContext.Provider>

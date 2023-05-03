@@ -1,17 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function FrmLogin(){
 
+    //Constantes
     const auth = useAuth();
+    const user = auth.user;
+    const navigate = useNavigate();
+
+    //Variables de estado.
     const [email,setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = ( (event) => {
-        event.preventDefault();
-        auth.login(email, password);
+    const handleLogin = ( async (event) => {
+
+        event.preventDefault();     
+        await auth.login(email, password);
+
     });
+
+    useEffect( () => {
+
+        if (user){
+            navigate("/inicio");
+        }
+    },[user]);
 
     return(
         <form className="frmAcceso rounded-2">
@@ -27,7 +41,9 @@ function FrmLogin(){
             </div>
             <button className="btn1 w-100 p-2" onClick={handleLogin}>INICIAR SESIÓN</button>
             <button className="btn1 w-100 mt-2 p-2"><i class="bi bi-google p-1"></i>Iniciar sesión con Google</button>
-        </form>        
+            <button className="btn1 w-100 mt-2 p-2" onClick={auth.logOut}><i class="bi bi-google p-1"></i>Cerrar sesión</button>
+        </form>      
+          
     );
 }
 

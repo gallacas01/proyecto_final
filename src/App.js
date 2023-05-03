@@ -10,11 +10,17 @@ import Panel from "./components/PanelDeRegistro";
 import Clasificacion from "./components/Clasificacion";
 import LoginScreen from "./components/SignIn";
 import SignUpScreen from "./components/SignUp";
+import Inicio from "./components/Inicio"
 
 const router = createBrowserRouter([
   {
     path : "/",
     element: <LoginScreen /> ,
+    errorElement : <ErrorPage />
+  },
+  {
+    path : "/inicio",
+    element: <Inicio /> ,
     errorElement : <ErrorPage />
   },
   {
