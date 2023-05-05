@@ -71,7 +71,7 @@ function BarraNavegacion({ datosNavBar }) {
 export default function NavBar() {
     let estructuraDatosNavBar = {
         titulo: "Inicio",
-        url: "/",
+        url: "/inicio",
         listaItems: [
             {
                 id: "jugadores",

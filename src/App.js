@@ -1,7 +1,7 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import ErrorPage from "./components/ErrorPage";
 import NavBar from "./components/NavBar";
-import Jugadores from "./components/VerJugadores";
+import VerJugadores from "./components/VerJugadores";
 import Equipos from "./components/VerEquipos";
 import Movimientos from "./components/Movimientos";
 import Estadisticas from "./components/Estadisticas";
@@ -10,7 +10,9 @@ import Panel from "./components/PanelDeRegistro";
 import Clasificacion from "./components/Clasificacion";
 import LoginScreen from "./components/SignIn";
 import SignUpScreen from "./components/SignUp";
-import Inicio from "./components/Inicio"
+import Inicio from "./components/Inicio";
+import { AuthProvider } from "./context/AuthContext";
+
 
 const router = createBrowserRouter([
   {
@@ -30,7 +32,7 @@ const router = createBrowserRouter([
   },
   {
     path : "/ver_jugadores",
-    element: <><NavBar /> <Jugadores /> </>,
+    element: <><VerJugadores /> </>,
     errorElement : <ErrorPage />,
   },
   {
@@ -67,8 +69,10 @@ const router = createBrowserRouter([
 
 export default function App() {
 
-  return (
+  return (    
+    <AuthProvider>
       <RouterProvider router={router} />
+    </AuthProvider>
   );
 }
 

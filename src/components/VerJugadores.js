@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import CardJugador from './CardJugador';
+import NavBar from "./NavBar";
 import '../css/bootstrap.css';
 import '../css/styles.css';
 
@@ -11,14 +12,15 @@ function createOptionElement(value, textContent) {
     return option;
 }
 
-export default function Jugadores() {
+export default function VerJugadores() {
 
     const [idCompeticion, setIdCompeticion] = useState('');
-    const desplegableCompeticiones = useRef(null);
-    const desplegableEquipos = useRef(null);
-    const nombreEquipo = useRef(null);
-    const [jugadores, setJugadores] = useState([]);
-    const containerJugadores = useRef(null);
+    const [jugadoresRecuperados, setJugadoresRecuperados] = useState(false);
+    const [jugadores,setJugadores] = useState([]);
+    const desplegableCompeticionesRef = useRef(null);
+    const desplegableEquiposRef = useRef(null);
+    const nombreEquipoRef = useRef(null);
+    const containerJugadoresRef = useRef(null);
 
     const rellenarDesplegableEquipos = ( async (id) => {
 
@@ -34,14 +36,14 @@ export default function Jugadores() {
                 let respuesta = await response.json();
                 if (!respuesta.error && respuesta.datos.length > 0){
     
-                    desplegableEquipos.current.innerHTML = " ";
+                    desplegableEquiposRef.current.innerHTML = " ";
                     let optionVacio = createOptionElement("-","-");
-                    desplegableEquipos.current.appendChild(optionVacio);
+                    desplegableEquiposRef.current.appendChild(optionVacio);
     
                      //Recorremos el array de equipos anyadiendo cada una al desplegable de competiciones.
                      for (let equipo of respuesta.datos){
                         let option = createOptionElement(equipo.id_equipo, equipo.nombre);
-                        desplegableEquipos.current.appendChild(option);
+                        desplegableEquiposRef.current.appendChild(option);
                     }
                 }
             }     
@@ -63,16 +65,21 @@ export default function Jugadores() {
             }          
     });
 
-    const arrayJugadores = [];
+    let defensas;
+    let centrocampistas;
+    let delanteros;
     const getJugadores = ( async () => {
 
-        if (idCompeticion !== "-" && desplegableEquipos.current.value !== "-"){
+        defensas = [];
+        centrocampistas = [];
+        delanteros = [];
+        if (idCompeticion !== "-" && desplegableEquiposRef.current.value !== "-"){
 
             //Escribimos el nombre del equipo dentro del h2 del div donde se encuentran los jugadores.
-            let nombreDelEquipo = desplegableEquipos.current.options[desplegableEquipos.current.selectedIndex].textContent;
-            nombreEquipo.current.textContent = nombreDelEquipo;
+            let nombreDelEquipo = desplegableEquiposRef.current.options[desplegableEquiposRef.current.selectedIndex].textContent;
+            nombreEquipoRef.current.textContent = nombreDelEquipo;
 
-            let idEquipo = desplegableEquipos.current.value; 
+            let idEquipo = desplegableEquiposRef.current.value; 
             let parametros = new FormData();
             parametros.append("id_equipo", idEquipo);     
 
@@ -99,21 +106,29 @@ export default function Jugadores() {
                             peso : jugador.peso, altura: jugador.altura, posicion : jugador.posicion, dorsal: jugador.dorsal,
                             pais : jugador.pais, equipo : jugador.equipo, imagen : urlImagen};
                         console.log(info);
-                        arrayJugadores.push(< CardJugador  key={jugador.id_jugador} info={info} />);
+
+                        let cardJugador = <CardJugador  key={jugador.id_jugador} info={info} metodos={getJugadores} />
+                        if (jugador.posicion === "defensa"){
+                            defensas.push(cardJugador);
+                        }else if (jugador.posicion === "centrocampista"){
+                            centrocampistas.push(cardJugador);
+                        }else {
+                            delanteros.push(cardJugador);
+                        }
                     }
+                    //Cambiamos el valor de esta variable de estado para que se muestren los jugadores.
+                    setJugadores([defensas,centrocampistas,delanteros]);
+                    containerJugadoresRef.current.classList.remove('d-none');
+                    setJugadoresRecuperados(true);
                 }
             }
-
-            //Mostramos el contenedor de los jugadores y guardamos los jugadores del array dentro de la variable de estado.
-            containerJugadores.current.classList.remove('d-none');
-            setJugadores(...[arrayJugadores]);
 
         }else{
 
             if (idCompeticion === "-"){
                 alert("Selecciona una competición.");
             }
-            if (desplegableEquipos.current.value === "-" ){
+            if (desplegableEquiposRef.current.value === "-" ){
                 alert("Selecciona un equipo.");
             }
         }     
@@ -131,14 +146,14 @@ export default function Jugadores() {
                 if (!respuesta.error && respuesta.datos.length > 0){
 
                     //Recuperamos el desplegable de competiciones y añadimos el primer elemento, cuyo valor será '-'.
-                    desplegableCompeticiones.current.innerHTML = " ";
+                    desplegableCompeticionesRef.current.innerHTML = " ";
                     let optionVacio = createOptionElement("-","-");
-                    desplegableCompeticiones.current.appendChild(optionVacio);
+                    desplegableCompeticionesRef.current.appendChild(optionVacio);
                     
                     //Recorremos el array de competiciones anyadiendo cada una al desplegable de competiciones.
                     for (let competicion of respuesta.datos){
                         let option = createOptionElement(competicion.id_competicion, competicion.nombre);
-                        desplegableCompeticiones.current.appendChild(option);
+                        desplegableCompeticionesRef.current.appendChild(option);
                     }
                 }
             }            
@@ -148,33 +163,48 @@ export default function Jugadores() {
     },[]);
 
     return (
-        <>
-            <form className="col-lg-9 mx-auto p-0">
-                <div className="row mx-auto mt-lg-3">
-                    <label className="form-label my-auto text-lg-end col-lg-2">Competición</label>
-                    <div className="col-lg-3 p-0 my-auto">
-                        <select className="form-select shadow-none" ref={desplegableCompeticiones} onChange={(event) => (handleChangeCompeticion(event))} required>
+        <div className='container-fluid'>
+            <div className='row'><NavBar /> </div>
+            <div className='row'>
+                <form className="col-lg-9 mx-auto p-0">
+                    <div className="row mx-auto mt-lg-3">
+                        <label className="form-label my-auto text-lg-end col-lg-2">Competición</label>
+                        <div className="col-lg-3 p-0 my-auto">
+                            <select className="form-select shadow-none" ref={desplegableCompeticionesRef} onChange={(event) => (handleChangeCompeticion(event))} required>
 
-                        </select>
+                            </select>
+                        </div>
+                        <label className="form-label my-auto text-lg-end col-lg-2">Equipo</label>
+                        <div className="col-lg-3 p-0 my-auto">
+                            <select className="form-select shadow-none" ref={desplegableEquiposRef} required>
+
+                            </select>
+                        </div>
+                    <button className="btn1 ms-lg-3 col-lg-1" onClick={ (event) => {event.preventDefault(); getJugadores();}}><i className="bi bi-search fs-5"></i></button>  
                     </div>
-                    <label className="form-label my-auto text-lg-end col-lg-2">Equipo</label>
-                    <div className="col-lg-3 p-0 my-auto">
-                        <select className="form-select shadow-none" ref={desplegableEquipos} required>
+                </form>
+            </div>
 
-                        </select>
+            <div className='row'>
+                <div className='col-lg-9 mx-auto mt-lg-4 p-1 d-none' ref={containerJugadoresRef}>
+                    <div className='row p-0 m-auto'> <h1 className="text-center mt-lg-1" ref={nombreEquipoRef} style={{color : '#182E3E'}}></h1></div>
+                    <div className='row p-0 m-0'>
+                        {jugadoresRecuperados &&
+                            <>
+                                <h5 className='p-1' id='tituloPosicion'>Defensas</h5>
+                                {jugadores[0]}                    
+                                <h5 className='p-1 mt-4' id='tituloPosicion'>Centrocampistas</h5>
+                                {jugadores[1]}
+                                <h5 className='p-1 mt-4' id='tituloPosicion'>Delanteros</h5>
+                                {jugadores[2]}
+                            </>                      
+                        }
+                    
                     </div>
-                   <button className="btn1 ms-lg-3 col-lg-1" onClick={ (event) => {event.preventDefault(); getJugadores();}}><i className="bi bi-search fs-5"></i></button>  
-                </div>
-            </form>
-
-            <div className='col-lg-9 mx-auto mt-lg-4 p-1 d-none' ref={containerJugadores}>
-                <div className='row p-0 m-auto'> <h2 className="text-center mt-lg-1" ref={nombreEquipo} style={{color : '#182E3E'}}></h2></div>
-                <div className='row p-0 m-0'>
-                    {jugadores}
                 </div>
 
             </div>
-        </>
+        </div>
     );
 }
 
