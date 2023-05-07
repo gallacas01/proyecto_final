@@ -6,7 +6,6 @@ import FrmRegistrarCompeticion from "./FrmRegistrarCompeticion";
 import '../css/bootstrap.css';
 import '../css/styles.css';
 
-
 export default function Panel(){
 
     //Variables de estado

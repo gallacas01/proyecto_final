@@ -113,7 +113,7 @@ export default function FrmRegistrarJugador() {
                             let respuesta2 = await response2.json();
                             if (!respuesta2.error) {
                                 alert("Se ha realizado la inserción del jugador y del movimiento en la base de datos.");
-                                frmRegistrarJugadorRef.current.reset();
+                                // frmRegistrarJugadorRef.current.reset();
                             } else {
                                 alert(respuesta2.datos);
                             }

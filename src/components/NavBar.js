@@ -1,54 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 import '../css/bootstrap.css';
 import '../css/styles.css';
 
-//Función encargada de crear un NavItem
-function NavItem({ info, esDropdown }) {
+//Componente NavItem
+function NavItem({ info }) {
+
+    //Variables de estado
     const [isFocused, setIsFocused] = useState(false);
 
     return (
-         <li key={info.id} className={esDropdown ? "dropdown-item" : "nav-item"}>
+         <li key={info.id} className="nav-item">
             <a className={isFocused ? "nav-link isFocused" : "nav-link"} onClick={() => setIsFocused(!isFocused)} onBlur={() => setIsFocused(false)} id={info.id} href={info.url}>{info.titulo}</a>
         </li>
          /*El evento onBlur se desencadena cuando un elemento pierde el foco */
     );
 }
 
-//Funcion encargada de crear un NavItemDropdown
-function NavItemDropdown({ info }) {
-
-    const listaNavItem = info.listaItems.map((elemInfo) => {
-        return (
-            <NavItem info={elemInfo} esDropdown={true} />
-        );
-    });
-
-    return (
-        <li key={info.id} className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                {info.titulo}
-            </a>
-            <ul className="dropdown-menu">
-                {listaNavItem}
-            </ul>
-        </li>
-    );
-}
-
 function BarraNavegacion({ datosNavBar }) {
 
-   
-    let listaNavItem = datosNavBar.listaItems.map((elemInfo) => {
+      //Constantes
+      const auth = useAuth();
+      const navigate = useNavigate();
 
-        if (elemInfo.url) { // Si está definida la url se trara de un NavItem
-            return (
-                <NavItem info={elemInfo} esDropdown={false} />
-            );
-        } else { // elemInfo.url == undefined --> Se trata de un NavItemDropdown
-            return (
-                <NavItemDropdown info={elemInfo} esDropdown={true}/>
-            );
+      //Función que cierra la sesión
+      const cerrarSesion = ( () => {
+
+        if  (window.confirm('¿Estás seguro/a de que quieres cerrar la sesión?')){
+            navigate("/inicio");
+            auth.logOut();
+            window.location.reload();
         }
+     });
+   
+    let listaNavItem = datosNavBar.listaItems.map((elemInfo, i) => {
+        return (
+            <NavItem key={i} info={elemInfo} />
+        );       
     });
 
     return (
@@ -61,6 +51,7 @@ function BarraNavegacion({ datosNavBar }) {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         {listaNavItem}
+                        <button className='p-0' onClick={cerrarSesion} id='btnCerrarSesion'>Cerrar sesión</button>
                     </ul>
                 </div>
             </div>
@@ -69,6 +60,19 @@ function BarraNavegacion({ datosNavBar }) {
 }
 
 export default function NavBar() {
+
+    const auth = useAuth();
+    const user = auth.user;
+    const navigate = useNavigate();
+
+    useEffect ( () => {
+
+        if (!user &&auth.checkedSession){
+            navigate("/login");
+        }
+      },[user, auth.checkedSession]);
+
+
     let estructuraDatosNavBar = {
         titulo: "Inicio",
         url: "/inicio",
@@ -78,11 +82,14 @@ export default function NavBar() {
                 titulo: "Jugadores",
                 url : "/ver_jugadores"
             },
-            {
-                id: "equipos",
-                titulo: "Equipos",
-                url : "/ver_equipos"
-            },
+            //Si el usuario que ha iniciado sesión es el admin, se añaden más enlaces a la NavBar
+            user.uid === "CPifWKxzLqPFg3N8hIauBdhf3lT2" ?
+                {
+                    id: "equipos",
+                    titulo: "Equipos",
+                    url : "/ver_equipos"
+                } : {},
+
             {
                 url: "/movimientos",
                 id: "movimientos",
@@ -97,12 +104,13 @@ export default function NavBar() {
                 id: "clasificacion",
                 titulo: "Clasificación",
                 url : "/clasificacion"
-            },   
-            {
-                url : "/panel_de_registro",
-                id: "panelDeregistro",
-                titulo: "Panel de registro"
-            }         
+            },
+            user.uid === "CPifWKxzLqPFg3N8hIauBdhf3lT2" ?
+                {
+                    url : "/panel_de_registro",
+                    id: "panelDeregistro",
+                    titulo: "Panel de registro"
+                } : {},
         ]
     };
 

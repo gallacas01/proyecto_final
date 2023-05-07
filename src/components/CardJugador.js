@@ -6,7 +6,7 @@ import 'animate.css';
 
 // import {Animation} from 'react-animate-style'; 
 
-export default function Card({ info, metodos }) {
+export default function Card({ info, getJugadores }) {
 
     //Constantes
     const auth = useAuth();
@@ -20,6 +20,7 @@ export default function Card({ info, metodos }) {
         pais: info.pais, equipo: info.equipo, imagen: info.imagen
     });
     const [verDatos, setVerDatos] = useState(false);
+    const [activarEdicion, setActivarEdicion] = useState(false);
     const cardRef = useRef(null);
 
     const handleVerdatos = ( () => {
@@ -29,7 +30,7 @@ export default function Card({ info, metodos }) {
             cardRef.current.classList.remove("animate__animated" ,"animate__flipOutY");
             setVerDatos(true);
         });
-    })
+    });
 
     const handleOcultarDatos = ( () => {
 
@@ -38,7 +39,13 @@ export default function Card({ info, metodos }) {
             cardRef.current.classList.remove("animate__animated" ,"animate__flipOutY");
             setVerDatos(false);
         });
-    })
+    });
+
+    const handleActivarEdicion = ( () => {
+
+
+        
+    });
 
     const eliminarJugador = ( () => {
 
@@ -48,6 +55,10 @@ export default function Card({ info, metodos }) {
             cardRef.current.addEventListener("animationend", async () => {
                 cardRef.current.classList.remove("animate__animated" ,"animate__fadeOut");
                 
+                //Eliminamos el elemento del DOM cuando se termine la animación.
+                cardRef.current.classList.add('d-none');
+
+                //Borramos el jugador de la BD.
                 let parametros = new FormData();
                 parametros.append("id_jugador", datos.id_jugador)
                 let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/DELETE/eliminarJugador.php", 
@@ -60,13 +71,13 @@ export default function Card({ info, metodos }) {
 
                     let respuesta = await response.json();
                     if (respuesta.datos.includes('correctamente')){
-                        metodos();
+                        getJugadores();
                     }
                 }
             });
         }      
 
-    })
+    });
 
     return (
         <div className='col-lg-3 p-1 my-1' ref={cardRef}>
@@ -93,7 +104,7 @@ export default function Card({ info, metodos }) {
                             {user.uid === "CPifWKxzLqPFg3N8hIauBdhf3lT2" &&
                                 <div className='row mx-auto'>
                                     <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleVerdatos}><i class="bi bi-info-circle-fill"></i></button></div>
-                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0'><i class="bi bi-pencil-square m-auto"></i></button></div>
+                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleActivarEdicion}><i class="bi bi-pencil-square m-auto"></i></button></div>
                                     <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={eliminarJugador}><i class="bi bi-trash3-fill"></i></button></div>
                                 </div>                              
                             }
@@ -101,33 +112,31 @@ export default function Card({ info, metodos }) {
                     }
 
                     {verDatos === true &&
-
                         <>           
                             {/* <Animation animationIn="bounceIn" animationOut="bounceOut" > */}
-                                <div className="row my-2 mx-auto p-1">
+                                <div className="row mx-auto p-1">
                                     <p className='text-start my-auto'>DNI / INE: {datos.dni_jugador}</p>
                                 </div>
-                                <div className="row my-2 mx-auto p-1">
+                                <div className="row mx-auto p-1">
                                     <p className='text-start my-auto'>Nombre completo: {datos.nombre_completo}</p>
                                 </div>
-                                <div className="row my-1 mx-auto p-1">
+                                <div className="row mx-auto p-1">
                                     <p className='text-start my-auto'>F. nacimiento: {datos.fecha_nacimiento}</p>
                                 </div>
-                                <div className="row mx-auto my-1 p-1">
+                                <div className="row mx-auto p-1">
                                     <p className='text-start my-auto'>Origen: {datos.pais} </p>
                                 </div>
-                                <div className="row mx-auto my-1 p-1">
+                                <div className="row mx-auto p-1">
                                     <p className='text-start my-auto'>Peso: {datos.peso} kg</p>
                                 </div>
-                                <div className="row mx-auto my-1 p-1">
+                                <div className="row mx-auto p-1">
                                     <p className='text-start my-auto'>Altura: {datos.altura} cm</p>
                                 </div>
-                                <div className="row mx-auto my-2 p-1">
+                                <div className="row mx-auto p-1">
                                     <p className='text-start my-auto'>Dorsal: {datos.dorsal}</p>
                                 </div> 
                                 <div className='row mx-auto'>
-                                    <div className='col-4 m-0 fs-6 p-1'><button className='btn1 w-100 p-0'><i class="bi bi-info-circle-fill"></i></button></div>
-                                    <div className='col-4 m-0 fs-6 p-1'><button className='btn1 w-100 p-0' onClick={handleOcultarDatos}><i class="bi bi-arrow-left-circle-fill"></i></button></div>
+                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleOcultarDatos}><i class="bi bi-arrow-left-circle-fill"></i></button></div>
                                 </div>     
                             {/* </Animation> */}
                         </>             

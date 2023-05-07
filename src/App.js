@@ -11,12 +11,10 @@ import Clasificacion from "./components/Clasificacion";
 import LoginScreen from "./components/SignIn";
 import SignUpScreen from "./components/SignUp";
 import Inicio from "./components/Inicio";
-import { AuthProvider } from "./context/AuthContext";
-
 
 const router = createBrowserRouter([
   {
-    path : "/",
+    path : "/login",
     element: <LoginScreen /> ,
     errorElement : <ErrorPage />
   },
@@ -70,9 +68,7 @@ const router = createBrowserRouter([
 export default function App() {
 
   return (    
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <RouterProvider router={router} />
   );
 }
 

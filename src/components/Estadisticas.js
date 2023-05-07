@@ -4,6 +4,7 @@ import { IconShoe } from '@tabler/icons-react';
 import '../css/bootstrap.css';
 import '../css/styles.css';
 
+
 const convertirImagenDB = ( async (img) => {
 
     let imagen = "data:image/png;base64," + img;
@@ -111,7 +112,7 @@ export default function Estadisticas(){
                     </button>
                     <button className="text-center p-1 btn1 w-100 mb-3" onClick={() => setCriterioDeOrdenacion('tarjetas_rojas')}> 
                         <img src="https://www.iconpacks.net/icons/1/free-red-card-icon-460-thumb.png" className="mt-2" width={'55px'} height={'55px'} alt="Red Card" />
-                    </button>                
+                    </button>            
                 </div>
                 <div className="col">
                     <table className="table p-0 d-none" ref={tableRef}>

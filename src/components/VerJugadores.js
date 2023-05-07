@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import CardJugador from './CardJugador';
 import NavBar from "./NavBar";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import '../css/bootstrap.css';
 import '../css/styles.css';
 
@@ -21,6 +23,11 @@ export default function VerJugadores() {
     const desplegableEquiposRef = useRef(null);
     const nombreEquipoRef = useRef(null);
     const containerJugadoresRef = useRef(null);
+
+    //Constantes
+    const auth = useAuth();
+    const user = auth.user;
+    const navigate = useNavigate();
 
     const rellenarDesplegableEquipos = ( async (id) => {
 
@@ -107,7 +114,7 @@ export default function VerJugadores() {
                             pais : jugador.pais, equipo : jugador.equipo, imagen : urlImagen};
                         console.log(info);
 
-                        let cardJugador = <CardJugador  key={jugador.id_jugador} info={info} metodos={getJugadores} />
+                        let cardJugador = <CardJugador  key={jugador.id_jugador} info={info} getJugadores={getJugadores} />
                         if (jugador.posicion === "defensa"){
                             defensas.push(cardJugador);
                         }else if (jugador.posicion === "centrocampista"){

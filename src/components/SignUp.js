@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import '../css/bootstrap.css';
+import '../css/styles.css';
 
 function FrmSignUp(){
 
+    //Constantes
     const auth = useAuth();
+    const user = auth.user;
+    const navigate = useNavigate();
+    //Variables de estado
     const [email,setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -11,6 +18,14 @@ function FrmSignUp(){
         event.preventDefault();
         auth.register(email, password);
     });
+
+     //Si el usuario tiene una sesión iniciada, se le redirige a la pantalla de inicio.
+     useEffect( () => {
+
+        if (user){
+            navigate("/inicio");
+        }
+    },[user]);
 
     return(
         <form className="frmAcceso rounded-2">

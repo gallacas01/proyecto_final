@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import '../css/bootstrap.css';
+import '../css/styles.css';
 
 function FrmLogin(){
 
@@ -12,17 +14,20 @@ function FrmLogin(){
     //Variables de estado.
     const [email,setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const handleLogin = ( async (event) => {
 
         event.preventDefault();     
         await auth.login(email, password);
     });
 
+    //Si el usuario tiene una sesión iniciada, se le redirige a la pantalla de inicio.
     useEffect( () => {
 
         if (user){
             navigate("/inicio");
+        }else if (!user){
+            console.log(user);
+            console.log("No hay usuario");
         }
     },[user]);
 

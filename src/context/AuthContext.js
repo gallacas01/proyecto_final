@@ -5,7 +5,7 @@ import {
     signInWithPopup, 
     signOut,
     onAuthStateChanged } from "firebase/auth";
-import {auth} from "../firebase/firebase.config";
+import { auth } from "../firebase/firebase.config";
 import {createContext, useContext, useEffect, useState} from "react";
 
 //Creamos el contexto.
@@ -25,6 +25,7 @@ export function AuthProvider({children}){
 
     //Variable de estado para almacenar el usuario que haya iniciado sesión.
     const [user, setUser] = useState('');
+    const [checkedSession, setCheckedSession] = useState(false);
 
     //UseEffect que comprueba si hay una sesión iniciada y almacena el usuario de la sesión si se ha iniciado sesión.
     useEffect ( () => {
@@ -32,10 +33,11 @@ export function AuthProvider({children}){
     //Función que devuelve el current user.
         const suscribed = onAuthStateChanged(auth, (currentUser) => {
             if (!currentUser){
-                console.log("No se ha iniciado sesión.")
+                console.log("No se ha iniciado sesión.");
             }else{
                 setUser(currentUser);
             }
+            setCheckedSession(true);
         });
         //Llamamos a la función.
         suscribed();
@@ -44,11 +46,13 @@ export function AuthProvider({children}){
     const register = async (email, password) =>{
         try{
             const response = await createUserWithEmailAndPassword (auth, email, password);
+            setUser(auth.currentUser);
+            console.log(auth);
             console.log(response);
         }catch (error){    
 
             if (error.message === "FirebaseError: Firebase: Error (auth/email-already-in-use)."){
-                alert("El correo " + email + " ya está en.");
+                alert("El correo " + email + " ya está en uso.");
             }else {
                 alert("Se ha producido un error: " + error);
             }
@@ -59,6 +63,8 @@ export function AuthProvider({children}){
 
         try{
             const response = await signInWithEmailAndPassword(auth, email,password);
+            setUser(auth.currentUser);
+            console.log(auth);
             console.log(response);
 
         }catch (error){            
@@ -91,7 +97,8 @@ export function AuthProvider({children}){
             login,
             loginWithGoogle,
             logOut,
-            user
+            user,
+            checkedSession
         }}>
         {children}
     </authContext.Provider>
