@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FrmRegistrarEquipo from "./FrmRegistrarEquipo";
 import FrmRegistrarJugador from "./FrmRegistrarJugador";
 import FrmRegistrarPartido from "./FrmRegistrarPartido";
@@ -8,7 +8,6 @@ import '../css/styles.css';
 
 export default function Panel(){
 
-    //Variables de estado
     const [frmActual, setFrmActual] = useState(null);
 
     //Funciones

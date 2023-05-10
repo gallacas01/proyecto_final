@@ -1,10 +1,15 @@
-import { useState,useRef, useEffect } from 'react';
+import { useState,useRef } from 'react';
 import { useAuth } from "../context/AuthContext";
 import '../css/bootstrap.css';
 import '../css/styles.css';
 import 'animate.css';
 
-// import {Animation} from 'react-animate-style'; 
+function createOptionElement(value, textContent) {
+    let option = document.createElement("option");
+    option.value = value;
+    option.textContent = textContent;
+    return option;
+}
 
 export default function Card({ info, getJugadores }) {
 
@@ -19,9 +24,14 @@ export default function Card({ info, getJugadores }) {
         peso: info.peso, altura: info.altura, posicion: info.posicion, dorsal: info.dorsal,
         pais: info.pais, equipo: info.equipo, imagen: info.imagen
     });
+    const [datosAnteriores, setDatosAnteriores] = useState({});
     const [verDatos, setVerDatos] = useState(false);
     const [activarEdicion, setActivarEdicion] = useState(false);
+    const [nuevaImagen, setNuevaImagen] = useState('');
     const cardRef = useRef(null);
+    const estadoInicialRef = useRef(null);
+    const nombreJugadorRef = useRef(null);
+    const desplegableEquiposRef = useRef(null);
 
     const handleVerdatos = ( () => {
 
@@ -43,8 +53,29 @@ export default function Card({ info, getJugadores }) {
 
     const handleActivarEdicion = ( () => {
 
+        setVerDatos(false);
+        nombreJugadorRef.current.textContent = "Nuevos datos";
+        //Guardamos los datos anteriores antes por si la edición se cancela.
+        setDatosAnteriores({...datos});
+        setActivarEdicion(true);     
+        rellenarDesplegableEquipos();   
+    });
 
-        
+    const handleChangeNuevoDato = ( (event) => {
+
+        const name = event.target.name;  // "nombre" o "apellidos"  
+        const value = event.target.value;
+        console.log("Name y value del nuevo dato: ", name, value);
+        setDatos ({...datos, [name]: value});
+    });
+
+    const cancelarEdicion = ( (event) => {
+
+        event.preventDefault();
+        setDatos({...datosAnteriores});
+        setActivarEdicion(false); 
+        setVerDatos(true);
+
     });
 
     const eliminarJugador = ( () => {
@@ -79,36 +110,117 @@ export default function Card({ info, getJugadores }) {
 
     });
 
+    async function rellenarDesplegableEquipos() {
+
+        let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getEquipos.php");
+        if (response.ok) {
+
+            let respuesta = await response.json();
+
+            desplegableEquiposRef.current.innerHTML = " ";
+
+            //Creamos el primer option de cada select, el cual estará vacío.
+            let optionSinValor = createOptionElement("-","-");
+
+            // Anidamos rl option al select.
+            desplegableEquiposRef.current.appendChild(optionSinValor);
+
+            for (let equipo of respuesta.datos) {
+                // Creamos un elemento de tipo option por cada equipo y lo añadimos al select.
+                let option = createOptionElement(equipo.id_equipo, equipo.nombre);
+                if (equipo.id_equipo === datos.equipo){
+                    option.selected = true;
+                }
+                desplegableEquiposRef.current.appendChild(option);
+            }
+        }
+    }
+
+    const updateDatosJugador = ( async (event) => {
+
+        event.preventDefault();
+        let imagen;
+        let imagenValida = false;
+        
+        //Si no se introduce una imagen cuando se modifiquen los datos, se enviará la imagen que ya está en la bbdd.
+        if (nuevaImagen === ""){
+            // alert("imagen no seleccionada");
+            imagen = datos.imagen;
+            imagenValida = true;
+        }else{
+
+            if (nuevaImagen.name.endsWith('.jpg') || nuevaImagen.name.endsWith('.jpeg') || nuevaImagen.name.endsWith('.png') || nuevaImagen.name.endsWith('.webp') || nuevaImagen.name.endsWith('.jpe')) {
+                imagen = nuevaImagen;
+                alert("Imagen seleccionada");
+                alert("Imagen anterior")
+                alert(datos.imagen)      
+                imagenValida = true;
+          
+            }           
+        }
+
+        if (imagenValida){
+
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+                let base64Imagen = reader.result.replace('data:', '').replace(/^.+,/, '');
+
+                let parametros = new FormData();
+                parametros.append("id_jugador", datos.id_jugador);
+                parametros.append("dni_jugador", datos.dni_jugador);
+                parametros.append("nombre_completo", datos.nombre_completo);
+                parametros.append("fecha_nacimiento", datos.fecha_nacimiento);
+                parametros.append("peso", datos.peso);
+                parametros.append("altura", datos.altura);
+                parametros.append("posicion", datos.posicion);
+                parametros.append("dorsal", datos.dorsal);
+                parametros.append("pais", datos.pais);
+                parametros.append("id_equipo", datos.equipo);
+                parametros.append("imagen", base64Imagen);
+                let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/UPDATE/actualizarJugador.php",{
+
+                    method : 'POST',
+                    body : parametros        
+                });
+
+                if (response.ok){
+                    
+                    let respuesta = await response.json();
+                    if (!respuesta.error){
+                        
+                        alert("Nueva imagen: ");
+                        alert(nuevaImagen);
+                        setDatos({...datos, [imagen] : nuevaImagen});
+                        alert("Modificación completada");
+                        console.log("Nuevos datos:", datos);
+                        setActivarEdicion(false);
+                        setVerDatos(true);
+                    }
+                }
+            } 
+            reader.readAsDataURL(imagen);
+        }       
+
+    });
+
     return (
-        <div className='col-lg-3 p-1 my-1' ref={cardRef}>
+        <div className='col-lg-3  p-1 my-1' ref={cardRef}>
             <div className="card my-0 border-2 rounded-3">
                 <div className="card-body p-0" >
                     <div className="row mb-2 mx-auto text-center fs-5 p-lg-1 text-white" style={{ backgroundColor: '#182E3E' }}>
-                        <p className='m-auto'>{datos.nombre_completo.split(" ")[0]}</p>
+                        <p className='m-auto' ref={nombreJugadorRef}>{datos.nombre_completo.split(" ")[0]}</p>
                     </div>
 
-                    {verDatos === false &&
-                        <>                
+                    {verDatos === false && activarEdicion === false &&
+                        <div ref={estadoInicialRef}>                
                             <div className="row my-2">
                                 <img src={datos.imagen} className="img-fluid" alt="..." />
                             </div>
 
-                            {/* <div className="row mt-2 mx-auto">
-                                <p className='text-start my-auto'>Posición: {datos.posicion}</p>
-                            </div>
-
-                            <div className="row mx-auto my-2">
-                                <p className='text-start my-auto'>Dorsal: {datos.dorsal}</p>
-                            </div> */}
-
-                            {user.uid === "CPifWKxzLqPFg3N8hIauBdhf3lT2" &&
-                                <div className='row mx-auto'>
-                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleVerdatos}><i class="bi bi-info-circle-fill"></i></button></div>
-                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleActivarEdicion}><i class="bi bi-pencil-square m-auto"></i></button></div>
-                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={eliminarJugador}><i class="bi bi-trash3-fill"></i></button></div>
-                                </div>                              
-                            }
-                        </>                                           
+                            <div className='row mx-auto'>
+                                <div className='col m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleVerdatos}><i className="bi bi-info-circle-fill"></i></button></div>
+                            </div>                              
+                        </div>                                           
                     }
 
                     {verDatos === true &&
@@ -135,11 +247,83 @@ export default function Card({ info, getJugadores }) {
                                 <div className="row mx-auto p-1">
                                     <p className='text-start my-auto'>Dorsal: {datos.dorsal}</p>
                                 </div> 
-                                <div className='row mx-auto'>
-                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleOcultarDatos}><i class="bi bi-arrow-left-circle-fill"></i></button></div>
-                                </div>     
-                            {/* </Animation> */}
+
+                              
+                                {!user.uid === "CPifWKxzLqPFg3N8hIauBdhf3lT2" &&
+                                    <div className='row mx-auto'>
+                                        <div className='col m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleOcultarDatos}><i className="bi bi-arrow-left-circle-fill"></i></button></div>
+                                    </div>   
+                                }  
+                       
+                                {/* Si el usuario es admin */}
+                                {user.uid === "CPifWKxzLqPFg3N8hIauBdhf3lT2" &&
+                                    <div className='row mx-auto'>
+                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleOcultarDatos}><i className="bi bi-arrow-left-circle-fill"></i></button></div>
+                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleActivarEdicion}><i className="bi bi-pencil-square m-auto"></i></button></div>
+                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={eliminarJugador}><i className="bi bi-trash3-fill"></i></button></div>
+                                </div>      
+                                }                                
                         </>             
+                    }
+
+                    {activarEdicion === true &&
+                        <form className='p-1'>
+                            <div className='row mx-auto'>
+                                <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">DNI / INE</label></div>
+                                <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none" onChange={handleChangeNuevoDato} defaultValue={datos.dni_jugador} name='dni_jugador' readOnly={!activarEdicion} minLength={9} maxLength={9}  /></div>
+                            </div>
+                            <div className='row mx-auto my-2'>
+                                <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">Nombre </label></div>
+                                <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none" defaultValue={datos.nombre_completo} onChange={handleChangeNuevoDato} name='nombre_completo' readOnly={!activarEdicion} minLength={9} maxLength={9}  /></div>
+                            </div>
+                            <div className='row mx-auto my-2'>
+                                <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">F. nac</label></div>
+                                <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none" defaultValue={datos.fecha_nacimiento} onChange={handleChangeNuevoDato} name='fecha_nacimiento' readOnly={!activarEdicion} minLength={9} maxLength={9}  /></div>
+                            </div>
+                            <div className='row mx-auto my-2'>
+                                <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">Peso </label></div>
+                                <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none"defaultValue={datos.peso} onChange={handleChangeNuevoDato} name='peso' readOnly={!activarEdicion} minLength={2} maxLength={3}  /></div>
+                            </div>
+                            <div className='row mx-auto my-2'>
+                                <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">Altura </label></div>
+                                <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none" defaultValue={datos.altura} onChange={handleChangeNuevoDato} name='altura' readOnly={!activarEdicion} minLength={3} maxLength={3}  /></div>
+                            </div>
+                            <div className='row mx-auto my-2'>
+                                <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">Posición</label></div>
+                                <div className='col-8 p-0 d-flex align-items-center justify-content-center'>
+                                    <select className="form-select shadow-none d-flex align-items-center justify-content-center" defaultValue={datos.posicion} onChange={handleChangeNuevoDato} readOnly={!activarEdicion} name='posicion' aria-label="Default select example" >
+                                        <option value="-">-</option>
+                                        <option value="portero">Portero</option>
+                                        <option value="defensa">Defensa</option>
+                                        <option value="centrocampista">Centrocampista</option>
+                                        <option value="delantero">Delantero</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className='row mx-auto my-2'>
+                                <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">Dorsal</label></div>
+                                <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none" defaultValue={datos.dorsal} name='dorsal' readOnly={!activarEdicion} minLength={1} maxLength={2}  /></div>
+                            </div>
+                            <div className="my-2 row mx-0">
+                                <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'><label className="form-label my-auto">Equipo</label></div>
+                                <div className='col-8 p-0 d-flex align-items-center justify-content-center'> 
+                                    <select className="form-control shadow-none" name='equipo' onChange={handleChangeNuevoDato} ref={desplegableEquiposRef} equired>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="row mx-0">
+                                <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'><label className="form-label">Imagen</label></div>
+                                {/* onChange={(event) => {setNuevaImagen(event.target.files[0]); console.log(nuevaImagen)}} */}
+                                <div className='col-8 p-0 d-flex align-items-center justify-content-center'>
+                                    <input className="form-control shadow-none" type="file" name='imagen' onChange={(event) => setNuevaImagen(event.target.files[0])} />
+                                </div>
+                            </div>
+                            <div className='row mx-auto p-0'>
+                                <div className='col-6 m-0 fs-4 p-1'> <button className='btn1 w-100 fs-3 p-0' onClick={updateDatosJugador} ><i className="bi bi-check-circle-fill"></i></button></div>   
+                                <div className='col-6 m-0 fs-4 p-1'> <button className='btn1 w-100 fs-3 p-0' onClick={cancelarEdicion}><i className="bi bi-x-circle-fill"></i></button></div>     
+                            </div>
+                        </form>
                     }
 
                 </div>
