@@ -69,6 +69,22 @@ export default function Card({ info, getJugadores }) {
         setDatos ({...datos, [name]: value});
     });
 
+
+    const handleChangeCambioImagen = ( (event) => {
+
+        console.log("imagen ANTERIOR: ", datos.imagen); 
+
+        let img = event.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+            let base64Imagen = reader.result.replace('data:', '').replace(/^.+,/, '');
+
+            setNuevaImagen(base64Imagen);
+            console.log("NUEVA IMAGEN: ", base64Imagen);
+        } 
+        reader.readAsDataURL(img);
+    });
+
     const cancelarEdicion = ( (event) => {
 
         event.preventDefault();
@@ -138,67 +154,41 @@ export default function Card({ info, getJugadores }) {
 
     const updateDatosJugador = ( async (event) => {
 
-        event.preventDefault();
-        let imagen;
-        let imagenValida = false;
-        
-        //Si no se introduce una imagen cuando se modifiquen los datos, se enviará la imagen que ya está en la bbdd.
-        if (nuevaImagen === ""){
-            // alert("imagen no seleccionada");
-            imagen = datos.imagen;
-            imagenValida = true;
-        }else{
+        event.preventDefault();        
+        console.log("Datos anteriores: ", datos);
 
-            if (nuevaImagen.name.endsWith('.jpg') || nuevaImagen.name.endsWith('.jpeg') || nuevaImagen.name.endsWith('.png') || nuevaImagen.name.endsWith('.webp') || nuevaImagen.name.endsWith('.jpe')) {
-                imagen = nuevaImagen;
-                alert("Imagen seleccionada");
-                alert("Imagen anterior")
-                alert(datos.imagen)      
-                imagenValida = true;
-          
-            }           
-        }
+        let parametros = new FormData();
+        parametros.append("id_jugador", datos.id_jugador);
+        parametros.append("dni_jugador", datos.dni_jugador);
+        parametros.append("nombre_completo", datos.nombre_completo);
+        parametros.append("fecha_nacimiento", datos.fecha_nacimiento);
+        parametros.append("peso", datos.peso);
+        parametros.append("altura", datos.altura);
+        parametros.append("posicion", datos.posicion);
+        parametros.append("dorsal", datos.dorsal);
+        parametros.append("pais", datos.pais);
+        parametros.append("id_equipo", datos.equipo);
+        parametros.append("imagen", nuevaImagen);
+        let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/UPDATE/actualizarJugador.php",{
 
-        if (imagenValida){
+            method : 'POST',
+            body : parametros        
+        });
 
-            const reader = new FileReader();
-            reader.onloadend = async () => {
-                let base64Imagen = reader.result.replace('data:', '').replace(/^.+,/, '');
+        if (response.ok){
+            
+            let respuesta = await response.json();
+            if (!respuesta.error){
 
-                let parametros = new FormData();
-                parametros.append("id_jugador", datos.id_jugador);
-                parametros.append("dni_jugador", datos.dni_jugador);
-                parametros.append("nombre_completo", datos.nombre_completo);
-                parametros.append("fecha_nacimiento", datos.fecha_nacimiento);
-                parametros.append("peso", datos.peso);
-                parametros.append("altura", datos.altura);
-                parametros.append("posicion", datos.posicion);
-                parametros.append("dorsal", datos.dorsal);
-                parametros.append("pais", datos.pais);
-                parametros.append("id_equipo", datos.equipo);
-                parametros.append("imagen", base64Imagen);
-                let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/UPDATE/actualizarJugador.php",{
+                let img = "data:image/png;base64," + nuevaImagen;
+                const blob = await fetch(img).then((res) => res.blob());
+                let urlImagen = URL.createObjectURL(blob);
 
-                    method : 'POST',
-                    body : parametros        
-                });
-
-                if (response.ok){
-                    
-                    let respuesta = await response.json();
-                    if (!respuesta.error){
-                        
-                        alert("Nueva imagen: ");
-                        alert(nuevaImagen);
-                        setDatos({...datos, [imagen] : nuevaImagen});
-                        alert("Modificación completada");
-                        console.log("Nuevos datos:", datos);
-                        setActivarEdicion(false);
-                        setVerDatos(true);
-                    }
-                }
-            } 
-            reader.readAsDataURL(imagen);
+                setDatos({...datos, imagen : urlImagen});
+                console.log("nuevos datos: ", datos);
+                setActivarEdicion(false);
+                setVerDatos(true);
+            }        
         }       
 
     });
@@ -223,8 +213,9 @@ export default function Card({ info, getJugadores }) {
                         </div>                                           
                     }
 
-                    {verDatos === true &&
-                        <>           
+                    {verDatos === true &&                      
+                        <>    
+                          {console.log("Imagen cuando se ven los datos", datos.imagen)}       
                             {/* <Animation animationIn="bounceIn" animationOut="bounceOut" > */}
                                 <div className="row mx-auto p-1">
                                     <p className='text-start my-auto'>DNI / INE: {datos.dni_jugador}</p>
@@ -316,7 +307,7 @@ export default function Card({ info, getJugadores }) {
                                 <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'><label className="form-label">Imagen</label></div>
                                 {/* onChange={(event) => {setNuevaImagen(event.target.files[0]); console.log(nuevaImagen)}} */}
                                 <div className='col-8 p-0 d-flex align-items-center justify-content-center'>
-                                    <input className="form-control shadow-none" type="file" name='imagen' onChange={(event) => setNuevaImagen(event.target.files[0])} />
+                                    <input className="form-control shadow-none" type="file" name='imagen' onChange={handleChangeCambioImagen} />
                                 </div>
                             </div>
                             <div className='row mx-auto p-0'>
