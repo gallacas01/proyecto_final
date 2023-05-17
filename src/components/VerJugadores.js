@@ -111,7 +111,7 @@ export default function VerJugadores() {
                         let info = { id_jugador : jugador.id_jugador, dni_jugador: jugador.dni_jugador, 
                             nombre_completo : jugador.nombre_completo, fecha_nacimiento : jugador.fecha_nacimiento, 
                             peso : jugador.peso, altura: jugador.altura, posicion : jugador.posicion, dorsal: jugador.dorsal,
-                            pais : jugador.pais, equipo : jugador.equipo, imagen : urlImagen};
+                            pais : jugador.pais, imagen : urlImagen};
                         console.log(info);
 
                         let cardJugador = <CardJugador  key={jugador.id_jugador} info={info} getJugadores={getJugadores} />

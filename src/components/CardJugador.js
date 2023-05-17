@@ -4,13 +4,6 @@ import '../css/bootstrap.css';
 import '../css/styles.css';
 import 'animate.css';
 
-function createOptionElement(value, textContent) {
-    let option = document.createElement("option");
-    option.value = value;
-    option.textContent = textContent;
-    return option;
-}
-
 export default function Card({ info, getJugadores }) {
 
     //Constantes
@@ -22,8 +15,7 @@ export default function Card({ info, getJugadores }) {
         id_jugador: info.id_jugador, dni_jugador: info.dni_jugador,
         nombre_completo: info.nombre_completo, fecha_nacimiento: info.fecha_nacimiento,
         peso: info.peso, altura: info.altura, posicion: info.posicion, dorsal: info.dorsal,
-        pais: info.pais, equipo: info.equipo, imagen: info.imagen
-    });
+        pais: info.pais, imagen: info.imagen});
     const [datosAnteriores, setDatosAnteriores] = useState({});
     const [verDatos, setVerDatos] = useState(false);
     const [activarEdicion, setActivarEdicion] = useState(false);
@@ -31,7 +23,6 @@ export default function Card({ info, getJugadores }) {
     const cardRef = useRef(null);
     const estadoInicialRef = useRef(null);
     const nombreJugadorRef = useRef(null);
-    const desplegableEquiposRef = useRef(null);
 
     const handleVerdatos = ( () => {
 
@@ -58,7 +49,6 @@ export default function Card({ info, getJugadores }) {
         //Guardamos los datos anteriores antes por si la edición se cancela.
         setDatosAnteriores({...datos});
         setActivarEdicion(true);     
-        rellenarDesplegableEquipos();   
     });
 
     const handleChangeNuevoDato = ( (event) => {
@@ -126,32 +116,6 @@ export default function Card({ info, getJugadores }) {
 
     });
 
-    async function rellenarDesplegableEquipos() {
-
-        let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getEquipos.php");
-        if (response.ok) {
-
-            let respuesta = await response.json();
-
-            desplegableEquiposRef.current.innerHTML = " ";
-
-            //Creamos el primer option de cada select, el cual estará vacío.
-            let optionSinValor = createOptionElement("-","-");
-
-            // Anidamos rl option al select.
-            desplegableEquiposRef.current.appendChild(optionSinValor);
-
-            for (let equipo of respuesta.datos) {
-                // Creamos un elemento de tipo option por cada equipo y lo añadimos al select.
-                let option = createOptionElement(equipo.id_equipo, equipo.nombre);
-                if (equipo.id_equipo === datos.equipo){
-                    option.selected = true;
-                }
-                desplegableEquiposRef.current.appendChild(option);
-            }
-        }
-    }
-
     const updateDatosJugador = ( async (event) => {
 
         event.preventDefault();        
@@ -167,7 +131,6 @@ export default function Card({ info, getJugadores }) {
         parametros.append("posicion", datos.posicion);
         parametros.append("dorsal", datos.dorsal);
         parametros.append("pais", datos.pais);
-        parametros.append("id_equipo", datos.equipo);
         parametros.append("imagen", nuevaImagen);
         let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/UPDATE/actualizarJugador.php",{
 
@@ -180,6 +143,8 @@ export default function Card({ info, getJugadores }) {
             let respuesta = await response.json();
             if (!respuesta.error){
 
+                //Si el servidor no ha respondido con un error, con vertimos la imagen que fue enviada a la bbdd, que estaba 
+                //en formato, base64 para usar la url y actualizar el valor del atributo imagen de la variable datos.
                 let img = "data:image/png;base64," + nuevaImagen;
                 const blob = await fetch(img).then((res) => res.blob());
                 let urlImagen = URL.createObjectURL(blob);
@@ -204,6 +169,7 @@ export default function Card({ info, getJugadores }) {
                     {verDatos === false && activarEdicion === false &&
                         <div ref={estadoInicialRef}>                
                             <div className="row my-2">
+                                {console.log("Imagen en el estado inicial", datos.imagen)}
                                 <img src={datos.imagen} className="img-fluid" alt="..." />
                             </div>
 
@@ -295,14 +261,6 @@ export default function Card({ info, getJugadores }) {
                                 <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">Dorsal</label></div>
                                 <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none" defaultValue={datos.dorsal} name='dorsal' readOnly={!activarEdicion} minLength={1} maxLength={2}  /></div>
                             </div>
-                            <div className="my-2 row mx-0">
-                                <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'><label className="form-label my-auto">Equipo</label></div>
-                                <div className='col-8 p-0 d-flex align-items-center justify-content-center'> 
-                                    <select className="form-control shadow-none" name='equipo' onChange={handleChangeNuevoDato} ref={desplegableEquiposRef} equired>
-
-                                    </select>
-                                </div>
-                            </div>
                             <div className="row mx-0">
                                 <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'><label className="form-label">Imagen</label></div>
                                 {/* onChange={(event) => {setNuevaImagen(event.target.files[0]); console.log(nuevaImagen)}} */}
@@ -310,7 +268,7 @@ export default function Card({ info, getJugadores }) {
                                     <input className="form-control shadow-none" type="file" name='imagen' onChange={handleChangeCambioImagen} />
                                 </div>
                             </div>
-                            <div className='row mx-auto p-0'>
+                            <div className='row mx-auto mb-0 my-1 p-0'>
                                 <div className='col-6 m-0 fs-4 p-1'> <button className='btn1 w-100 fs-3 p-0' onClick={updateDatosJugador} ><i className="bi bi-check-circle-fill"></i></button></div>   
                                 <div className='col-6 m-0 fs-4 p-1'> <button className='btn1 w-100 fs-3 p-0' onClick={cancelarEdicion}><i className="bi bi-x-circle-fill"></i></button></div>     
                             </div>

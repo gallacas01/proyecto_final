@@ -102,7 +102,6 @@ export default function FrmRegistrarJugador() {
                         parametrosMovimiento.append("id_equipo_antiguo",0);
                         parametrosMovimiento.append("id_equipo_nuevo",desplegableEquiposRef.current.value);
                         parametrosMovimiento.append("fecha", null);
-                        parametrosMovimiento.append("mercado", null);
 
                             let response2 = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarMovimiento.php",
                                 {

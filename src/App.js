@@ -11,6 +11,7 @@ import Clasificacion from "./components/Clasificacion";
 import LoginScreen from "./components/SignIn";
 import SignUpScreen from "./components/SignUp";
 import Inicio from "./components/Inicio";
+import Modal from "./components/Modal";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,11 @@ const router = createBrowserRouter([
   {
     path : "/panel_de_registro",
     element: <><NavBar /><Panel/></>,
+    errorElement : <ErrorPage />,
+  },
+  {
+    path : "/modal",
+    element: <><NavBar /><Modal /></>,
     errorElement : <ErrorPage />,
   }
 ]);

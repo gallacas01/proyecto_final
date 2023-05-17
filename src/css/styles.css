@@ -2,6 +2,7 @@
 body{
     font-family: 'Oswald', sans-serif;
     font-size: 1.1rem;
+    z-index: 1;
 }
 
 /*Selector css que para que cambie el cursor a una mano cuando haya un enlace cuya atributo href no esté difido y el cursos esté sobre el enlace (se usa en e login) */ 
@@ -133,6 +134,12 @@ input[type="text"]::placeholder {
 .card img{
     width: 100%;
     max-height: 250px;
+}
+
+/* Modal */
+#modalTitle{
+    background-color: #182E3E;
+    color: white;
 }
 
 /* Clase que controla que el elemento seleccionado de la navbar mantenga su border-bottom */

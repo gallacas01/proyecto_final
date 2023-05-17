@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import FrmRegistrarEquipo from "./FrmRegistrarEquipo";
 import FrmRegistrarJugador from "./FrmRegistrarJugador";
 import FrmRegistrarPartido from "./FrmRegistrarPartido";
 import FrmRegistrarCompeticion from "./FrmRegistrarCompeticion";
+import FrmRegistrarMovimiento from "./FrmRegistrarMovimiento";
 import '../css/bootstrap.css';
 import '../css/styles.css';
 
@@ -31,16 +32,23 @@ export default function Panel(){
         setFrmActual(<FrmRegistrarPartido/>);
     });//Fin de la función.
 
+
+    const showFrmRegistrarMovimiento = ( () => {
+
+        setFrmActual(<FrmRegistrarMovimiento/>);
+    });//Fin de la función.
+
     return(
 
         <>
             <div className="container">
 
                 <div className="row mt-lg-3 p-1">        
-                    <div className="col-xs-12 col-sm-6 col-md-3 p-1"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarCompeticion}> Registrar competición </button></div>     
-                    <div className="col-xs-12 col-sm-6 col-md-3 p-1"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarEquipo}> Registrar equipo </button></div> 
-                    <div className="col-xs-12 col-sm-6 col-md-3 p-1"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarJugador}> Registrar jugador </button></div> 
-                    <div className="col-xs-12 col-sm-6 col-md-3 p-1"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarPartido}> Registrar partido </button></div>        
+                    <div className="col-xs-12 col-sm-6 col-md p-1"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarCompeticion}> Registrar competición </button></div>     
+                    <div className="col-xs-12 col-sm-6 col-md p-1"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarEquipo}> Registrar equipo </button></div> 
+                    <div className="col-xs-12 col-sm-6 col-md p-1"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarJugador}> Registrar jugador </button></div> 
+                    <div className="col-xs-12 col-sm-6 col-md p-1"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarPartido}> Registrar partido </button></div>        
+                    <div className="col-xs-12 col-sm-6 col-md p-1"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarMovimiento}> Registrar movimiento </button></div>        
                 </div>
 
                 <div className="row">

@@ -99,6 +99,11 @@ export default function NavBar() {
                 url : "/estadisticas",
                 id: "stats",
                 titulo: "Estadísticas"
+            },   
+            {
+                url : "/modal",
+                id: "modal",
+                titulo: "Modal"
             },    
             {
                 id: "clasificacion",
