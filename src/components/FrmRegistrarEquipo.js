@@ -1,12 +1,15 @@
 import { useRef, useState } from "react";
 import '../css/bootstrap.css';
 import '../css/styles.css';
+import MyModal from "./Modal";
+
 
 export default function FrmRegistrarEquipo() {
 
     //Variables de estado
     const [file, setFile] = useState(null);
     const frmRegistrarEquipoRef = useRef(null);
+    const [showModal, setShowModal] = useState(false);
 
     function handleChangeFile(file) {
 
@@ -40,7 +43,7 @@ export default function FrmRegistrarEquipo() {
                 if (response.ok) {
 
                     let respuesta = await response.json();
-                    alert(respuesta.datos);
+                    <MyModal showModal={showModal} setShowModal={setShowModal} tipo={"INFORMACIÓN"} texto={respuesta.datos} />                         
                     frmRegistrarEquipoRef.current.reset();
                 }
             }

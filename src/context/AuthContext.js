@@ -7,6 +7,7 @@ import {
     onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
 import {createContext, useContext, useEffect, useState} from "react";
+import MyModal from "../components/Modal";
 
 //Creamos el contexto.
 export const authContext = createContext();
@@ -26,6 +27,9 @@ export function AuthProvider({children}){
     //Variable de estado para almacenar el usuario que haya iniciado sesión.
     const [user, setUser] = useState('');
     const [checkedSession, setCheckedSession] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [textoModal, setTextoModal] = useState('');
+    const [modalError, setModalError] = useState(false);
 
     //UseEffect que comprueba si hay una sesión iniciada y almacena el usuario de la sesión si se ha iniciado sesión.
     useEffect ( () => {
@@ -52,10 +56,12 @@ export function AuthProvider({children}){
         }catch (error){    
 
             if (error.message === "FirebaseError: Firebase: Error (auth/email-already-in-use)."){
-                alert("El correo " + email + " ya está en uso.");
+                setTextoModal("El correo " + email + " ya está en uso.");
             }else {
-                alert("Se ha producido un error: " + error);
+                setTextoModal("Se ha producido un error: " + error);
             }
+            setModalError(true);
+            setShowModal(true);
         }
     }
 
@@ -69,12 +75,14 @@ export function AuthProvider({children}){
 
         }catch (error){            
             if (error.message === "Firebase: Error (auth/user-not-found)."){
-                alert("El correo no es correcto.");
+                setTextoModal("El correo no es correcto.");
             }else if (error.message === "Firebase: Error (auth/wrong-password)."){
-                alert("La contraseña no es correcta.");
+                setTextoModal("La contraseña no es correcta.");
             }else {
-                alert("Se ha producido un error: " + error);
+                setTextoModal("Se ha producido un error: " + error);
             }
+            setModalError(true);
+            setShowModal(true);
         }
     }
     //Login con Google, que es un proveedor externo.
@@ -101,5 +109,6 @@ export function AuthProvider({children}){
             checkedSession
         }}>
         {children}
+        <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />   
     </authContext.Provider>
 }

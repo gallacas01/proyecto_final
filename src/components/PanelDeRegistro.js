@@ -6,6 +6,7 @@ import FrmRegistrarCompeticion from "./FrmRegistrarCompeticion";
 import FrmRegistrarMovimiento from "./FrmRegistrarMovimiento";
 import '../css/bootstrap.css';
 import '../css/styles.css';
+import NavBar from "./NavBar";
 
 export default function Panel(){
 
@@ -41,8 +42,8 @@ export default function Panel(){
     return(
 
         <>
+        <div className="col-12 p-0"><NavBar/></div>
             <div className="container">
-
                 <div className="row mt-lg-3 p-1">        
                     <div className="col-xs-12 col-sm-6 col-md p-1"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarCompeticion}> Registrar competición </button></div>     
                     <div className="col-xs-12 col-sm-6 col-md p-1"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarEquipo}> Registrar equipo </button></div> 

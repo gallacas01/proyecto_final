@@ -21,19 +21,24 @@ nav{
     font-size: 1.3rem;
 }
 
-.navbar-brand,.nav-link,.dropdown-menu{
+.navbar-brand,.nav-link,.dropdown-menu, .nav-item{
     color: white;
     background-color: #182E3E;
 }
 
 .navbar-brand:hover,.nav-link:hover{
-    border-bottom: 3px solid rgb(252, 224, 179);
+    border-bottom: 0.23rem solid rgb(252, 224, 179);
     color: white;
 }
 
-  
 .navbar-brand:focus,.nav-link:focus{
-   border-bottom: 3px solid rgb(252, 224, 179);
+   border-bottom: 0.23rem solid rgb(252, 224, 179);
+}
+
+/*Clase que controla que el elemento seleccionado de la navbar mantenga su border-bottom */
+.isFocused{
+    border-bottom: 0.23rem solid rgb(252, 224, 179);
+    color: whitesmoke; 
 }
 
 /* Color del borde de los input */
@@ -142,13 +147,21 @@ input[type="text"]::placeholder {
     color: white;
 }
 
-/* Clase que controla que el elemento seleccionado de la navbar mantenga su border-bottom */
-.isFocused{
-border-bottom: 3px solid rgb(252, 224, 179);
-color: whitesmoke; 
-}
-
-.footer{
+#footer{
     color: white;
     background-color: #182E3E;
+}
+
+#footer a{
+    text-decoration: underline;
+    color: white;
+}
+
+#footer a:hover{
+    text-decoration: underline;
+    color: rgb(141, 212, 247);
+}
+
+#footer i{
+    color: rgb(252, 224, 179);
 }

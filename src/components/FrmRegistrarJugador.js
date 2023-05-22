@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import '../css/bootstrap.css';
 import '../css/styles.css';
+import MyModal from "./Modal";
 
 function createOptionElement(value, textContent) {
     let option = document.createElement("option");
@@ -22,6 +23,10 @@ export default function FrmRegistrarJugador() {
     const dorsalRef = useRef(null);
     const paisRef = useRef(null);
     const desplegableEquiposRef = useRef(null);
+    const [showModal, setShowModal] = useState(false);
+    const [textoModal, setTextoModal] = useState('');
+    const [modalError, setModalError] = useState(false);
+
     
     function handleChangeFile(imagen){
 
@@ -111,91 +116,104 @@ export default function FrmRegistrarJugador() {
 
                             let respuesta2 = await response2.json();
                             if (!respuesta2.error) {
-                                alert("Se ha realizado la inserción del jugador y del movimiento en la base de datos.");
+                                setTextoModal("Se ha realizado la inserción del jugador y del movimiento en la base de datos.");
+                                setModalError(false);
                                 // frmRegistrarJugadorRef.current.reset();
                             } else {
-                                alert(respuesta2.datos);
+                                setModalError(true);
+                                setTextoModal(respuesta2.datos);
                             }
+                            setShowModal(true);
                         } else {
-                            alert("Error: " + respuesta1.datos);
+                            setModalError(true);
+                            setTextoModal(respuesta1.datos);
+                            setShowModal(true);
                         }
                     } else {
-                        alert(response1.datos)
-                    }       
-                    
+                        setModalError(true);
+                        setTextoModal(response1.datos);
+                        setShowModal(true);
+                    }                    
                 }
                 reader.readAsDataURL(imagenJugador);
 
                 }else{
-                    alert("El archivo que selecciones debe ser una imagen.");
+                    setTextoModal("El archivo que selecciones debe ser una imagen.");
+                    setModalError(true);
+                    setShowModal(true);
                 }           
              
             //Cuando se introduce texto en un campo numérico, al recoger su valor con un .value
             //se interpreta como una cadena vacía.
             } else {
                 if (pesoRef === "")
-                    alert("Introduce un valor numérico en el campo 'peso'");
+                    setTextoModal("Introduce un valor numérico en el campo 'peso'");                     
                 if (alturaRef === "")
-                    alert("Introduce un valor numérico en el campo 'altura'");
+                    setTextoModal("Introduce un valor numérico en el campo 'altura'");                     
                 if (desplegableEquiposRef === "-")
-                    alert("Introduce un equipo para el jugador.");
+                    setTextoModal("Introduce un equipo para el jugador.");  
+
+                setModalError(true);
+                setShowModal(true);
             }
           
     }//Fin de la función.
 
-    return (
-    
-        <form className="bg-transparent p-0" ref={frmRegistrarJugadorRef}>
-            <h3 className="text-center mt-1">Datos del jugador</h3>
-            <div className="my-2 row mx-0">
-                <label className="form-label my-auto">DNI / INE</label>
-                <input type="text" className="form-control shadow-none" ref={dniJugadorRef} minLength={9} maxLength={9} required />
-            </div>
-            <div className="my-2 row mx-0">
-                <label className="form-label my-auto">Nombre completo </label>
-                <input type="text" className="form-control shadow-none" ref={nombreCompletoRef} maxLength={35} required />
-            </div>
-            <div className="my-2 row mx-0">
-                <label className="form-label my-auto">Fecha de nacimiento </label>
-                <input type="date" className="form-control shadow-none" ref={fechaNacimientoRef} min={0} required />
-            </div>
-            <div className="my-2 row mx-0">
-                <label className="form-label my-auto">Peso (Kg)</label>
-                <input type="number" className="form-control shadow-none" ref={pesoRef} minLength={2} maxLength={5} step="0.1" min={50} required />
-            </div>
-            <div className="my-2 row mx-0">
-                <label className="form-label my-auto">Altura (cm) </label>
-                <input type="number" className="form-control shadow-none" ref={alturaRef} min={0} required />
-            </div>
-            <div className="my-3 row mx-0">
-                <label className="form-label my-auto">Posición</label>
-                <select className="form-select shadow-none" ref={posicionRef} aria-label="Default select example" required>
-                    <option value="-">-</option>
-                    <option value="portero">Portero</option>
-                    <option value="defensa">Defensa</option>
-                    <option value="centrocampista">Centrocampista</option>
-                    <option value="delantero">Delantero</option>
-                </select>
-            </div>
-            <div className="my-2 row mx-0">
-                <label className="form-label my-auto">Dorsal </label>
-                <input type="number" className="form-control shadow-none" ref={dorsalRef} min={0} max={100} required />
-            </div>
-            <div className="my-2 row mx-0">
-                <label className="form-label my-auto">Lugar de nacimiento</label>
-                <input type="text" className="form-control shadow-none" ref={paisRef} required />
-            </div>
-            <div className="my-2 row mx-0">
-                <label className="form-label my-auto">Equipo</label>
-                <select className="form-control shadow-none" ref={desplegableEquiposRef} required>
+    return (    
+        <>
+            <form className="bg-transparent p-0" ref={frmRegistrarJugadorRef}>
+                <h3 className="text-center mt-1">Datos del jugador</h3>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">DNI / INE</label>
+                    <input type="text" className="form-control shadow-none" ref={dniJugadorRef} minLength={9} maxLength={9} required />
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">Nombre completo </label>
+                    <input type="text" className="form-control shadow-none" ref={nombreCompletoRef} maxLength={35} required />
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">Fecha de nacimiento </label>
+                    <input type="date" className="form-control shadow-none" ref={fechaNacimientoRef} min={0} required />
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">Peso (Kg)</label>
+                    <input type="number" className="form-control shadow-none" ref={pesoRef} minLength={2} maxLength={5} step="0.1" min={50} required />
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">Altura (cm) </label>
+                    <input type="number" className="form-control shadow-none" ref={alturaRef} min={0} required />
+                </div>
+                <div className="my-3 row mx-0">
+                    <label className="form-label my-auto">Posición</label>
+                    <select className="form-select shadow-none" ref={posicionRef} aria-label="Default select example" required>
+                        <option value="-">-</option>
+                        <option value="portero">Portero</option>
+                        <option value="defensa">Defensa</option>
+                        <option value="centrocampista">Centrocampista</option>
+                        <option value="delantero">Delantero</option>
+                    </select>
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">Dorsal </label>
+                    <input type="number" className="form-control shadow-none" ref={dorsalRef} min={0} max={100} required />
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">Lugar de nacimiento</label>
+                    <input type="text" className="form-control shadow-none" ref={paisRef} required />
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">Equipo</label>
+                    <select className="form-control shadow-none" ref={desplegableEquiposRef} required>
 
-                </select>
-            </div>
-            <div className="my-2 row mx-0">
-                <label className="form-label">Imagen</label>
-                <input className="form-control shadow-none" type="file" ref={imagenJugador} onChange={(event) => handleChangeFile(event.target.files[0])} required/>
-            </div>
-            <input type="button" className="btn1 p-lg-2 col-3" value={"ACEPTAR"} onClick={guardarJugadorEnBD} />
-        </form>
+                    </select>
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label">Imagen</label>
+                    <input className="form-control shadow-none" type="file" ref={imagenJugador} onChange={(event) => handleChangeFile(event.target.files[0])} required/>
+                </div>
+                <input type="button" className="btn1 p-lg-2 col-3" value={"ACEPTAR"} onClick={guardarJugadorEnBD} />
+            </form>
+            <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />                
+        </>
     );
 }

@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import NavBar from "./NavBar";
 import '../css/bootstrap.css';
 import '../css/styles.css';
+import MyModal from "./Modal";
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {
@@ -17,6 +18,10 @@ export default function Clasificacion (){
     const desplegableCompeticionesRef = useRef(null);
     const tablaRef = useRef(null);
     const tbodyRef = useRef(null);
+    const [showModal, setShowModal] = useState(false);
+    const [textoModal, setTextoModal] = useState('');
+    const [modalError, setModalError] = useState(false);
+
 
     const getClasificacion = ( async () => {
        
@@ -34,6 +39,7 @@ export default function Clasificacion (){
             if (response.ok){
     
                 let respuesta = await response.json();
+                console.log (respuesta.error, "-" , respuesta.datos.length);
                 if (!respuesta.error && respuesta.datos.length > 0){
     
                     //Visibilizamos la tabla.
@@ -101,14 +107,23 @@ export default function Clasificacion (){
     
                         tbodyRef.current.appendChild(tr);
                         contadorEquipos++;
-                    }//Fin del bucle for.
-    
-                }else if (!respuesta.error && respuesta.datos.length === 0){
-                    alert("No hay datos registrados para esa competición.");
+                    }//Fin del bucle for.    
+                    
+                }else{
+                    if (respuesta.datos.length === 0){
+                        setModalError(false);
+                        setTextoModal('No hay equipos registrados en esa competición.');
+                    }else{
+                        setModalError(true);
+                        setTextoModal(respuesta.datos);
+                    }     
+                    setShowModal(true);              
                 }
             }
         }else{
-            alert("Selecciona una competición");
+            setModalError(true);
+            setTextoModal('Por favor, selecciona una competición.')
+            setShowModal(true);
         }       
 
     }); //Fin de la función.
@@ -142,7 +157,6 @@ export default function Clasificacion (){
 
     return (
         <div className="container-fluid">
-
             <div className="row"><NavBar /></div>
             <div className="row">
                 <form className="col-lg-6 mx-auto mt-lg-4 p-0">
@@ -177,7 +191,7 @@ export default function Clasificacion (){
                     </table>  
                 </div>          
             </div>
-
+            <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />                
         </div>
        
     );

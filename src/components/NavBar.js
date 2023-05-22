@@ -1,19 +1,20 @@
-import { useState, useEffect } from 'react';
+import {useEffect } from 'react';
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 import '../css/bootstrap.css';
 import '../css/styles.css';
+import { useRef } from 'react';
 
 //Componente NavItem
 function NavItem({ info }) {
 
     //Variables de estado
-    const [isFocused, setIsFocused] = useState(false);
+    const linkRef = useRef(null);
 
     return (
          <li key={info.id} className="nav-item">
-            <a className={isFocused ? "nav-link isFocused" : "nav-link"} onClick={() => setIsFocused(!isFocused)} onBlur={() => setIsFocused(false)} id={info.id} href={info.url}>{info.titulo}</a>
+            <a ref={linkRef} className='nav-link' onClick={() => linkRef.current.classList.add('isFocused')} onBlur={() => linkRef.current.classList.remove('isFocused') } id={info.id} href={info.url}>{info.titulo}</a>
         </li>
          /*El evento onBlur se desencadena cuando un elemento pierde el foco */
     );
@@ -99,12 +100,7 @@ export default function NavBar() {
                 url : "/estadisticas",
                 id: "stats",
                 titulo: "Estadísticas"
-            },   
-            {
-                url : "/modal",
-                id: "modal",
-                titulo: "Modal"
-            },    
+            },     
             {
                 id: "clasificacion",
                 titulo: "Clasificación",

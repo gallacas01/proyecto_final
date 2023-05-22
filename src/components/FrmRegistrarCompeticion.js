@@ -1,6 +1,7 @@
-import { useRef } from "react";
+import { useRef,useState } from "react";
 import '../css/bootstrap.css';
 import '../css/styles.css';
+import MyModal from "./Modal";
 
 export default function FrmRegistrarCompeticion (){
 
@@ -8,6 +9,9 @@ export default function FrmRegistrarCompeticion (){
     const frmRegistrarCompeticionRef = useRef (null);
     const nombreCompeticionRef = useRef(null);
     const temporadaCompeticionRef = useRef(null);
+    const [showModal, setShowModal] = useState(false);
+    const [textoModal, setTextoModal] = useState('');
+    const [modalError, setModalError] = useState(false);
 
     const guardarCompeticion = ( async () => {
 
@@ -28,26 +32,31 @@ export default function FrmRegistrarCompeticion (){
                 let respuesta = await response.json();
                 if (!respuesta.error){
 
-                    alert(respuesta.datos);
+                    setModalError(false);
+                    setTextoModal(respuesta.datos);
+                    setShowModal(true);
                     frmRegistrarCompeticionRef.current.reset();
                 }else{
-                    alert(respuesta.datos);
+                    setModalError(true);
+                    setTextoModal(respuesta.datos);
+                    setShowModal(true);
                 }
             }
         }else{
             
-            if (nombreCompeticionRef.current.value !== " " && temporadaCompeticionRef.current.value === ""){
-                alert("Por favor, rellena todos los campos.");
+            if (nombreCompeticionRef.current.value === " " || temporadaCompeticionRef.current.value === ""){
+                setTextoModal("Por favor, rellena todos los campos.");
+                    
             }else  if (!/^\d{4}-\d{4}$/.test(temporadaCompeticionRef.current.value)) {
-                alert("La temporada debe seguir el siguiente patrón: 2022-2023");           
+                setTextoModal("El texto que introduzcas en el campo temporada debe seguir el siguiente patrón: 2022-2023");
             }
-        }
-        
+            setModalError(true);
+            setShowModal(true);
+        }        
 
     })//Fin de la función.
 
     return (
-
         <>
             <form className="mx-auto p-0" ref={frmRegistrarCompeticionRef}>
                 <h3 className="text-center mt-1">Datos de la competición</h3>
@@ -61,6 +70,7 @@ export default function FrmRegistrarCompeticion (){
                 </div>
                 <button className="btn1 p-lg-2 col-lg-3" onClick={ (event) => {event.preventDefault(); guardarCompeticion();}}>ENVIAR </button>
             </form>
+            <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />                
         </>
     );
 }

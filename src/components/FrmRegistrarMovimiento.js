@@ -1,5 +1,6 @@
 import React, { useEffect,useRef } from "react";
 import { useState } from "react";
+import MyModal from "./Modal";
 
 // class RegistrarMovimiento extends React.Component{
 //     render(){
@@ -22,6 +23,9 @@ export default function RegistrarMovimiento() {
     const [idCompeticionEquipoNuevo, setIdCompeticionEquipoNuevo] = useState('');
     const [idEquipoNuevo, setIdEquipoNuevo] = useState('');
     const [fechaTraspaso, setFechaTraspaso] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [textoModal, setTextoModal] = useState('');
+    const [modalError, setModalError] = useState(false);
 
     //Referencias al DOM del componente
     const equiposCompeticionEquipoAnteriorRef = useRef(null);
@@ -177,11 +181,14 @@ export default function RegistrarMovimiento() {
         event.preventDefault();
         console.log(idCompeticionEquipoAnterior, idEquipoAnterior, dniJugador, idCompeticionEquipoNuevo, idEquipoNuevo, fechaTraspaso)
         if (idEquipoAnterior === idEquipoNuevo){
-            alert("El equipo anterior y el nuevo equipo no pueden ser el mismo.");
-
+            setModalError(true);
+            setTextoModal("El equipo anterior y el nuevo equipo no pueden ser el mismo.");
+            setShowModal(true);
         }else if (idCompeticionEquipoAnterior === "-" || idEquipoAnterior === "-" || dniJugador === "-" 
             || idCompeticionEquipoNuevo === "-" || idEquipoNuevo === "-" || fechaTraspaso === ""){
-            alert("Por favor, rellena todos los campos.");
+            setModalError(true);
+            setTextoModal('Por favor, rellena todos los campos.');
+            setShowModal(true);
         }else{
 
             let parametros = new FormData();
@@ -199,7 +206,9 @@ export default function RegistrarMovimiento() {
                 let respuesta = await response.json();
                 if (!respuesta.error){
 
-                    alert(respuesta.datos);
+                    setModalError(true);
+                    setTextoModal(respuesta.datos);
+                    setShowModal(true);
                     frmRegistrarMovimiento.current.reset();
                 }
             }
@@ -207,46 +216,50 @@ export default function RegistrarMovimiento() {
     });
 
     return(
-        <form ref={frmRegistrarMovimiento}>
-            <h3 className="text-center mt-1">Datos del movimiento</h3>
-            <div className="my-2 row mx-0">
-                <label className="form-label my-auto">Liga del equipo anterior</label>             
-                <select className="form-control shadow-none" ref={competicionesEquipoAnteriorRef} onChange={(event ) => setIdCompeticionEquipoAnterior(event.target.value)} required>
+        <>
+            <form ref={frmRegistrarMovimiento}>
+                <h3 className="text-center mt-1">Datos del movimiento</h3>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">Liga del equipo anterior</label>             
+                    <select className="form-control shadow-none" ref={competicionesEquipoAnteriorRef} onChange={(event ) => setIdCompeticionEquipoAnterior(event.target.value)} required>
 
-                </select>
-            </div>           
-            <div className="my-2 row mx-0">
-                <label className="form-label my-auto">Equipo anterior</label>   
-                <select className="form-control shadow-none" ref={equiposCompeticionEquipoAnteriorRef} onChange={(event) => setIdEquipoAnterior(event.target.value)} required>
+                    </select>
+                </div>           
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">Equipo anterior</label>   
+                    <select className="form-control shadow-none" ref={equiposCompeticionEquipoAnteriorRef} onChange={(event) => setIdEquipoAnterior(event.target.value)} required>
 
-                </select>
-            </div>
-            <div className="my-2 row mx-0">
-                <label className="form-label my-auto">Jugador traspasado</label>   
-                <select className="form-control shadow-none" ref={desplegableJugadoresRef} onChange={(event) => setDniJugador(event.target.value)} required>
+                    </select>
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">Jugador traspasado</label>   
+                    <select className="form-control shadow-none" ref={desplegableJugadoresRef} onChange={(event) => setDniJugador(event.target.value)} required>
 
-                </select>
-            </div>
-            <div className="my-2 row mx-0">
-                <label className="form-label my-auto">Liga del nuevo equipo</label>   
-                <select className="form-control shadow-none" ref={competicionesEquipoNuevoRef} onChange={(event) => setIdCompeticionEquipoNuevo(event.target.value)} required>
+                    </select>
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">Liga del nuevo equipo</label>   
+                    <select className="form-control shadow-none" ref={competicionesEquipoNuevoRef} onChange={(event) => setIdCompeticionEquipoNuevo(event.target.value)} required>
 
-                </select>
-            </div>
-            <div className="my-2 row mx-0">
-                <label className="form-label my-auto">Equipo nuevo</label>   
-                <select className="form-control shadow-none" ref={equiposCompeticionEquipoNuevoRef} onChange={(event) => setIdEquipoNuevo(event.target.value)} required>
+                    </select>
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">Equipo nuevo</label>   
+                    <select className="form-control shadow-none" ref={equiposCompeticionEquipoNuevoRef} onChange={(event) => setIdEquipoNuevo(event.target.value)} required>
 
-                </select>
-            </div>
-            <div className="my-2 row mx-0">
-                <label className="form-label my-auto">Fecha del traspaso </label>
-                <input type="date" className="form-control shadow-none" onChange={(event) => setFechaTraspaso(event.target.value)} required />
-            </div>
-            <div className="my-2 row mx-0">
-                <button className="btn1 col-3 p-2" onClick={updateEquipoDelJugador}>ACEPTAR</button>
-            </div>
-        </form>
+                    </select>
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">Fecha del traspaso </label>
+                    <input type="date" className="form-control shadow-none" onChange={(event) => setFechaTraspaso(event.target.value)} required />
+                </div>
+                <div className="my-2 row mx-0">
+                    <button className="btn1 col-3 p-2" onClick={updateEquipoDelJugador}>ACEPTAR</button>
+                </div>
+            </form>
+            <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />   
+        </>             
+
     );
 }
 

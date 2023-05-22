@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import CardJugador from './CardJugador';
 import NavBar from "./NavBar";
-import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import '../css/bootstrap.css';
 import '../css/styles.css';
+import MyModal from './Modal';
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {
@@ -19,15 +18,15 @@ export default function VerJugadores() {
     const [idCompeticion, setIdCompeticion] = useState('');
     const [jugadoresRecuperados, setJugadoresRecuperados] = useState(false);
     const [jugadores,setJugadores] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [textoModal, setTextoModal] = useState('');
+    const [modalError, setModalError] = useState(false);
+
+    //Referencias al DOM.
     const desplegableCompeticionesRef = useRef(null);
     const desplegableEquiposRef = useRef(null);
     const nombreEquipoRef = useRef(null);
     const containerJugadoresRef = useRef(null);
-
-    //Constantes
-    const auth = useAuth();
-    const user = auth.user;
-    const navigate = useNavigate();
 
     const rellenarDesplegableEquipos = ( async (id) => {
 
@@ -133,11 +132,13 @@ export default function VerJugadores() {
         }else{
 
             if (idCompeticion === "-"){
-                alert("Selecciona una competición.");
+                setTextoModal("Selecciona una competición.");
             }
             if (desplegableEquiposRef.current.value === "-" ){
-                alert("Selecciona un equipo.");
+                setTextoModal("Selecciona un equipo.");
             }
+            setModalError(true);
+            setShowModal(true);
         }     
         
     })//Fin de la función.
@@ -209,8 +210,8 @@ export default function VerJugadores() {
                     
                     </div>
                 </div>
-
             </div>
+            <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />   
         </div>
     );
 }

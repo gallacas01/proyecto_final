@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import '../css/bootstrap.css';
 import '../css/styles.css';
 import Modal from 'react-bootstrap/Modal';
 
- function MyModaaaaaaal({showModal, setShowModal,tipo, texto}) {
+export default function MyModal({showModal, setShowModal, tipo, texto}) {
 
   return (
    
@@ -19,7 +18,7 @@ import Modal from 'react-bootstrap/Modal';
        <div className='container-fluid p-0 w-100'> 
             
             <Modal.Header className='d-flex align-items-center justify-content-center row m-auto' id='modalTitle'>
-                <Modal.Title className='col-12'>{tipo}</Modal.Title> 
+                <Modal.Title className='col-12'>{tipo ? "ERROR" : "INFORMACIÓN" }</Modal.Title> 
             </Modal.Header>            
             
             <Modal.Body className='d-flex align-items-center justify-content-center row m-auto bg-light'>
@@ -35,18 +34,4 @@ import Modal from 'react-bootstrap/Modal';
     </Modal>
 
     );
-}
-
-export default function MyModal(){
-
-    const [showModal, setShowModal] = useState(false);
-    return(
-
-        <>
-            <button onClick={() => setShowModal(true)}>MOSTRAR</button>
-            <MyModaaaaaaal showModal={showModal} setShowModal={setShowModal} tipo={"INFORMACIÓN"} texto={"HOOLAAAAAA"} />
-        </>
-        
-    )
-
 }

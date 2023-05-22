@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import '../css/bootstrap.css';
 import '../css/styles.css';
+import MyModal from "./Modal";
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {
@@ -16,6 +17,9 @@ function Evento({ info }) {
     const [tipoEvento, setTipoEvento] = useState('');
     const [nombreJugador, setNombreJugador] = useState('');
     const [idJugador, setIdJugador] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [textoModal, setTextoModal] = useState('');
+    const [modalError, setModalError] = useState(false);
 
     function handleNombreJugador(event) {
         //El value del option del campo select tiene la siguiente estructura: nombre-id
@@ -38,14 +42,16 @@ function Evento({ info }) {
         if (nombreJugador === "" || tipoEvento === ""){
 
             if(nombreJugador === "" && tipoEvento === ""){
-                alert("Selecciona un jugador y un evento.");
+                setTextoModal("Selecciona un jugador y un evento.");
             }else if (nombreJugador === ""){
                 event.preventDefault();
-                alert("Selecciona un jugador.");
+                setTextoModal("Selecciona un jugador.");
             }else if (tipoEvento === ""){
                 event.preventDefault();
-                alert("Selecciona un evento para el jugador.");
+                setTextoModal("Selecciona un evento para el jugador.");
             }
+            setModalError(true);
+            setShowModal(true);
         }else{
             setEventoAceptado(true);
         }
@@ -98,7 +104,9 @@ function Evento({ info }) {
                 if (!respuesta.error){
                     console.log(respuesta.datos);
                 }else{
-                    alert(respuesta.datos);
+                    setTextoModal(respuesta.datos);
+                    setModalError(true);
+                    setShowModal(true);
                 }
             }
         }
@@ -168,6 +176,9 @@ export default function FrmRegistrarPartido() {
     const [idEquipoLocal, setIdEquipoLocal] = useState('');
     const [idEquipoVisitante, setIdEquipoVisitante] = useState('');
     const [guardarDatosEnBD, setGuardarDatosEnBD] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [textoModal, setTextoModal] = useState('');
+    const [modalError, setModalError] = useState(false);
     //id del partido que se va a registrar y al que harán referencia los eventos cuando se guarden en la BD.
     const idPartido = useRef('');
 
@@ -364,7 +375,9 @@ export default function FrmRegistrarPartido() {
         if (idCompeticion !== "-" && idEquipoLocal !== "-" && idEquipoVisitante !== "-") {
 
             if (idEquipoLocal === idEquipoVisitante) {
-                alert("ERROR: El equipo local y el visitante no pueden ser el mismo.");
+                setModalError(true);
+                setTextoModal("El equipo local y el visitante no pueden ser el mismo.");
+                setShowModal(true);
             } else {
 
                 let parametros = new FormData();
@@ -388,15 +401,19 @@ export default function FrmRegistrarPartido() {
                         idPartido.current = await getIdPartido();
                         setGuardarDatosEnBD(true);     
                         setTimeout(function() {
-                            alert(respuesta.datos);
+                            setModalError(false)
+                            setTextoModal(respuesta.datos);
+                            setShowModal(true);
                             window.location.reload(false);
-                          }, 1000)  ;                 
+                          }, 750)  ;                 
                     }
                 }
             }
 
         } else {
-            alert("ERROR: Por favor, introduce datos válidos.");
+            setModalError(true);
+            setTextoModal("ERROR: Por favor, introduce datos válidos.");
+            setShowModal(true);
         }
 
     }//Fin de la función.
@@ -415,52 +432,54 @@ export default function FrmRegistrarPartido() {
     }
 
     return (
-        
-        <form className="mx-auto p-0">
-            <h3 className="text-center mt-1">Información del partido</h3>
-            <div className="my-2 row mx-0">
-                <label className="form-label">Competicion</label>
-                <select className="form-select shadow-none" ref={desplegableCompeticionesRef} id="txtCompeticion" name="txtCompeticion" required >
+        <>
+            <form className="mx-auto p-0">
+                <h3 className="text-center mt-1">Información del partido</h3>
+                <div className="my-2 row mx-0">
+                    <label className="form-label">Competicion</label>
+                    <select className="form-select shadow-none" ref={desplegableCompeticionesRef} id="txtCompeticion" name="txtCompeticion" required >
 
-                </select>
-            </div>
-            <div className="my-2 row mx-0">
-                <label className="form-label">Equipo local</label>
-                <select className="form-select shadow-none" ref={desplegableEquipoLocalRef} onChange={(event) => handleChangeEquipoLocal(event.target.value)} required >
+                    </select>
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label">Equipo local</label>
+                    <select className="form-select shadow-none" ref={desplegableEquipoLocalRef} onChange={(event) => handleChangeEquipoLocal(event.target.value)} required >
 
-                </select>
-            </div>
-            <div className="my-2 row mx-0">
-                <label htmlFor="txtEquipoVisitante" className="form-label">Equipo visitante</label>
-                <select className="form-control shadow-none" ref={desplegableEquipoVisitanteRef} onChange={(event) => handleChangeEquipoVisitante(event.target.value)} required>
+                    </select>
+                </div>
+                <div className="my-2 row mx-0">
+                    <label htmlFor="txtEquipoVisitante" className="form-label">Equipo visitante</label>
+                    <select className="form-control shadow-none" ref={desplegableEquipoVisitanteRef} onChange={(event) => handleChangeEquipoVisitante(event.target.value)} required>
 
-                </select>
-            </div>
-            <div className="my-2 row mx-0">
-                <label className="form-label">Fecha del partido</label>
-                <input type="date" className="form-control shadow-none" ref={fechaPartidoRef} min={0} required />
-            </div>
-            <div className="my-2 row mx-0">
-                <div className="col-4  m-auto p-0 text-center"><p className="my-auto">Resultado del partido</p> </div>
-                <div className="col-3"><input type="number" className="form-control shadow-none" ref={golesEquipoLocalRef}  min={0} max={999} minLength={0} maxLength={3} required /></div>
-                <div className="col-1 m-auto">-</div>
-                <div className="col-3"><input type="number" className="form-control shadow-none" ref={golesEquipoVisitanteRef} min={0} minLength={0} maxLength={3} required /></div>
+                    </select>
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label">Fecha del partido</label>
+                    <input type="date" className="form-control shadow-none" ref={fechaPartidoRef} min={0} required />
+                </div>
+                <div className="my-2 row mx-0">
+                    <div className="col-4  m-auto p-0 text-center"><p className="my-auto">Resultado del partido</p> </div>
+                    <div className="col-3"><input type="number" className="form-control shadow-none" ref={golesEquipoLocalRef}  min={0} max={999} minLength={0} maxLength={3} required /></div>
+                    <div className="col-1 m-auto">-</div>
+                    <div className="col-3"><input type="number" className="form-control shadow-none" ref={golesEquipoVisitanteRef} min={0} minLength={0} maxLength={3} required /></div>
 
-                {/* Caracteres del patron: ^ indica el comienzo de la cadena, \d{1,2} indica que se permiten de 1 a 2 dígitos, - indica el carácter - literal, $ indica el final de la cadena. */}
-            </div>
-            <div className="my-2 row mx-0">
-                <p>Estadio del partido: {estadioEquipoLocal}</p>
-            </div>
-            
-            <h2 className="text-center d-none rounded-2 p-1"  id="tituloEventos">EVENTOS DEL PARTIDO</h2>
-            {eventos}
+                    {/* Caracteres del patron: ^ indica el comienzo de la cadena, \d{1,2} indica que se permiten de 1 a 2 dígitos, - indica el carácter - literal, $ indica el final de la cadena. */}
+                </div>
+                <div className="my-2 row mx-0">
+                    <p>Estadio del partido: {estadioEquipoLocal}</p>
+                </div>
+                
+                <h2 className="text-center d-none rounded-2 p-1"  id="tituloEventos">EVENTOS DEL PARTIDO</h2>
+                {eventos}
 
-            <div className="my-2 row mx-0">
-                <input type="button" className="btn1 p-lg-2 col-3" value={"GUARDAR"} onClick={registrarPartido} />
-                <div className="col"></div>
-                <button className="btn1 p-lg-2 col-3" onClick={(event) => {event.preventDefault(); incNumEventos();}}>EVENTO <i className="fa-solid fa-flag ms-lg-1"></i></button>
-            </div>
-        </form>
-      
+                <div className="my-2 row mx-0">
+                    <input type="button" className="btn1 p-lg-2 col-3" value={"GUARDAR"} onClick={registrarPartido} />
+                    <div className="col"></div>
+                    <button className="btn1 p-lg-2 col-3" onClick={(event) => {event.preventDefault(); incNumEventos();}}>EVENTO <i className="fa-solid fa-flag ms-lg-1"></i></button>
+                </div>
+            </form>
+            <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />   
+      </>
+
     );
 }
