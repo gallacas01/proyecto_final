@@ -10,6 +10,7 @@ function createOptionElement(value, textContent) {
     let option = document.createElement("option");
     option.value = value;
     option.textContent = textContent;
+    option.style.fontSize = "1.1rem";
     return option;
 }
 
@@ -172,38 +173,42 @@ export default function VerJugadores() {
 
     return (
         <div className='container-fluid'>
-            <div className='row'><NavBar /> </div>
+            {/* <div className='row'><NavBar /> </div> */}
             <div className='row'>
                 <form className="col-lg-9 mx-auto p-0">
                     <div className="row mx-auto mt-lg-3">
-                        <label className="form-label my-auto text-lg-end col-lg-2">Competición</label>
+                        <label className="form-label my-auto text-lg-end col-lg-2 fs-4">Competición</label>
                         <div className="col-lg-3 p-0 my-auto">
                             <select className="form-select shadow-none" ref={desplegableCompeticionesRef} onChange={(event) => (handleChangeCompeticion(event))} required>
 
                             </select>
                         </div>
-                        <label className="form-label my-auto text-lg-end col-lg-2">Equipo</label>
+                        <label className="form-label my-auto text-lg-end col-lg-2 fs-4">Equipo</label>
                         <div className="col-lg-3 p-0 my-auto">
                             <select className="form-select shadow-none" ref={desplegableEquiposRef} required>
 
                             </select>
                         </div>
-                    <button className="btn1 ms-lg-3 col-lg-1" onClick={ (event) => {event.preventDefault(); getJugadores();}}><i className="bi bi-search fs-5"></i></button>  
+                    <button className="btn1 ms-lg-3 col-lg-1" onClick={ (event) => {event.preventDefault(); getJugadores();}}><i className="bi bi-search fs-4"></i></button>  
                     </div>
                 </form>
             </div>
 
             <div className='row'>
                 <div className='col-lg-9 mx-auto mt-lg-4 p-1 d-none' ref={containerJugadoresRef}>
-                    <div className='row p-0 m-auto'> <h1 className="text-center mt-lg-1" ref={nombreEquipoRef} style={{color : '#182E3E'}}></h1></div>
+                    <div className='row m-auto'> 
+                        <div className='col-12 p-0'>
+                            <h1 className="text-center mt-lg-1 p-2" ref={nombreEquipoRef} style={{color : 'rgb(252, 224, 179)', backgroundColor : "#182E3E"}}></h1>
+                        </div>
+                    </div>
                     <div className='row p-0 m-0'>
                         {jugadoresRecuperados &&
                             <>
-                                <h5 className='p-1' id='tituloPosicion'>Defensas</h5>
+                                <h5 className='p-1 fs-4' id='tituloPosicion'>Defensas</h5>
                                 {jugadores[0]}                    
-                                <h5 className='p-1 mt-4' id='tituloPosicion'>Centrocampistas</h5>
+                                <h5 className='p-1 fs-4 mt-4' id='tituloPosicion'>Centrocampistas</h5>
                                 {jugadores[1]}
-                                <h5 className='p-1 mt-4' id='tituloPosicion'>Delanteros</h5>
+                                <h5 className='p-1 fs-4 mt-4' id='tituloPosicion'>Delanteros</h5>
                                 {jugadores[2]}
                             </>                      
                         }

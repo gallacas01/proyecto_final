@@ -1,6 +1,5 @@
 import NavBar from "./NavBar";
 import Footer from "./Footer";
-import { useEffect, useState } from "react";
 import '../css/bootstrap.css';
 import '../css/styles.css';
 import img_balon from "../img/imagen_balon.png";
@@ -12,26 +11,36 @@ export default function Inicio() {
 
     return (
         <div className="container-fluid">
-            <div className="row"><NavBar /></div>
-            <div className="row">
-                <div class="carousel slide p-0">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src={img_balon} class="d-block w-100" data-bs-interval="1000" alt="..." />
+            {/* <div className="row"><NavBar /></div> */}
+            {/* <div className="row">
+                <div className="carousel slide p-0">
+                    <div className="carousel-inner">
+                        <div className="carousel-item active">
+                            <img src={img_balon} className="d-block w-100" data-bs-interval="1000" alt="..." />
                         </div>
-                        <div class="carousel-item">
-                            <img src={img_balon} class="d-block w-100" data-bs-interval="1000" alt="..." />
+                        <div className="carousel-item">
+                            <img src={img_balon} className="d-block w-100" data-bs-interval="1000" alt="..." />
                         </div>
-                        <div class="carousel-item">
-                            <img src={img_balon} class="d-block w-100" data-bs-interval="1000" alt="..." />
+                        <div className="carousel-item">
+                            <img src={img_balon} className="d-block w-100" data-bs-interval="1000" alt="..." />
                         </div>
                     </div>
                 </div>
-            </div> 
-            <div className="row" style={{ borderTop: "0.4rem solid rgb(252, 224, 179)" }}>
-                <div className="col-6" style={{ backgroundColor: "#182E3E", color: "white" }}> klasdfjlkdsajalkdsjlkljklajadskljklajdflkjdflkaj </div>
-                <div className="col-6" style={{ backgroundColor: "white", color: "#182E3E" }}> jasklfjdsklfjladskjdsklajlkadsjldskjlfkajafslk </div>
-                <div className="col-6" style={{ backgroundColor: "white", color: "#182E3E" }}> kladsjfkldsajklfasjklfjdslkjlkdsfjklfads </div>
+            </div>  */}
+            <div className="row">
+                <div className="col-12 p-0">
+                    <img src={img_balon} className="d-block w-100" height={'750px'} alt="..." />
+                </div>
+            </div>
+            <div className="row text-center" style={{ borderTop: "0.4rem solid rgb(252, 224, 179)" }}>
+                <div className="col-6 p-2" style={{ backgroundColor: "#182E3E", color: "white" }} >
+                    <p>Echa un vistazo a las plantillas de todos los equipos registrados</p> 
+                 </div>
+                <div className="col-6 p-2" style={{ backgroundColor: "white", color: "#182E3E" }}> 
+                    <p>Consulta la clasificación y las estadísticas de todos los equipos </p>
+                </div>
+                <div className="col-6" style={{ backgroundColor: "white", color: "#182E3E" }}> 
+                 </div>
                 <div className="col-6" style={{ backgroundColor: "#182E3E", color: "white" }}> kladsjfkladsjkladfsjkladsjskldfdfskljdfskla </div>
             </div>
             <div className="row"><Footer /></div>

@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import '../css/bootstrap.css';
 import '../css/styles.css';
 import 'animate.css';
+import MyModal from './Modal';
 
 export default function Card({ info, getJugadores }) {
 
@@ -20,9 +21,15 @@ export default function Card({ info, getJugadores }) {
     const [verDatos, setVerDatos] = useState(false);
     const [activarEdicion, setActivarEdicion] = useState(false);
     const [imagenJugador, setImagenJugador] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [textoModal, setTextoModal] = useState('');
+    const [modalError, setModalError] = useState(false);
+
+    //Referencias al DOM del componente.
     const cardRef = useRef(null);
     const estadoInicialRef = useRef(null);
     const nombreJugadorRef = useRef(null);
+    const imagenRef = useRef('');
 
     const handleVerdatos = ( () => {
 
@@ -127,8 +134,10 @@ export default function Card({ info, getJugadores }) {
 
     const updateDatosJugador = ( async (event) => {
 
-        event.preventDefault();        
-        console.log("Datos anteriores: ", datos);
+        event.preventDefault();
+        let noHayImagen = imagenRef.current.files.length === 0;
+        // console.log(noHayImagen);
+        // console.log("Datos anteriores: ", datos);
 
         let parametros = new FormData();
         parametros.append("id_jugador", datos.id_jugador);
@@ -140,7 +149,7 @@ export default function Card({ info, getJugadores }) {
         parametros.append("posicion", datos.posicion);
         parametros.append("dorsal", datos.dorsal);
         parametros.append("pais", datos.pais);
-        parametros.append("imagen", imagenJugador);
+        parametros.append("imagen", noHayImagen ? 0 : imagenJugador);
         let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/UPDATE/actualizarJugador.php",{
 
             method : 'POST',
@@ -152,17 +161,14 @@ export default function Card({ info, getJugadores }) {
             let respuesta = await response.json();
             if (!respuesta.error){
 
-                //Si el servidor no ha respondido con un error, con vertimos la imagen que fue enviada a la bbdd, que estaba 
-                //en formato, base64 para usar la url y actualizar el valor del atributo imagen de la variable datos.
-                // let img = "data:image/png;base64," + imagenJugador;
-                // const blob = await fetch(img).then((res) => res.blob());
-                // let urlImagen = URL.createObjectURL(blob);
-
-                // setDatos({...datos, imagen : urlImagen});
                 console.log("nuevos datos: ", datos);
                 setActivarEdicion(false);
                 setVerDatos(true);
-            }        
+            }else{
+                setTextoModal(respuesta.datos);
+                setModalError(true);
+                setShowModal(true);
+            }       
         }       
 
     });
@@ -192,43 +198,42 @@ export default function Card({ info, getJugadores }) {
                         <>    
                             {/* {nombreJugadorRef.current.textContent = datos.nombre_completo.split(" ")[0]} */}
                             {console.log("Imagen cuando se ven los datos", datos.imagen)}       
-                                <div className="row mx-auto p-1">
-                                    <p className='text-start my-auto'>DNI / INE: {datos.dni_jugador}</p>
-                                </div>
-                                <div className="row mx-auto p-1">
-                                    <p className='text-start my-auto'>Nombre completo: {datos.nombre_completo}</p>
-                                </div>
-                                <div className="row mx-auto p-1">
-                                    <p className='text-start my-auto'>F. nacimiento: {datos.fecha_nacimiento}</p>
-                                </div>
-                                <div className="row mx-auto p-1">
-                                    <p className='text-start my-auto'>Origen: {datos.pais} </p>
-                                </div>
-                                <div className="row mx-auto p-1">
-                                    <p className='text-start my-auto'>Peso: {datos.peso} kg</p>
-                                </div>
-                                <div className="row mx-auto p-1">
-                                    <p className='text-start my-auto'>Altura: {datos.altura} cm</p>
-                                </div>
-                                <div className="row mx-auto p-1">
-                                    <p className='text-start my-auto'>Dorsal: {datos.dorsal}</p>
-                                </div> 
-
-                              
-                                {!user.uid === "CPifWKxzLqPFg3N8hIauBdhf3lT2" &&
-                                    <div className='row mx-auto'>
-                                        <div className='col m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleOcultarDatos}><i className="bi bi-arrow-left-circle-fill"></i></button></div>
-                                    </div>   
-                                }  
-                       
-                                {/* Si el usuario es admin */}
-                                {user.uid === "CPifWKxzLqPFg3N8hIauBdhf3lT2" &&
-                                    <div className='row mx-auto'>
-                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleOcultarDatos}><i className="bi bi-arrow-left-circle-fill"></i></button></div>
-                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleActivarEdicion}><i className="bi bi-pencil-square m-auto"></i></button></div>
-                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={eliminarJugador}><i className="bi bi-trash3-fill"></i></button></div>
-                                </div>      
-                                }                                
+                            <div className="row mx-auto p-1 fs-5">
+                                <p className='text-start my-auto'>DNI / INE: {datos.dni_jugador}</p>
+                            </div>
+                            <div className="row mx-auto p-1 fs-5">
+                                <p className='text-start my-auto'>Nombre completo: {datos.nombre_completo}</p>
+                            </div>
+                            <div className="row mx-auto p-1 fs-5">
+                                <p className='text-start my-auto'>F. nacimiento: {datos.fecha_nacimiento}</p>
+                            </div>
+                            <div className="row mx-auto p-1 fs-5">
+                                <p className='text-start my-auto'>Origen: {datos.pais} </p>
+                            </div>
+                            <div className="row mx-auto p-1 fs-5">
+                                <p className='text-start my-auto'>Peso: {datos.peso} kg</p>
+                            </div>
+                            <div className="row mx-auto p-1 fs-5">
+                                <p className='text-start my-auto'>Altura: {datos.altura} cm</p>
+                            </div>
+                            <div className="row mx-auto p-1 fs-5">
+                                <p className='text-start my-auto'>Dorsal: {datos.dorsal}</p>
+                            </div> 
+                            
+                            {!user.uid === "CPifWKxzLqPFg3N8hIauBdhf3lT2" &&
+                                <div className='row mx-auto'>
+                                    <div className='col m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleOcultarDatos}><i className="bi bi-arrow-left-circle-fill"></i></button></div>
+                                </div>   
+                            }  
+                    
+                            {/* Si el usuario es admin */}
+                            {user.uid === "CPifWKxzLqPFg3N8hIauBdhf3lT2" &&
+                                <div className='row mx-auto'>
+                                <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleOcultarDatos}><i className="bi bi-arrow-left-circle-fill"></i></button></div>
+                                <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleActivarEdicion}><i className="bi bi-pencil-square m-auto"></i></button></div>
+                                <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={eliminarJugador}><i className="bi bi-trash3-fill"></i></button></div>
+                            </div>      
+                            }                                
                         </>             
                     }
 
@@ -237,27 +242,27 @@ export default function Card({ info, getJugadores }) {
                         <>
                             <form className='p-1'>
                                 <div className='row mx-auto'>
-                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">DNI / INE</label></div>
+                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto fs-5">DNI / INE</label></div>
                                     <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none" onChange={handleChangeNuevoDato} defaultValue={datos.dni_jugador} name='dni_jugador' readOnly={!activarEdicion} minLength={9} maxLength={9}  /></div>
                                 </div>
                                 <div className='row mx-auto my-2'>
-                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">Nombre </label></div>
+                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto fs-5">Nombre </label></div>
                                     <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none" defaultValue={datos.nombre_completo} onChange={handleChangeNuevoDato} name='nombre_completo' readOnly={!activarEdicion} minLength={40} maxLength={40}  /></div>
                                 </div>
                                 <div className='row mx-auto my-2'>
-                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">F. nac</label></div>
+                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto fs-5">F. nac</label></div>
                                     <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none" defaultValue={datos.fecha_nacimiento} onChange={handleChangeNuevoDato} name='fecha_nacimiento' readOnly={!activarEdicion} minLength={10} maxLength={10}  /></div>
                                 </div>
                                 <div className='row mx-auto my-2'>
-                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">Peso </label></div>
+                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto fs-5">Peso </label></div>
                                     <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none"defaultValue={datos.peso} onChange={handleChangeNuevoDato} name='peso' readOnly={!activarEdicion} minLength={2} maxLength={3}  /></div>
                                 </div>
                                 <div className='row mx-auto my-2'>
-                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">Altura </label></div>
+                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto fs-5">Altura </label></div>
                                     <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none" defaultValue={datos.altura} onChange={handleChangeNuevoDato} name='altura' readOnly={!activarEdicion} minLength={3} maxLength={3}  /></div>
                                 </div>
                                 <div className='row mx-auto my-2'>
-                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">Posición</label></div>
+                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto fs-5">Posición</label></div>
                                     <div className='col-8 p-0 d-flex align-items-center justify-content-center'>
                                         <select className="form-select shadow-none d-flex align-items-center justify-content-center" defaultValue={datos.posicion} onChange={handleChangeNuevoDato} readOnly={!activarEdicion} name='posicion' aria-label="Default select example" >
                                             <option value="-">-</option>
@@ -269,13 +274,17 @@ export default function Card({ info, getJugadores }) {
                                     </div>
                                 </div>
                                 <div className='row mx-auto my-2'>
-                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto">Dorsal</label></div>
-                                    <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none" defaultValue={datos.dorsal} name='dorsal' readOnly={!activarEdicion} minLength={1} maxLength={2}  /></div>
+                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto fs-5">Dorsal</label></div>
+                                    <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none" defaultValue={datos.dorsal} onChange={handleChangeNuevoDato} name='dorsal' readOnly={!activarEdicion} minLength={1} maxLength={2}  /></div>
+                                </div>
+                                <div className='row mx-auto my-2'>
+                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto fs-5">País</label></div>
+                                    <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none" defaultValue={datos.pais} onChange={handleChangeNuevoDato} name='pais' readOnly={!activarEdicion} minLength={3} maxLength={20}  /></div>
                                 </div>
                                 <div className="row mx-0">
-                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'><label className="form-label">Imagen</label></div>
+                                    <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'><label className="form-label fs-5">Imagen</label></div>
                                     <div className='col-8 p-0 d-flex align-items-center justify-content-center'>
-                                        <input className="form-control shadow-none" type="file" name='imagen' onChange={handleChangeCambioImagen} />
+                                        <input className="form-control shadow-none" type="file" name='imagen' ref={imagenRef} onChange={handleChangeCambioImagen} />
                                     </div>
                                 </div>
                                 <div className='row mx-auto mb-0 my-1 p-0'>
@@ -285,7 +294,7 @@ export default function Card({ info, getJugadores }) {
                             </form>
                         </>
                     }
-
+                    <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />   
                 </div>
             </div>
         </div>

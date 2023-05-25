@@ -1,7 +1,6 @@
 import {useEffect } from 'react';
-import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from '../context/AuthContext';
 import '../css/bootstrap.css';
 import '../css/styles.css';
 import { useRef } from 'react';
@@ -25,6 +24,8 @@ function BarraNavegacion({ datosNavBar }) {
       //Constantes
       const auth = useAuth();
       const navigate = useNavigate();
+      const location = useLocation();
+      const currentPath = location.pathname;
 
       //Función que cierra la sesión
       const cerrarSesion = ( () => {
@@ -43,9 +44,9 @@ function BarraNavegacion({ datosNavBar }) {
     });
 
     return (
-        <nav className="navbar navbar-expand-lg">
+        <nav className={`navbar navbar-expand-lg ${currentPath === '/' || currentPath === '/register' ? 'd-none' : ''}`}>
             <div className="container-fluid">
-                <a className="navbar-brand" href={datosNavBar.url}>{datosNavBar.titulo}</a>
+                <a className="navbar-brand fs-4" href={datosNavBar.url}>{datosNavBar.titulo}</a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"/>
                 </button>
@@ -69,7 +70,7 @@ export default function NavBar() {
     useEffect ( () => {
 
         if (!user &&auth.checkedSession){
-            navigate("/login");
+            navigate("/");
         }
       },[user, auth.checkedSession]);
 

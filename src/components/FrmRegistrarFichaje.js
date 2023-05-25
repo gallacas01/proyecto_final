@@ -2,11 +2,6 @@ import React, { useEffect,useRef } from "react";
 import { useState } from "react";
 import MyModal from "./Modal";
 
-// class RegistrarMovimiento extends React.Component{
-//     render(){
-//     }
-// }
-
 function createOptionElement(value, textContent) {
     let option = document.createElement("option");
     option.value = value;
@@ -14,7 +9,7 @@ function createOptionElement(value, textContent) {
     return option;
 }
 
-export default function RegistrarMovimiento() {
+export default function RegistrarFichaje() {
 
     //Variables de estado
     const [idCompeticionEquipoAnterior, setIdCompeticionEquipoAnterior] = useState('');
@@ -218,7 +213,7 @@ export default function RegistrarMovimiento() {
     return(
         <>
             <form ref={frmRegistrarMovimiento}>
-                <h3 className="text-center mt-1">Datos del movimiento</h3>
+                <h3 className="text-center mt-1 fs-2">Datos del fichaje</h3>
                 <div className="my-2 row mx-0">
                     <label className="form-label my-auto">Liga del equipo anterior</label>             
                     <select className="form-control shadow-none" ref={competicionesEquipoAnteriorRef} onChange={(event ) => setIdCompeticionEquipoAnterior(event.target.value)} required>

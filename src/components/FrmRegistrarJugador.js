@@ -162,7 +162,7 @@ export default function FrmRegistrarJugador() {
     return (    
         <>
             <form className="bg-transparent p-0" ref={frmRegistrarJugadorRef}>
-                <h3 className="text-center mt-1">Datos del jugador</h3>
+                <h3 className="text-center mt-1 fs-2">Datos del jugador</h3>
                 <div className="my-2 row mx-0">
                     <label className="form-label my-auto">DNI / INE</label>
                     <input type="text" className="form-control shadow-none" ref={dniJugadorRef} minLength={9} maxLength={9} required />
@@ -198,7 +198,7 @@ export default function FrmRegistrarJugador() {
                     <input type="number" className="form-control shadow-none" ref={dorsalRef} min={0} max={100} required />
                 </div>
                 <div className="my-2 row mx-0">
-                    <label className="form-label my-auto">Lugar de nacimiento</label>
+                    <label className="form-label my-auto">País</label>
                     <input type="text" className="form-control shadow-none" ref={paisRef} required />
                 </div>
                 <div className="my-2 row mx-0">

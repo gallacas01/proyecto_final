@@ -59,7 +59,7 @@ export default function FrmRegistrarCompeticion (){
     return (
         <>
             <form className="mx-auto p-0" ref={frmRegistrarCompeticionRef}>
-                <h3 className="text-center mt-1">Datos de la competición</h3>
+                <h3 className="text-center mt-1 fs-2">Datos de la competición</h3>
                 <div className="my-2 row mx-0">
                     <label className="form-label my-auto">Nombre</label>
                     <input type="text" className="form-control shadow-none" ref={nombreCompeticionRef} required />

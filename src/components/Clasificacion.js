@@ -157,7 +157,7 @@ export default function Clasificacion (){
 
     return (
         <div className="container-fluid">
-            <div className="row"><NavBar /></div>
+            {/* <div className="row"><NavBar /></div> */}
             <div className="row">
                 <form className="col-lg-6 mx-auto mt-lg-4 p-0">
                     <div className="row mx-auto">

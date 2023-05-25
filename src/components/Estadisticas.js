@@ -4,6 +4,9 @@ import { IconShoe } from '@tabler/icons-react';
 import '../css/bootstrap.css';
 import '../css/styles.css';
 import NavBar from "./NavBar";
+import tarjeta_amarilla from '../img/tarjeta_amarilla.png';
+import tarjeta_roja from '../img/tarjeta_roja.png';
+
 
 const convertirImagenDB = ( async (img) => {
 
@@ -103,20 +106,20 @@ export default function Estadisticas(){
 
     return (
         <>
-            <div className="col-12 p-0"><NavBar /></div>
+            {/* <div className="col-12 p-0"><NavBar /></div> */}
             <div className="container">
-                <div className="row mt-4">
-                    <div className="col-lg-2">
+                <div className="row mt-4 mx-4">
+                    <div className="col-2">
                         <button className="text-center p-3 btn1 w-100 mt-2 mb-3" onClick={() => setCriterioDeOrdenacion('goles')}> <IconBallFootball size={'42'} /> </button>
                         <button className="text-center p-3 btn1 w-100 mb-3" onClick={() => setCriterioDeOrdenacion('asistencias')}> <IconShoe size={'42'} /> </button>
                         <button className="text-center p-1 btn1 w-100 mb-3" onClick={() => setCriterioDeOrdenacion('tarjetas_amarillas')}> 
-                            <img src="https://www.iconpacks.net/icons/1/free-yellow-card-icon-489-thumb.png" className="mt-2" width={'55px'} height={'55px'} alt="Yellow Card" />
+                            <img src="https://www.iconpacks.net/icons/1/free-yellow-card-icon-489-thumb.png"  className="mt-2" width={'55px'} height={'55px'} alt="Yellow Card" />
                         </button>
                         <button className="text-center p-1 btn1 w-100 mb-3" onClick={() => setCriterioDeOrdenacion('tarjetas_rojas')}> 
                             <img src="https://www.iconpacks.net/icons/1/free-red-card-icon-460-thumb.png" className="mt-2" width={'55px'} height={'55px'} alt="Red Card" />
                         </button>            
                     </div>
-                    <div className="col">
+                    <div className="col-10">
                         <table className="table p-0 d-none" ref={tableRef}>
                             <thead>
                                 <th className="text-center">Jugador</th>

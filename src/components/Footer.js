@@ -21,11 +21,11 @@ export default function Footer() {
             </div>
             <div className='row'>
                 <div className='col-auto ms-auto'>
-                <i class="bi bi-envelope-at-fill fs-2 me-2"/> 
+                <i className="bi bi-envelope-at-fill fs-2 me-2"/> 
                     <a href="mailto:miguigc01@gmail.com" >miguigc01@gmail.com</a>
                 </div>
                 <div className='col-auto me-auto'>
-                    <i class="bi bi-instagram fs-2 me-2"></i>
+                    <i className="bi bi-instagram fs-2 me-2"></i>
                     <a href="https://www.instagram.com/miguelgc01_/?hl=es" target='_blank' rel='noreferrer'>miguelgc01_</a>
                 </div>
             </div>
