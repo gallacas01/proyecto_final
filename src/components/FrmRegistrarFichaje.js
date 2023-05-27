@@ -212,7 +212,7 @@ export default function RegistrarFichaje() {
 
     return(
         <>
-            <form ref={frmRegistrarMovimiento}>
+            <form  className="mb-3" ref={frmRegistrarMovimiento}>
                 <h3 className="text-center mt-1 fs-2">Datos del fichaje</h3>
                 <div className="my-2 row mx-0">
                     <label className="form-label my-auto">Liga del equipo anterior</label>             
@@ -249,10 +249,10 @@ export default function RegistrarFichaje() {
                     <input type="date" className="form-control shadow-none" onChange={(event) => setFechaTraspaso(event.target.value)} required />
                 </div>
                 <div className="my-2 row mx-0">
-                    <button className="btn1 col-3 p-2" onClick={updateEquipoDelJugador}>ACEPTAR</button>
+                    <button className="btn1 col-5 col-sm-5 col-md-3 text-truncate p-2" onClick={updateEquipoDelJugador}>ACEPTAR</button>
                 </div>
+                <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />   
             </form>
-            <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />   
         </>             
 
     );

@@ -58,8 +58,8 @@ export default function FrmRegistrarCompeticion (){
 
     return (
         <>
-            <form className="mx-auto p-0" ref={frmRegistrarCompeticionRef}>
-                <h3 className="text-center mt-1 fs-2">Datos de la competición</h3>
+            <form className="mx-auto p-0 mb-3" ref={frmRegistrarCompeticionRef}>
+                <h3 className="text-center mt-1 fs-2 tituloForm">Datos de la competición</h3>
                 <div className="my-2 row mx-0">
                     <label className="form-label my-auto">Nombre</label>
                     <input type="text" className="form-control shadow-none" ref={nombreCompeticionRef} required />
@@ -68,7 +68,7 @@ export default function FrmRegistrarCompeticion (){
                     <label className="form-label my-auto">Temporada</label>
                     <input type="text" className="form-control shadow-none" ref={temporadaCompeticionRef} pattern="^\d{4}-\d{4}$" placeholder="Ej: 2022-2023" minLength={9} maxLength={9} required />
                 </div>
-                <button className="btn1 p-lg-2 col-lg-3" onClick={ (event) => {event.preventDefault(); guardarCompeticion();}}>ENVIAR </button>
+                <button className="btn1 col-5 col-sm-5 col-md-3 text-truncate p-2" onClick={ (event) => {event.preventDefault(); guardarCompeticion();}}>ENVIAR </button>
             </form>
             <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />                
         </>

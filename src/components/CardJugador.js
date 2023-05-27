@@ -266,10 +266,10 @@ export default function Card({ info, getJugadores }) {
                                     <div className='col-8 p-0 d-flex align-items-center justify-content-center'>
                                         <select className="form-select shadow-none d-flex align-items-center justify-content-center" defaultValue={datos.posicion} onChange={handleChangeNuevoDato} readOnly={!activarEdicion} name='posicion' aria-label="Default select example" >
                                             <option value="-">-</option>
-                                            <option value="portero">Portero</option>
-                                            <option value="defensa">Defensa</option>
-                                            <option value="centrocampista">Centrocampista</option>
-                                            <option value="delantero">Delantero</option>
+                                            <option value="Portero">Portero</option>
+                                            <option value="Defensa">Defensa</option>
+                                            <option value="Centrocampista">Centrocampista</option>
+                                            <option value="Delantero">Delantero</option>
                                         </select>
                                     </div>
                                 </div>

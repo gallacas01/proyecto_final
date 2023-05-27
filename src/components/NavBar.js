@@ -1,5 +1,5 @@
 import {useEffect } from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
 import '../css/bootstrap.css';
 import '../css/styles.css';
@@ -12,9 +12,13 @@ function NavItem({ info }) {
     const linkRef = useRef(null);
 
     return (
-         <li key={info.id} className="nav-item">
-            <a ref={linkRef} className='nav-link' onClick={() => linkRef.current.classList.add('isFocused')} onBlur={() => linkRef.current.classList.remove('isFocused') } id={info.id} href={info.url}>{info.titulo}</a>
-        </li>
+            <li key={info.id} className="nav-item" ref={linkRef}>
+                <Link
+                    className='nav-link' 
+                    id={info.id}
+                    to={info.url}>{info.titulo}
+                </Link>
+            </li>
          /*El evento onBlur se desencadena cuando un elemento pierde el foco */
     );
 }
@@ -46,14 +50,15 @@ function BarraNavegacion({ datosNavBar }) {
     return (
         <nav className={`navbar navbar-expand-lg ${currentPath === '/' || currentPath === '/register' ? 'd-none' : ''}`}>
             <div className="container-fluid">
-                <a className="navbar-brand fs-4" href={datosNavBar.url}>{datosNavBar.titulo}</a>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button className="navbar-toggler mb-2 text-light" style={{backgroundColor : "#f0f0f0"}} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"/>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         {listaNavItem}
-                        <button className='p-0' onClick={cerrarSesion} id='btnCerrarSesion'>Cerrar sesión</button>
+                        <li className='nav-item'>
+                            <button className='p-0 mt-2 fs-4' onClick={cerrarSesion} id='btnCerrarSesion'><i class="fa-solid fa-right-from-bracket"/></button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -76,9 +81,12 @@ export default function NavBar() {
 
 
     let estructuraDatosNavBar = {
-        titulo: "Inicio",
-        url: "/inicio",
         listaItems: [
+            {
+                id: "inicio",
+                titulo: "Inicio",
+                url : "/inicio"
+            },
             {
                 id: "jugadores",
                 titulo: "Jugadores",

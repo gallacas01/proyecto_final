@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import CardJugador from './CardJugador';
-import NavBar from "./NavBar";
 import '../css/bootstrap.css';
 import '../css/styles.css';
 import MyModal from './Modal';
@@ -173,7 +172,6 @@ export default function VerJugadores() {
 
     return (
         <div className='container-fluid'>
-            {/* <div className='row'><NavBar /> </div> */}
             <div className='row'>
                 <form className="col-lg-9 mx-auto p-0">
                     <div className="row mx-auto mt-lg-3">

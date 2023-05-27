@@ -1,4 +1,3 @@
-import NavBar from "./NavBar";
 import Footer from "./Footer";
 import '../css/bootstrap.css';
 import '../css/styles.css';
@@ -11,7 +10,6 @@ export default function Inicio() {
 
     return (
         <div className="container-fluid">
-            {/* <div className="row"><NavBar /></div> */}
             {/* <div className="row">
                 <div className="carousel slide p-0">
                     <div className="carousel-inner">

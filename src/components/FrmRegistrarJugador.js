@@ -161,7 +161,7 @@ export default function FrmRegistrarJugador() {
 
     return (    
         <>
-            <form className="bg-transparent p-0" ref={frmRegistrarJugadorRef}>
+            <form className="p-0 mb-3 mx-auto" ref={frmRegistrarJugadorRef}>
                 <h3 className="text-center mt-1 fs-2">Datos del jugador</h3>
                 <div className="my-2 row mx-0">
                     <label className="form-label my-auto">DNI / INE</label>
@@ -187,10 +187,10 @@ export default function FrmRegistrarJugador() {
                     <label className="form-label my-auto">Posición</label>
                     <select className="form-select shadow-none" ref={posicionRef} aria-label="Default select example" required>
                         <option value="-">-</option>
-                        <option value="portero">Portero</option>
-                        <option value="defensa">Defensa</option>
-                        <option value="centrocampista">Centrocampista</option>
-                        <option value="delantero">Delantero</option>
+                        <option value="Portero">Portero</option>
+                        <option value="Defensa">Defensa</option>
+                        <option value="Centrocampista">Centrocampista</option>
+                        <option value="Delantero">Delantero</option>
                     </select>
                 </div>
                 <div className="my-2 row mx-0">

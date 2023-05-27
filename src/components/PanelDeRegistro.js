@@ -6,7 +6,6 @@ import FrmRegistrarCompeticion from "./FrmRegistrarCompeticion";
 import FrmRegistrarMovimiento from "./FrmRegistrarFichaje";
 import '../css/bootstrap.css';
 import '../css/styles.css';
-import NavBar from "./NavBar";
 
 export default function Panel(){
 
@@ -42,18 +41,23 @@ export default function Panel(){
     return(
 
         <>
-        {/* <div className="col-12 p-0"><NavBar/></div> */}
             <div className="container">
-                <div className="row mt-lg-3 p-1">        
-                    <div className="col-xs-12 col-sm-6 col-md p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarCompeticion}> Registrar competición </button></div>     
-                    <div className="col-xs-12 col-sm-6 col-md p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarEquipo}> Registrar equipo </button></div> 
-                    <div className="col-xs-12 col-sm-6 col-md p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarJugador}> Registrar jugador </button></div> 
-                    <div className="col-xs-12 col-sm-6 col-md p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarPartido}> Registrar partido </button></div>        
-                    <div className="col-xs-12 col-sm-6 col-md p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarMovimiento}> Registrar fichaje </button></div>        
+                <div className="row mt-lg-3 p-1"> 
+                    <div className="col-10 mx-auto p-0">
+                        <div className="container-fluid">
+                            <div className="row p-0" style={{borderBottom : "3px solid #182E3E"}}>
+                                <div className="col-xs-12 col-sm-6 col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarCompeticion}> Registrar competición </button></div>     
+                                <div className="col-xs-12 col-sm-6 col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarEquipo}> Registrar equipo </button></div> 
+                                <div className="col-xs-12 col-sm-6 col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarJugador}> Registrar jugador </button></div> 
+                                <div className="col-xs-12 col-sm-6 col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarPartido}> Registrar partido </button></div>        
+                                <div className="col-xs-12 col-sm-6 col-md-6 mx-sm-auto col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarMovimiento}> Registrar fichaje </button></div>        
+                            </div>
+                        </div>
+                    </div>    
                 </div>
 
                 <div className="row">
-                    <div className="col-lg-6 mx-auto">
+                    <div className="col-10 col-lg-6 mx-auto">
                         {frmActual}
                     </div>
                 </div>

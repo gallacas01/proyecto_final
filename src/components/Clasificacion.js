@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import NavBar from "./NavBar";
 import '../css/bootstrap.css';
 import '../css/styles.css';
 import MyModal from "./Modal";
@@ -23,8 +22,9 @@ export default function Clasificacion (){
     const [modalError, setModalError] = useState(false);
 
 
-    const getClasificacion = ( async () => {
+    const getClasificacion = ( async (event) => {
        
+        event.preventDefault();
         let idComepticion = desplegableCompeticionesRef.current.value;
         if (idComepticion !== "-"){
 
@@ -157,17 +157,20 @@ export default function Clasificacion (){
 
     return (
         <div className="container-fluid">
-            {/* <div className="row"><NavBar /></div> */}
-            <div className="row">
+            <div className="row p-0">
                 <form className="col-lg-6 mx-auto mt-lg-4 p-0">
                     <div className="row mx-auto">
-                        <label className="form-label text-end my-auto col-lg-3">Competición</label>
-                        <div className="col-lg p-0 my-auto">
+                        <div className="col-2 text-start p-1">                        
+                            <label className="form-label m-auto">Competición</label>
+                        </div>
+                        <div className="col-8 p-0 my-auto">
                             <select className="form-select shadow-none" ref={desplegableCompeticionesRef} required>
 
                             </select>
                         </div>
-                    <button className="btn1 col-lg-2 ms-lg-2" onClick={ (event) => {event.preventDefault(); getClasificacion();}}><i className="bi bi-search fs-5"></i></button>  
+                        <div className='col ms-3 p-0'>                    
+                            <button className="btn1 w-100" onClick={getClasificacion}><i className="bi bi-search fs-4"></i></button>  
+                        </div>
                     </div>
                 </form>
             </div>

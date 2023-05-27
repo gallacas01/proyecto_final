@@ -3,7 +3,6 @@ import { IconBallFootball } from '@tabler/icons-react';
 import { IconShoe } from '@tabler/icons-react';
 import '../css/bootstrap.css';
 import '../css/styles.css';
-import NavBar from "./NavBar";
 import tarjeta_amarilla from '../img/tarjeta_amarilla.png';
 import tarjeta_roja from '../img/tarjeta_roja.png';
 
@@ -59,7 +58,7 @@ export default function Estadisticas(){
                         // let borderColor = contadorEquipos % 2 === 0 ? "rgb(252, 224, 179)" : "#182E3E";   
                         imagen.classList.add('img-fluid');
                         imagen.style.width = '60px';
-                        imagen.style.height = '60px';
+                        imagen.style.height = '75px';
                         // imagen.style.border = '3px solid ' + borderColor;
                         td.appendChild(imagen);
                         tr.appendChild(td);
@@ -106,7 +105,6 @@ export default function Estadisticas(){
 
     return (
         <>
-            {/* <div className="col-12 p-0"><NavBar /></div> */}
             <div className="container">
                 <div className="row mt-4 mx-4">
                     <div className="col-2">
@@ -127,8 +125,8 @@ export default function Estadisticas(){
                                 <th className="text-center">Posición</th>
                                 <th className="text-center">Goles</th>
                                 <th className="text-center">Asistencias</th>
-                                <th className="text-center">Tarjetas amarillas </th>
-                                <th className="text-center">Tarjetas rojas</th>
+                                <th className="text-center">Tarj. amarillas </th>
+                                <th className="text-center">Tarj. rojas</th>
                             </thead>
                             <tbody ref={tbodyRef}>
 
