@@ -17,7 +17,6 @@ export default function RegistrarFichaje() {
     const [dniJugador, setDniJugador] = useState('');
     const [idCompeticionEquipoNuevo, setIdCompeticionEquipoNuevo] = useState('');
     const [idEquipoNuevo, setIdEquipoNuevo] = useState('');
-    const [fechaTraspaso, setFechaTraspaso] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [textoModal, setTextoModal] = useState('');
     const [modalError, setModalError] = useState(false);
@@ -174,13 +173,12 @@ export default function RegistrarFichaje() {
     const updateEquipoDelJugador = ( async (event) => {
 
         event.preventDefault();
-        console.log(idCompeticionEquipoAnterior, idEquipoAnterior, dniJugador, idCompeticionEquipoNuevo, idEquipoNuevo, fechaTraspaso)
         if (idEquipoAnterior === idEquipoNuevo){
             setModalError(true);
             setTextoModal("El equipo anterior y el nuevo equipo no pueden ser el mismo.");
             setShowModal(true);
         }else if (idCompeticionEquipoAnterior === "-" || idEquipoAnterior === "-" || dniJugador === "-" 
-            || idCompeticionEquipoNuevo === "-" || idEquipoNuevo === "-" || fechaTraspaso === ""){
+            || idCompeticionEquipoNuevo === "-" || idEquipoNuevo === "-"){
             setModalError(true);
             setTextoModal('Por favor, rellena todos los campos.');
             setShowModal(true);
@@ -190,7 +188,7 @@ export default function RegistrarFichaje() {
             parametros.append("dni_jugador", dniJugador);
             parametros.append("id_equipo_antiguo", idEquipoAnterior);
             parametros.append("id_equipo_nuevo", idEquipoNuevo);
-            parametros.append("fecha", fechaTraspaso);
+            // parametros.append("fecha", fechaTraspaso);
             let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarMovimiento.php",{
                 method : 'POST',
                 body : parametros        
@@ -201,7 +199,7 @@ export default function RegistrarFichaje() {
                 let respuesta = await response.json();
                 if (!respuesta.error){
 
-                    setModalError(true);
+                    setModalError(false);
                     setTextoModal(respuesta.datos);
                     setShowModal(true);
                     frmRegistrarMovimiento.current.reset();
@@ -243,10 +241,6 @@ export default function RegistrarFichaje() {
                     <select className="form-control shadow-none" ref={equiposCompeticionEquipoNuevoRef} onChange={(event) => setIdEquipoNuevo(event.target.value)} required>
 
                     </select>
-                </div>
-                <div className="my-2 row mx-0">
-                    <label className="form-label my-auto">Fecha del traspaso </label>
-                    <input type="date" className="form-control shadow-none" onChange={(event) => setFechaTraspaso(event.target.value)} required />
                 </div>
                 <div className="my-2 row mx-0">
                     <button className="btn1 col-5 col-sm-5 col-md-3 text-truncate p-2" onClick={updateEquipoDelJugador}>ACEPTAR</button>

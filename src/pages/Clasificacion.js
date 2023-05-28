@@ -21,7 +21,6 @@ export default function Clasificacion (){
     const [textoModal, setTextoModal] = useState('');
     const [modalError, setModalError] = useState(false);
 
-
     const getClasificacion = ( async (event) => {
        
         event.preventDefault();
