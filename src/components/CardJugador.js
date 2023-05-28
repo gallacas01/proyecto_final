@@ -159,9 +159,10 @@ export default function Card({ info, getJugadores }) {
         if (response.ok){
             
             let respuesta = await response.json();
-            if (!respuesta.error){
+            if (!respuesta.error && respuesta.datos.includes('correctamente')){
 
                 console.log("nuevos datos: ", datos);
+                getJugadores();
                 setActivarEdicion(false);
                 setVerDatos(true);
             }else{
@@ -174,9 +175,9 @@ export default function Card({ info, getJugadores }) {
     });
 
     return (
-        <div className='col-lg-3  p-1 my-1' ref={cardRef}>
+        <div className='col-lg-3 p-1 my-1' ref={cardRef}>
             <div className="card my-0 border-2 rounded-3">
-                <div className="card-body p-0" >
+                <div className="card-body p-0">
                     <div className="row mb-2 mx-auto text-center fs-5 p-lg-1 text-white" style={{ backgroundColor: '#182E3E' }}>
                         <p className='m-auto' ref={nombreJugadorRef}>{datos.nombre_completo.split(" ")[0]}</p>
                     </div>

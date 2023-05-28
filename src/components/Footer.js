@@ -1,22 +1,18 @@
 import '../css/bootstrap.css';
 import '../css/styles.css';
 
-export default function Footer() {
+export default function MyFooter() {
     return (
         <div className='container-fluid fs-5' id='footer'>
             <div className='row'>
                 <div className='col-auto mx-auto p-2'>
-                    <p className='my-auto'>Centro de estudio: I.E.S. Hermanos Machado</p>
+                    <p className='my-auto'>Centro de estudio: I.E.S. Hermanos Machado 
+                    || Ciclo: Desarrollo de aplicaciones Multiplataforma</p>
                 </div>
             </div>
             <div className='row'>
                 <div className='col-auto mx-auto p-2'>
-                    <p className='my-auto'>Ciclo: Desarrollo de aplicaciones Multiplataforma</p>
-                </div>
-            </div>
-            <div className='row'>
-                <div className='col-auto mx-auto p-2'>
-                    <p className='my-auto'>Trabajo realizado por Miguel Gallardo Castillo</p>
+                    <p className='my-auto'>Trabajo realizado por <span style={{color: "rgb(252, 224, 179)"}}>Miguel Gallardo Castillo</span> </p>
                 </div>
             </div>
             <div className='row'>

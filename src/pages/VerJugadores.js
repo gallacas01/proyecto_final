@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import CardJugador from './CardJugador';
+import CardJugador from '../components/CardJugador';
 import '../css/bootstrap.css';
 import '../css/styles.css';
-import MyModal from './Modal';
+import MyModal from '../components/Modal';
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {
@@ -71,14 +71,16 @@ export default function VerJugadores() {
             }          
     });
 
+    let porteros;
     let defensas;
     let centrocampistas;
     let delanteros;
     const getJugadores = ( async () => {
 
+        porteros = [];
         defensas = [];
         centrocampistas = [];
-        delanteros = [];
+        delanteros = [];       
         if (idCompeticion !== "-" && desplegableEquiposRef.current.value !== "-"){
 
             //Escribimos el nombre del equipo dentro del h2 del div donde se encuentran los jugadores.
@@ -114,17 +116,20 @@ export default function VerJugadores() {
                         console.log(info);
 
                         let cardJugador = <CardJugador  key={jugador.id_jugador} info={info} getJugadores={getJugadores} />
-                        if (jugador.posicion === "defensa"){
+                        if  (jugador.posicion === "Portero"){
+                            porteros.push(cardJugador);
+                        }else if (jugador.posicion === "Defensa"){
                             defensas.push(cardJugador);
-                        }else if (jugador.posicion === "centrocampista"){
+                        }else if (jugador.posicion === "Centrocampista"){
                             centrocampistas.push(cardJugador);
                         }else {
                             delanteros.push(cardJugador);
                         }
                     }
                     //Cambiamos el valor de esta variable de estado para que se muestren los jugadores.
-                    setJugadores([defensas,centrocampistas,delanteros]);
+                    setJugadores([porteros,defensas,centrocampistas,delanteros]);
                     containerJugadoresRef.current.classList.remove('d-none');
+                    console.log("Jugadores");
                     setJugadoresRecuperados(true);
                 }
             }
@@ -173,8 +178,8 @@ export default function VerJugadores() {
     return (
         <div className='container-fluid'>
             <div className='row'>
-                <form className="col-lg-9 mx-auto p-0">
-                    <div className="row mx-auto mt-lg-3">
+                <form className="col-lg-9 my-3 mx-auto p-0">
+                    <div className="row m-auto">
                         <label className="form-label my-auto text-lg-end col-lg-2 fs-4">Competición</label>
                         <div className="col-lg-3 p-0 my-auto">
                             <select className="form-select shadow-none" ref={desplegableCompeticionesRef} onChange={(event) => (handleChangeCompeticion(event))} required>
@@ -193,7 +198,7 @@ export default function VerJugadores() {
             </div>
 
             <div className='row'>
-                <div className='col-lg-9 mx-auto mt-lg-4 p-1 d-none' ref={containerJugadoresRef}>
+                <div className='col-lg-9 m-auto p-1 d-none' ref={containerJugadoresRef}>
                     <div className='row m-auto'> 
                         <div className='col-12 p-0'>
                             <h1 className="text-center mt-lg-1 p-2" ref={nombreEquipoRef} style={{color : 'rgb(252, 224, 179)', backgroundColor : "#182E3E"}}></h1>
@@ -202,12 +207,14 @@ export default function VerJugadores() {
                     <div className='row p-0 m-0'>
                         {jugadoresRecuperados &&
                             <>
+                                <h5 className='p-1 fs-4' id='tituloPosicion'>Porteros</h5>
+                                {jugadores[0]}  
                                 <h5 className='p-1 fs-4' id='tituloPosicion'>Defensas</h5>
-                                {jugadores[0]}                    
+                                {jugadores[1]}                    
                                 <h5 className='p-1 fs-4 mt-4' id='tituloPosicion'>Centrocampistas</h5>
-                                {jugadores[1]}
-                                <h5 className='p-1 fs-4 mt-4' id='tituloPosicion'>Delanteros</h5>
                                 {jugadores[2]}
+                                <h5 className='p-1 fs-4 mt-4' id='tituloPosicion'>Delanteros</h5>
+                                {jugadores[3]}
                             </>                      
                         }
                     

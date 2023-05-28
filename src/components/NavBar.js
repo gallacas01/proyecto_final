@@ -57,7 +57,7 @@ function BarraNavegacion({ datosNavBar }) {
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         {listaNavItem}
                         <li className='nav-item'>
-                            <button className='p-0 mt-2 fs-4' onClick={cerrarSesion} id='btnCerrarSesion'><i class="fa-solid fa-right-from-bracket"/></button>
+                            <button className='p-0 mt-2 fs-4' onClick={cerrarSesion} id='btnCerrarSesion'><i className="fa-solid fa-right-from-bracket"/></button>
                         </li>
                     </ul>
                 </div>

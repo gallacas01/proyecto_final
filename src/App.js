@@ -1,14 +1,14 @@
 import { BrowserRouter as Router, Route, Routes, BrowserRouter } from "react-router-dom";
 import ErrorPage from "./components/ErrorPage";
-import VerJugadores from "./components/VerJugadores";
-import Equipos from "./components/VerEquipos";
+import VerJugadores from "./pages/VerJugadores";
+import Equipos from "./pages/VerEquipos";
 import Movimientos from "./components/Movimientos";
 import Estadisticas from "./components/Estadisticas";
-import Panel from "./components/PanelDeRegistro";
-import Clasificacion from "./components/Clasificacion";
-import LoginScreen from "./components/SignIn";
-import SignUpScreen from "./components/SignUp";
-import Inicio from "./components/Inicio";
+import Panel from "./pages/PanelDeRegistro";
+import Clasificacion from "./pages/Clasificacion";
+import LoginScreen from "./pages/SignIn";
+import SignUpScreen from "./pages/SignUp";
+import Inicio from "./pages/Inicio";
 import NavBar from "./components/NavBar";
 
 export default function App() {

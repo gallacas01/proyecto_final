@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import '../css/bootstrap.css';
 import '../css/styles.css';
-import MyModal from "./Modal";
+import MyModal from "../components/Modal";
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {
@@ -112,7 +112,7 @@ export default function Clasificacion (){
                 }else{
                     if (respuesta.datos.length === 0){
                         setModalError(false);
-                        setTextoModal('No hay equipos registrados en esa competición.');
+                        setTextoModal('Aún no se han jugado partidos en esa competición.');
                     }else{
                         setModalError(true);
                         setTextoModal(respuesta.datos);
@@ -178,15 +178,17 @@ export default function Clasificacion (){
                 <div className="col-lg-9 p-0 m-0 mx-auto">
                     <table className="table">
                         <thead>
-                            <th className="text-center">Pos</th>
-                            <th className="text-center">Equipo</th>
-                            <th className="text-center">Puntos</th>
-                            <th className="text-center">P. J.</th>
-                            <th className="text-center">V </th>
-                            <th className="text-center">E</th>
-                            <th className="text-center">D</th>
-                            <th className="text-center">G.F.</th>
-                            <th className="text-center">G.C.</th>
+                            <tr>
+                                <th className="text-center">Pos</th>
+                                <th className="text-center">Equipo</th>
+                                <th className="text-center">Puntos</th>
+                                <th className="text-center">P. J.</th>
+                                <th className="text-center">V </th>
+                                <th className="text-center">E</th>
+                                <th className="text-center">D</th>
+                                <th className="text-center">G.F.</th>
+                                <th className="text-center">G.C.</th>
+                            </tr>
                         </thead>
                         <tbody ref={tbodyRef}>
 

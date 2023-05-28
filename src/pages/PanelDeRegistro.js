@@ -1,15 +1,17 @@
 import { useState } from "react";
-import FrmRegistrarEquipo from "./FrmRegistrarEquipo";
-import FrmRegistrarJugador from "./FrmRegistrarJugador";
-import FrmRegistrarPartido from "./FrmRegistrarPartido";
-import FrmRegistrarCompeticion from "./FrmRegistrarCompeticion";
-import FrmRegistrarMovimiento from "./FrmRegistrarFichaje";
+import FrmRegistrarEquipo from "../components/FrmRegistrarEquipo";
+import FrmRegistrarJugador from "../components/FrmRegistrarJugador";
+import FrmRegistrarPartido from "../components/FrmRegistrarPartido";
+import FrmRegistrarCompeticion from "../components/FrmRegistrarCompeticion";
+import FrmRegistrarMovimiento from "../components/FrmRegistrarFichaje";
 import '../css/bootstrap.css';
 import '../css/styles.css';
+import MyFooter from "../components/Footer";
 
 export default function Panel(){
 
     const [frmActual, setFrmActual] = useState(null);
+    const [showFooter, setShowFooter] = useState(null);
 
     //Funciones
     const showFrmRegistrarCompeticion = ( () => {
@@ -45,7 +47,7 @@ export default function Panel(){
                 <div className="row mt-lg-3 p-1"> 
                     <div className="col-10 mx-auto p-0">
                         <div className="container-fluid">
-                            <div className="row p-0" style={{borderBottom : "3px solid #182E3E"}}>
+                            <div className="row p-0" style={{borderBottom : "3px solid #182E3E"}} onClick={() => setShowFooter(true)}>
                                 <div className="col-xs-12 col-sm-6 col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarCompeticion}> Registrar competición </button></div>     
                                 <div className="col-xs-12 col-sm-6 col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarEquipo}> Registrar equipo </button></div> 
                                 <div className="col-xs-12 col-sm-6 col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarJugador}> Registrar jugador </button></div> 
@@ -61,8 +63,10 @@ export default function Panel(){
                         {frmActual}
                     </div>
                 </div>
-
-            </div>            
+            </div>  
+            <div className={showFooter ? "" : 'd-none'}>
+                <MyFooter />   
+            </div>                  
         </>
 
     );

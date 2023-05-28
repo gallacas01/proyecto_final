@@ -111,22 +111,24 @@ export default function Estadisticas(){
                         <button className="text-center p-3 btn1 w-100 mt-2 mb-3" onClick={() => setCriterioDeOrdenacion('goles')}> <IconBallFootball size={'42'} /> </button>
                         <button className="text-center p-3 btn1 w-100 mb-3" onClick={() => setCriterioDeOrdenacion('asistencias')}> <IconShoe size={'42'} /> </button>
                         <button className="text-center p-1 btn1 w-100 mb-3" onClick={() => setCriterioDeOrdenacion('tarjetas_amarillas')}> 
-                            <img src="https://www.iconpacks.net/icons/1/free-yellow-card-icon-489-thumb.png"  className="mt-2" width={'55px'} height={'55px'} alt="Yellow Card" />
+                            <img src={tarjeta_amarilla}  className="mt-2" width={'55px'} height={'55px'} alt="Yellow Card" />
                         </button>
                         <button className="text-center p-1 btn1 w-100 mb-3" onClick={() => setCriterioDeOrdenacion('tarjetas_rojas')}> 
-                            <img src="https://www.iconpacks.net/icons/1/free-red-card-icon-460-thumb.png" className="mt-2" width={'55px'} height={'55px'} alt="Red Card" />
+                            <img src={tarjeta_roja} className="mt-2" width={'55px'} height={'55px'} alt="Red Card" />
                         </button>            
                     </div>
                     <div className="col-10">
                         <table className="table p-0 d-none" ref={tableRef}>
                             <thead>
-                                <th className="text-center">Jugador</th>
-                                <th className="text-center">Nombre</th>
-                                <th className="text-center">Posición</th>
-                                <th className="text-center">Goles</th>
-                                <th className="text-center">Asistencias</th>
-                                <th className="text-center">Tarj. amarillas </th>
-                                <th className="text-center">Tarj. rojas</th>
+                                <tr>
+                                    <th className="text-center">Jugador</th>
+                                    <th className="text-center">Nombre</th>
+                                    <th className="text-center">Posición</th>
+                                    <th className="text-center">Goles</th>
+                                    <th className="text-center">Asistencias</th>
+                                    <th className="text-center">Tarj. amarillas </th>
+                                    <th className="text-center">Tarj. rojas</th>
+                                </tr>
                             </thead>
                             <tbody ref={tbodyRef}>
 

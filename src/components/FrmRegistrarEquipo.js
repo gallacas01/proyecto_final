@@ -3,16 +3,14 @@ import '../css/bootstrap.css';
 import '../css/styles.css';
 import MyModal from "./Modal";
 
-
 export default function FrmRegistrarEquipo() {
 
     //Variables de estado
     const [file, setFile] = useState(null);
-    const frmRegistrarEquipoRef = useRef(null);
     const [showModal, setShowModal] = useState(false);
     const [textoModal, setTextoModal] = useState('');
     const [modalError, setModalError] = useState(false);
-
+    const frmRegistrarEquipoRef = useRef(null);
 
     function handleChangeFile(file) {
 
@@ -71,7 +69,7 @@ export default function FrmRegistrarEquipo() {
     return (
 
         <>
-            <form className="bg-transparent p-0" ref={frmRegistrarEquipoRef}>
+            <form className="bg-transparent p-0 mb-3" ref={frmRegistrarEquipoRef}>
                 <h3 className="text-center mt-2 fs-2">Datos del equipo </h3>
                 <div className="my-2 row mx-0">
                     <label htmlFor="txtNombreEquipo" className="form-label">Nombre</label>
@@ -91,7 +89,7 @@ export default function FrmRegistrarEquipo() {
                 </div>
                 <button className="btn1 p-lg-2 col-lg-3" onClick={guardarEquipoEnBD} >GUARDAR </button>
             </form>
-            <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />                         
+            <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />  
         </>
     );
 }

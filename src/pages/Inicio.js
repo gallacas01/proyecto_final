@@ -1,4 +1,4 @@
-import Footer from "./Footer";
+import Footer from "../components/Footer";
 import '../css/bootstrap.css';
 import '../css/styles.css';
 import img_balon from "../img/imagen_balon.png";

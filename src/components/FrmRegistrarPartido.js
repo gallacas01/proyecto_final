@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import '../css/bootstrap.css';
 import '../css/styles.css';
 import MyModal from "./Modal";
+import { SettingsPhoneSharp } from "@mui/icons-material";
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {
@@ -83,18 +84,6 @@ function Evento({ info }) {
         rellenarDesplegableJugadores();
     }, [info.jugadores]); //Si se produce un cambio en la variable info.jugadores que pasa del componente padre al hijo, se ejecuta el useState.
 
-    // useEffect(() => {        
-
-    //     //Si no se ha aceptado el evento, se preguntará al usuario si desea aceptarlo.
-    //     if (info.guardarDatosEnBD === true && eventoAceptado === false){           
-    //             info.eliminarEvento();
-    //     }else if (info.guardarDatosEnBD === true && eventoAceptado === true){
-    //         registrarEvento();
-    //     }
-
-    // }, [info.guardarDatosEnBD]);
-
-
     return (
         <div className="my-2 row mx-0" id={info.numEvento}>
             <div className="container-fluid">
@@ -151,11 +140,10 @@ export default function FrmRegistrarPartido() {
     const [estadioEquipoLocal, setEstadioEquipoLocal] = useState('');
     const [idEquipoLocal, setIdEquipoLocal] = useState('');
     const [idEquipoVisitante, setIdEquipoVisitante] = useState('');
-    const [guardarDatosEnBD, setGuardarDatosEnBD] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [textoModal, setTextoModal] = useState('');
     const [modalError, setModalError] = useState(false);
-    const [idPartidoActual, setIdPartidoActual] = useState('');
+    // const [idPartidoActual, setIdPartidoActual] = useState('');
 
     //Referencias al DOM
     const formRef = useRef(null);
@@ -244,7 +232,7 @@ export default function FrmRegistrarPartido() {
         event.preventDefault();
         //Pasamos a cada componente evento el método que elimina el evento del componente principal,
         //el método que maneja el cambio de equipo, y los jugadores de los equipos seleccionados.
-        const info = {eliminarEvento, jugadores, guardarDatosEnBD, infoEventos};
+        const info = {eliminarEvento, jugadores, infoEventos};
         setEventos([...eventos, <Evento key={eventos.length} info={info} />]);
     });
 
@@ -322,23 +310,8 @@ export default function FrmRegistrarPartido() {
             }
         }//Fin de la función.
 
-        async function getIdPartido (){
-
-            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getUltimoIdDePartido.php");
-            if (response.ok){
-    
-                let respuesta = await response.json();
-                if (!respuesta.error){
-                    let ultimoId = parseInt(respuesta.datos.id_partido) + 1;
-                    console.log("Último id: ", ultimoId);
-                    setIdPartidoActual(ultimoId);
-                }
-            }
-        }
-
         rellenarDesplegableCompeticiones();
         rellenarDesplegableEquipos();
-        getIdPartido();
     }, []);
 
     //UseEffect que hará que se renderice el componente sólo cuando cuando se produzca un cambio en alguna
@@ -356,15 +329,33 @@ export default function FrmRegistrarPartido() {
         actualizarJugadoresDeAmbosEquipos();
     }, [jugadoresEquipoLocal, jugadoresEquipoVisitante]);
 
+    async function getUltimoIdPartido (){
+
+        let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getUltimoIdDePartido.php");
+        if (response.ok){
+
+            let respuesta = await response.json();
+            if (!respuesta.error){
+
+                console.log("ÚLTIMO ID DE PARTIDO: ", respuesta.datos.id_partido);
+                return respuesta.datos.id_partido;
+                // let ultimoId = parseInt(respuesta.datos.id_partido) + 1;
+                // console.log("Último id: ", ultimoId);
+                // setIdPartidoActual(ultimoId);
+            }
+        }
+    }
+
     async function registrarEventos(){
             
+        let idPartido = await getUltimoIdPartido();
         for  (let evento of infoEventos){
     
             console.log("DATOS DEL EVENTO: ", evento);
             let parametros = new FormData();
-            parametros.append("id_partido", idPartidoActual);
+            parametros.append("id_partido", idPartido);
             parametros.append("id_jugador", evento.idJugador);
-            parametros.append("tipo", evento.idJugador);
+            parametros.append("tipo", evento.tipo);
 
             let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarEvento.php", {
                 method: 'POST',
@@ -394,7 +385,8 @@ export default function FrmRegistrarPartido() {
         let golesEquipoLocal = golesEquipoLocalRef.current.value;
         let golesEquipoVisitante = golesEquipoVisitanteRef.current.value;
 
-        if (idCompeticion !== "-" && idEquipoLocal !== "-" && idEquipoVisitante !== "-") {
+        if (idCompeticion !== "-" && idEquipoLocal !== "-" && idEquipoVisitante !== "-" && fecha !== "-" 
+            && golesEquipoLocal !== "-" && golesEquipoVisitante !== "-") {
 
             if (idEquipoLocal === idEquipoVisitante) {
                 setModalError(true);
@@ -422,9 +414,11 @@ export default function FrmRegistrarPartido() {
                     if (!respuesta.error){                        
                         //Si el partido se ha guardado correctamente, guardamos los eventos en la bbd.
                         registrarEventos();
-                        setIdPartidoActual(parseInt(idPartidoActual) + 1);
                         setEventos([]);
                         setInfoEventos([]);
+                        setTextoModal("El partido ha sido registrado correctamente.");
+                        setModalError(false);
+                        SettingsPhoneSharp(true);
                         formRef.current.reset();
                     }
                 }
@@ -487,7 +481,7 @@ export default function FrmRegistrarPartido() {
                 
 
                 <div className="my-2 row mx-0">
-                    <button className="btn1 p-lg-2 col-3" onClick={registrarPartido}>GUARDAR</button>
+                    <button className="btn1 p-lg-2 col-3" onClick={registrarPartido}>ACEPTAR</button>
                     <div className="col"></div>
                     <button className="btn1 p-lg-2 col-3" onClick={(event) => incNumEventos(event)}>EVENTO <i className="fa-solid fa-flag ms-lg-1"></i></button>
                 </div>

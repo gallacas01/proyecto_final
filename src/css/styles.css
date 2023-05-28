@@ -25,6 +25,11 @@ nav{
     background-color: #182E3E;
 }
 
+/* .navbar-brand:hover,.nav-link:hover{
+    border-bottom: 0.23rem solid rgb(252, 224, 179);
+    color: white;
+} */
+
 .navbar-brand:hover,.nav-link:hover, .navbar-brand:active,.nav-link:active,.navbar-brand:focus,.nav-link:focus{
     border-bottom: 0.23rem solid rgb(252, 224, 179);
     color: white;
@@ -50,7 +55,7 @@ nav{
 input[type="text"]::placeholder {
     color: #182E3E;
     opacity:0.7;
-  }
+}
 
 .btn1, .btnAceptarEvento, .btnEliminarEvento{
     border-color: transparent;
@@ -85,7 +90,6 @@ input[type="text"]::placeholder {
 }
 
 
-
 /* Botones del componente Panel de control */
 .btnShowFrm{
     border: 2px solid#182E3E;
@@ -102,6 +106,10 @@ input[type="text"]::placeholder {
     color: #182E3E;
     border-color: #182E3E;
     text-decoration: none;
+}
+
+h3{
+    
 }
 
 /* Titulo de la posición de los jugadores en Ver Jugadores */
@@ -126,11 +134,12 @@ input[type="text"]::placeholder {
 
 .card{
     border: 2px solid #182E3E;
+    height: 100%;
 }
 
 .card img{
     width: 100%;
-    max-height: 13em;
+    height: 13em;
 }
 
 /* Modal */
@@ -139,13 +148,7 @@ input[type="text"]::placeholder {
     color: white;
 }
 
-/* .tituloForm{
-    border-bottom: 0.25rem solid #182E3E;
-    border-left: 0.25rem solid #182E3E;
-    border-right: 0.25rem solid #182E3E;
- 
-} */
-
+/* Footer */
 #footer{
     color: white;
     background-color: #182E3E;
