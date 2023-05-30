@@ -11,6 +11,9 @@ export default function FrmRegistrarEquipo() {
     const [textoModal, setTextoModal] = useState('');
     const [modalError, setModalError] = useState(false);
     const frmRegistrarEquipoRef = useRef(null);
+    const nombreEquipoRef = useRef(null);
+    const estadioRef = useRef(null);
+    const fechaFundacionRef = useRef(null);
 
     function handleChangeFile(file) {
 
@@ -27,9 +30,9 @@ export default function FrmRegistrarEquipo() {
             reader.onloadend = async () => {
                 let base64Imagen = reader.result.replace('data:', '').replace(/^.+,/, '');
 
-                let nombreEquipo = document.getElementById('txtNombreEquipo').value;
-                let estadio = document.getElementById('txtNombreEstadio').value;
-                let fechaFundacion = document.getElementById('txtFechaFundacion').value;
+                let nombreEquipo = nombreEquipoRef.current.value;
+                let estadio = estadioRef.current.value;
+                let fechaFundacion = fechaFundacionRef.current.value;
                 let parametros = new FormData();
                 parametros.append("nombre", nombreEquipo);
                 parametros.append("estadio", estadio);
@@ -69,25 +72,33 @@ export default function FrmRegistrarEquipo() {
     return (
 
         <>
-            <form className="bg-transparent p-0 mb-3" ref={frmRegistrarEquipoRef}>
-                <h3 className="text-center mt-2 fs-2">Datos del equipo </h3>
-                <div className="my-2 row mx-0">
-                    <label htmlFor="txtNombreEquipo" className="form-label">Nombre</label>
-                    <input type="text" className="form-control shadow-none" id="txtNombreEquipo" minLength={5} maxLength={40}required />
+            <form className="p-0 mb-3" ref={frmRegistrarEquipoRef}>
+            <div className="row">
+                    <div className="col-12">
+                        <h2 className="text-center mt-1">Datos del equipo</h2>
+                    </div>
                 </div>
                 <div className="my-2 row mx-0">
-                    <label htmlFor="txtNombreEstadio" className="form-label">Estadio </label>
-                    <input type="text" className="form-control shadow-none" id="txtNombreEstadio" minLength={8} maxLength={40} required />
+                    <label className="form-label my-auto">Nombre</label>
+                    <input type="text" className="form-control shadow-none" ref={nombreEquipoRef} minLength={5} maxLength={40}required />
                 </div>
                 <div className="my-2 row mx-0">
-                    <label htmlFor="txtFechaFundacion" className="form-label">Fecha de fundación </label>
-                    <input type="date" className="form-control shadow-none" id="txtFechaFundacion" min={0} required />
+                    <label className="form-label my-auto col-12">Estadio </label>
+                    <input type="text" className="form-control shadow-none col-12" ref={estadioRef} minLength={8} maxLength={40} required />
                 </div>
                 <div className="my-2 row mx-0">
-                    <label htmlFor="fileEscudo" className="form-label">Escudo</label>
-                    <input type="file" className="form-control shadow-none"  onChange={(event) => handleChangeFile(event.target.files[0])} required />
+                    <label className="form-label my-auto col-12">Fecha de fundación </label>
+                    <input type="date" className="form-control shadow-none col-12" ref={fechaFundacionRef} min={0} maxLength={10} required />
                 </div>
-                <button className="btn1 p-lg-2 col-lg-3" onClick={guardarEquipoEnBD} >GUARDAR </button>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto col-12">Escudo</label>
+                    <input type="file" className="form-control shadow-none col-12" onChange={(event) => handleChangeFile(event.target.files[0])} required />
+                </div>
+                <div className="row">
+                    <div className="col-12 col-sm-4 col-md-3 col-lg-3">
+                        <button className="btn1 text-truncate p-1 w-100 p-lg-2" onClick={guardarEquipoEnBD}>ACEPTAR </button>
+                    </div>
+                </div>
             </form>
             <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />  
         </>

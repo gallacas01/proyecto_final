@@ -2,8 +2,7 @@ import { BrowserRouter as Router, Route, Routes, BrowserRouter } from "react-rou
 import ErrorPage from "./components/ErrorPage";
 import VerJugadores from "./pages/VerJugadores";
 import Equipos from "./pages/VerEquipos";
-import Movimientos from "./components/Movimientos";
-import Estadisticas from "./components/Estadisticas";
+import Estadisticas from "./pages/Estadisticas";
 import Panel from "./pages/PanelDeRegistro";
 import Clasificacion from "./pages/Clasificacion";
 import LoginScreen from "./pages/SignIn";
@@ -21,11 +20,10 @@ export default function App() {
           <Route path="/register" element={<SignUpScreen />} />
           <Route path="/ver_jugadores" element={<VerJugadores />} />
           <Route path="/ver_equipos" element={<Equipos />} />
-          <Route path="/movimientos" element={<Movimientos />} />
           <Route path="/clasificacion" element={<Clasificacion />} />
           <Route path="/estadisticas" element={<Estadisticas />} />
           <Route path="/panel_de_registro" element={<Panel />} />
-          <Route path="*" element={<ErrorPage />} />
+          <Route path="*" element={<LoginScreen />} />
         </Routes>
     </>
   );

@@ -1,8 +1,9 @@
 export default function CardEquipo({info}){
 
     return(
+
         <div className='col-lg-3 p-1 my-1'>
-            <div className="card my-0 border-2 rounded-3">
+            <div className="card my-0 rounded-3">
                 <div className="card-body fs-5 p-0">
 
                    <div className="row mx-auto">
@@ -12,7 +13,7 @@ export default function CardEquipo({info}){
                     </div>
                     <div className="row mx-auto p-1">
                         <div className="col-12">
-                            <p className="m-auto">Nombre del club: {info.nombre}</p>
+                            <p className="m-auto">Nombre: {info.nombre}</p>
                         </div>
                     </div>
                     <div className="row mx-auto p-1">

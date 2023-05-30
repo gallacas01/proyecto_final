@@ -45,21 +45,21 @@ export default function Panel(){
         <>
             <div className="container">
                 <div className="row mt-lg-3 p-1"> 
-                    <div className="col-10 mx-auto p-0">
+                    <div className="col-11 col-sm-12 col-md-11 col-lg-10 mx-auto p-0">
                         <div className="container-fluid">
                             <div className="row p-0" style={{borderBottom : "3px solid #182E3E"}} onClick={() => setShowFooter(true)}>
-                                <div className="col-xs-12 col-sm-6 col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarCompeticion}> Registrar competición </button></div>     
-                                <div className="col-xs-12 col-sm-6 col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarEquipo}> Registrar equipo </button></div> 
-                                <div className="col-xs-12 col-sm-6 col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarJugador}> Registrar jugador </button></div> 
-                                <div className="col-xs-12 col-sm-6 col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarPartido}> Registrar partido </button></div>        
-                                <div className="col-xs-12 col-sm-6 col-md-6 mx-sm-auto col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarMovimiento}> Registrar fichaje </button></div>        
+                                <div className="col-xs-12 col-sm-4 col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 h-100 w-100 rounded-2" onClick={showFrmRegistrarCompeticion}> Registrar torneo </button></div>     
+                                <div className="col-xs-12 col-sm-4 col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarEquipo}> Registrar equipo </button></div> 
+                                <div className="col-xs-12 col-sm-4 col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarJugador}> Registrar jugador </button></div> 
+                                <div className="col-xs-12 col-sm-4 ms-sm-auto col-md-6 col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarPartido}> Registrar partido </button></div>        
+                                <div className="col-xs-12 col-sm-4 me-sm-auto col-md-6 mx-md-auto col-lg p-1 fs-5"> <button className="btnShowFrm p-2 w-100 rounded-2" onClick={showFrmRegistrarMovimiento}> Registrar fichaje </button></div>        
                             </div>
                         </div>
                     </div>    
                 </div>
 
                 <div className="row">
-                    <div className="col-10 col-lg-6 mx-auto">
+                    <div className="col-11 col-sm-10 col-md-8 col-lg-7 mx-auto">
                         {frmActual}
                     </div>
                 </div>

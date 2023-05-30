@@ -5,7 +5,7 @@ import '../css/bootstrap.css';
 import '../css/styles.css';
 import tarjeta_amarilla from '../img/tarjeta_amarilla.png';
 import tarjeta_roja from '../img/tarjeta_roja.png';
-import MyModal from "./Modal";
+import MyModal from "../components/Modal";
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {
@@ -150,11 +150,9 @@ export default function Estadisticas(){
 
         let idCompeticion = desplegableCompeticionesRef.current.value;
         if (idCompeticion !== "-"){
-
             getEstadisticas(idCompeticion, criterioDeOrdenacion);
         }else{
-            console.log(idCompeticion, "||", criterioDeOrdenacion);
-            setTextoModal("Por favor, selecciona una competición");
+            setTextoModal("Por favor, selecciona una competición.");
             setModalError(true);
             setShowModal(true);
         }
@@ -166,12 +164,12 @@ export default function Estadisticas(){
         <>
             <div className="container">
                 <div className="row">
-                    <form className="col-lg-6 mx-auto my-3 p-0">
+                    <form className="col-lg-5 mx-auto my-3 p-0">
                         <div className="row m-auto">
-                            <div className="col-2 text-start p-0">                        
-                                <label className="form-label mt-1">Competición</label>
+                            <div className="col-3 text-center p-0">                        
+                                <label className="form-label my-auto">Competición</label>
                             </div>
-                            <div className="col-8 p-0 my-auto">
+                            <div className="col p-0 my-auto">
                                 <select className="form-select shadow-none" ref={desplegableCompeticionesRef} required>
 
                                 </select>

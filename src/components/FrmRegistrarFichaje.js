@@ -203,6 +203,7 @@ export default function RegistrarFichaje() {
                     setTextoModal(respuesta.datos);
                     setShowModal(true);
                     frmRegistrarMovimiento.current.reset();
+                    
                 }
             }
         }
@@ -211,7 +212,7 @@ export default function RegistrarFichaje() {
     return(
         <>
             <form  className="mb-3" ref={frmRegistrarMovimiento}>
-                <h3 className="text-center mt-1 fs-2">Datos del fichaje</h3>
+                <h2 className="text-center mt-1 fs-2">Datos del fichaje</h2>
                 <div className="my-2 row mx-0">
                     <label className="form-label my-auto">Liga del equipo anterior</label>             
                     <select className="form-control shadow-none" ref={competicionesEquipoAnteriorRef} onChange={(event ) => setIdCompeticionEquipoAnterior(event.target.value)} required>
@@ -242,8 +243,10 @@ export default function RegistrarFichaje() {
 
                     </select>
                 </div>
-                <div className="my-2 row mx-0">
-                    <button className="btn1 col-5 col-sm-5 col-md-3 text-truncate p-2" onClick={updateEquipoDelJugador}>ACEPTAR</button>
+                <div className="row">
+                    <div className="col-12 col-sm-4 col-md-3 col-lg-3">
+                        <button className="btn1 text-truncate p-1 w-100 p-lg-2" onClick={updateEquipoDelJugador}>ACEPTAR </button>
+                    </div>
                 </div>
                 <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />   
             </form>

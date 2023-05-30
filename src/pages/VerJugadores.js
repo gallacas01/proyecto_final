@@ -15,7 +15,6 @@ function createOptionElement(value, textContent) {
 
 export default function VerJugadores() {
 
-    const [idCompeticion, setIdCompeticion] = useState('');
     const [jugadoresRecuperados, setJugadoresRecuperados] = useState(false);
     const [jugadores,setJugadores] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -60,28 +59,29 @@ export default function VerJugadores() {
         let optionSeleccionado = event.target.options[event.target.selectedIndex];
         let id = optionSeleccionado.value;
 
-            console.log("ID de la competición antes" + idCompeticion);
-            setIdCompeticion(id);   
-            console.log("ID de la competición despues" + idCompeticion);
-
-            if (id !== "-"){
-                /*Cuando cambie la competición y adopte un valor válido, se recuperarán aquellos equipos
-                pertenecientes a esa competicion. */
-                rellenarDesplegableEquipos(id);
-            }          
+        if (id !== "-"){
+            rellenarDesplegableEquipos(id);
+        }   
     });
 
     let porteros;
     let defensas;
     let centrocampistas;
     let delanteros;
-    const getJugadores = ( async () => {
+    const getJugadores = ( async (event) => {
 
+        event.preventDefault();
         porteros = [];
         defensas = [];
         centrocampistas = [];
         delanteros = [];       
-        if (idCompeticion !== "-" && desplegableEquiposRef.current.value !== "-"){
+
+        let idCompeticion = desplegableCompeticionesRef.current.value;
+        let idEquipo = desplegableEquiposRef.current.value;
+
+        console.log("ID de la competición", idCompeticion);
+        console.log("ID del equipo", idEquipo);
+        if (idCompeticion !== "-" && idEquipo !== "-"){
 
             //Escribimos el nombre del equipo dentro del h2 del div donde se encuentran los jugadores.
             let nombreDelEquipo = desplegableEquiposRef.current.options[desplegableEquiposRef.current.selectedIndex].textContent;
@@ -138,8 +138,7 @@ export default function VerJugadores() {
 
             if (idCompeticion === "-"){
                 setTextoModal("Selecciona una competición.");
-            }
-            if (desplegableEquiposRef.current.value === "-" ){
+            }else if (idEquipo === "-" ){
                 setTextoModal("Selecciona un equipo.");
             }
             setModalError(true);
@@ -178,43 +177,61 @@ export default function VerJugadores() {
     return (
         <div className='container-fluid'>
             <div className='row'>
-                <form className="col-lg-9 my-3 mx-auto p-0">
-                    <div className="row m-auto">
-                        <label className="form-label my-auto text-lg-end col-lg-2 fs-4">Competición</label>
-                        <div className="col-lg-3 p-0 my-auto">
-                            <select className="form-select shadow-none" ref={desplegableCompeticionesRef} onChange={(event) => (handleChangeCompeticion(event))} required>
+                <form className="col-9 col-sm-12 col-md-9 col-lg-9 my-4 mx-auto ms-sm-1 ms-md-auto">
+                    <div className="row">
+                        <div className='col-12 col-sm-auto col-md-auto fs-4 ms-lg-4 text-start text-sm-end'>
+                            <label className='my-auto'>Competición</label>
+                        </div>
+                        <div className="col-12 col-sm-3 p-0 my-auto">
+                            <select className="form-select shadow-none p-1" ref={desplegableCompeticionesRef} onChange={handleChangeCompeticion} required>
 
                             </select>
                         </div>
-                        <label className="form-label my-auto text-lg-end col-lg-2 fs-4">Equipo</label>
-                        <div className="col-lg-3 p-0 my-auto">
-                            <select className="form-select shadow-none" ref={desplegableEquiposRef} required>
+                        <div className='col-12 col-sm-2 text-start text-sm-end fs-4'>
+                            <label className="form-label my-auto">Equipo</label>
+                        </div>                        
+                        <div className="col-12 col-sm-3 p-0 my-auto">
+                            <select className="form-select shadow-none p-1" ref={desplegableEquiposRef} required>
 
                             </select>
                         </div>
-                    <button className="btn1 ms-lg-3 col-lg-1" onClick={ (event) => {event.preventDefault(); getJugadores();}}><i className="bi bi-search fs-4"></i></button>  
+                        <div className='col-12 col-sm-1 mx-auto mt-2 mt-sm-0 ms-sm-3 p-0'>                    
+                            <button className="btn1 w-100" onClick={(event) => getJugadores(event)} ><i className="bi bi-search fs-4"></i></button>  
+                        </div>
                     </div>
                 </form>
             </div>
 
             <div className='row'>
-                <div className='col-lg-9 m-auto p-1 d-none' ref={containerJugadoresRef}>
+                <div className='col-9 m-auto p-1 d-none' ref={containerJugadoresRef}>
                     <div className='row m-auto'> 
                         <div className='col-12 p-0'>
                             <h1 className="text-center mt-lg-1 p-2" ref={nombreEquipoRef} style={{color : 'rgb(252, 224, 179)', backgroundColor : "#182E3E"}}></h1>
                         </div>
                     </div>
-                    <div className='row p-0 m-0'>
+                    <div className='row p-0 mx-auto'>
                         {jugadoresRecuperados &&
                             <>
-                                <h5 className='p-1 fs-4' id='tituloPosicion'>Porteros</h5>
-                                {jugadores[0]}  
-                                <h5 className='p-1 fs-4' id='tituloPosicion'>Defensas</h5>
-                                {jugadores[1]}                    
-                                <h5 className='p-1 fs-4 mt-4' id='tituloPosicion'>Centrocampistas</h5>
-                                {jugadores[2]}
-                                <h5 className='p-1 fs-4 mt-4' id='tituloPosicion'>Delanteros</h5>
-                                {jugadores[3]}
+                                <div className='col-12 p-0 mx-auto m-sm-0'>
+                                    <h5 className='p-1 fs-4' id='tituloPosicion'>Porteros</h5>
+                                </div>                                
+                                {jugadores[0]}                                
+
+                                <div className='col-12 p-0 mx-auto m-sm-0'>
+                                    <h5 className='p-1 fs-4' id='tituloPosicion'>Defensas</h5>
+                                </div>                                
+                                {jugadores[1]}                                
+
+                                <div className='col-12 p-0 mx-auto m-sm-0'>
+                                    <h5 className='p-1 fs-4' id='tituloPosicion'>Centrocampistas</h5>
+                                </div>                               
+                                {jugadores[2]}                             
+
+                                <div className='col-12 p-0 mx-auto m-sm-0'>
+                                    <h5 className='p-1 fs-4' id='tituloPosicion'>Delanteros</h5>
+                                </div>                               
+                                {jugadores[3]} 
+                                
                             </>                      
                         }
                     

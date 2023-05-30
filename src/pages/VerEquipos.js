@@ -98,8 +98,8 @@ export default function Equipos(){
             <div className="row p-0">
                 <form className="col-lg-6 mx-auto my-3 p-0">
                     <div className="row m-auto">
-                        <div className="col-2 text-start p-0">                        
-                            <label className="form-label">Competición</label>
+                        <div className="col-2 text-start p-1">                        
+                            <label className="form-label m-auto">Competición</label>
                         </div>
                         <div className="col-8 p-0 my-auto">
                             <select className="form-select shadow-none" ref={desplegableCompeticionesRef} onChange={(event) => setIdCompeticion(event.target.value)} required>

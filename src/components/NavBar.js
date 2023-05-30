@@ -48,9 +48,9 @@ function BarraNavegacion({ datosNavBar }) {
     });
 
     return (
-        <nav className={`navbar navbar-expand-lg ${currentPath === '/' || currentPath === '/register' ? 'd-none' : ''}`}>
-            <div className="container-fluid">
-                <button className="navbar-toggler mb-2 text-light" style={{backgroundColor : "#f0f0f0"}} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <nav className={`navbar navbar-expand-md p-0 ${currentPath === '/' || currentPath === '/register' ? 'd-none' : ''}`}>
+            <div className="container-fluid p-1">
+                <button className="navbar-toggler mb-2 text-light mt-2" style={{backgroundColor : "#f0f0f0"}} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"/>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -88,22 +88,14 @@ export default function NavBar() {
                 url : "/inicio"
             },
             {
+                id: "equipos",
+                titulo: "Equipos",
+                url : "/ver_equipos"
+            },
+            {
                 id: "jugadores",
                 titulo: "Jugadores",
                 url : "/ver_jugadores"
-            },
-            //Si el usuario que ha iniciado sesión es el admin, se añaden más enlaces a la NavBar
-            user.uid === "CPifWKxzLqPFg3N8hIauBdhf3lT2" ?
-                {
-                    id: "equipos",
-                    titulo: "Equipos",
-                    url : "/ver_equipos"
-                } : {},
-
-            {
-                url: "/movimientos",
-                id: "movimientos",
-                titulo: "Movimientos"
             },
             {
                 url : "/estadisticas",
@@ -115,6 +107,7 @@ export default function NavBar() {
                 titulo: "Clasificación",
                 url : "/clasificacion"
             },
+            //Si el usuario que ha iniciado sesión es el admin, se añaden más enlaces a la NavBar
             user.uid === "CPifWKxzLqPFg3N8hIauBdhf3lT2" ?
                 {
                     url : "/panel_de_registro",

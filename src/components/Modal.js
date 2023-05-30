@@ -15,20 +15,19 @@ export default function MyModal({showModal, setShowModal, tipo, texto}) {
         centered
       >
        
-       <div className='container-fluid p-0 w-100'> 
+       <div className='container p-0'> 
             
-            <Modal.Header className='d-flex align-items-center justify-content-center row m-auto' id='modalTitle'>
-                <Modal.Title className='col-12'>{tipo ? "ERROR" : "INFORMACIÓN" }</Modal.Title> 
+            <Modal.Header className='row m-auto' id='modalTitle'>
+                <Modal.Title className='col-12 p-0'>{tipo === true ? "ERROR" : "INFORMACIÓN" }</Modal.Title> 
             </Modal.Header>            
             
-            <Modal.Body className='d-flex align-items-center justify-content-center row m-auto bg-light'>
-                <div className='col-12 fs-5'>
+            <Modal.Body className='row m-auto bg-light'>
+                <div className='col-12 fs-5 p-0'>
                     {texto}
                 </div>               
-                <div className='col-10'></div>                
-                <button className='btn1 col-2 mt-3 p-1' onClick={() => setShowModal(false)}>
-                    Cerrar
-                </button>
+                <div className='col-4 col-sm-3 col-md-3 ms-auto p-1  mt-2'>
+                    <button className='btn1 p-0 p-sm-1 w-100' onClick={() => setShowModal(false)}> Cerrar</button>
+                </div>              
             </Modal.Body>
         </div>
     </Modal>

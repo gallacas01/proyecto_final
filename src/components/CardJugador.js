@@ -136,8 +136,6 @@ export default function Card({ info, getJugadores }) {
 
         event.preventDefault();
         let noHayImagen = imagenRef.current.files.length === 0;
-        // console.log(noHayImagen);
-        // console.log("Datos anteriores: ", datos);
 
         let parametros = new FormData();
         parametros.append("id_jugador", datos.id_jugador);
@@ -162,9 +160,9 @@ export default function Card({ info, getJugadores }) {
             if (!respuesta.error && respuesta.datos.includes('correctamente')){
 
                 console.log("nuevos datos: ", datos);
-                getJugadores();
                 setActivarEdicion(false);
                 setVerDatos(true);
+                getJugadores(event);
             }else{
                 setTextoModal(respuesta.datos);
                 setModalError(true);
@@ -175,11 +173,11 @@ export default function Card({ info, getJugadores }) {
     });
 
     return (
-        <div className='col-lg-3 p-1 my-1' ref={cardRef}>
+        <div className='col-8 col-sm-4 col-md-4 col-lg-3 p-1 my-1 mx-auto m-sm-0' ref={cardRef}>
             <div className="card my-0 border-2 rounded-3">
                 <div className="card-body p-0">
                     <div className="row mb-2 mx-auto text-center fs-5 p-lg-1 text-white" style={{ backgroundColor: '#182E3E' }}>
-                        <p className='m-auto' ref={nombreJugadorRef}>{datos.nombre_completo.split(" ")[0]}</p>
+                        <p className='m-auto' ref={nombreJugadorRef}>{datos.nombre_completo.split(" ")[0] + " " + datos.nombre_completo.split(" ")[1]}</p>
                     </div>
 
                     {verDatos === false && activarEdicion === false &&
@@ -206,7 +204,7 @@ export default function Card({ info, getJugadores }) {
                                 <p className='text-start my-auto'>Nombre completo: {datos.nombre_completo}</p>
                             </div>
                             <div className="row mx-auto p-1 fs-5">
-                                <p className='text-start my-auto'>F. nacimiento: {datos.fecha_nacimiento}</p>
+                                <p className='text-start my-auto'>F. nac: {datos.fecha_nacimiento}</p>
                             </div>
                             <div className="row mx-auto p-1 fs-5">
                                 <p className='text-start my-auto'>Origen: {datos.pais} </p>

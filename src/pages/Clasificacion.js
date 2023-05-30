@@ -157,7 +157,7 @@ export default function Clasificacion (){
     return (
         <div className="container-fluid">
             <div className="row p-0">
-                <form className="col-lg-6 mx-auto mt-lg-4 p-0">
+                <form className="col-lg-6 mx-auto my-3 p-0">
                     <div className="row mx-auto">
                         <div className="col-2 text-start p-1">                        
                             <label className="form-label m-auto">Competición</label>
@@ -168,7 +168,7 @@ export default function Clasificacion (){
                             </select>
                         </div>
                         <div className='col ms-3 p-0'>                    
-                            <button className="btn1 w-100" onClick={getClasificacion}><i className="bi bi-search fs-4"></i></button>  
+                            <button className="btn1 w-75" onClick={getClasificacion}><i className="bi bi-search fs-4"></i></button>  
                         </div>
                     </div>
                 </form>

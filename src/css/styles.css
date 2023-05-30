@@ -94,7 +94,7 @@ input[type="text"]::placeholder {
 .btnShowFrm{
     border: 2px solid#182E3E;
     color: white;
-    background-color: #182E3E;;
+    background-color: #182E3E;
 }
 
 .btnShowFrm:hover{
@@ -106,10 +106,6 @@ input[type="text"]::placeholder {
     color: #182E3E;
     border-color: #182E3E;
     text-decoration: none;
-}
-
-h3{
-    
 }
 
 /* Titulo de la posición de los jugadores en Ver Jugadores */
@@ -133,13 +129,18 @@ h3{
 }
 
 .card{
-    border: 2px solid #182E3E;
-    height: 100%;
+    border: 2.5px solid #182E3E;
+    max-height: 100%;
 }
 
 .card img{
     width: 100%;
     height: 13em;
+}
+
+.datoEquipo{
+    background-color: #182E3E;
+    color: white;
 }
 
 /* Modal */
