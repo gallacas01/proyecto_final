@@ -164,12 +164,12 @@ export default function Estadisticas(){
         <>
             <div className="container">
                 <div className="row">
-                    <form className="col-lg-5 mx-auto my-3 p-0">
+                    <form className="col-11 col-md-8 col-lg-7 mx-auto mt-3 p-0">
                         <div className="row m-auto">
-                            <div className="col-3 text-center p-0">                        
+                            <div className="col-12 col-sm-3 text-center p-0">                        
                                 <label className="form-label my-auto">Competición</label>
                             </div>
-                            <div className="col p-0 my-auto">
+                            <div className="col-12 col-sm-9 p-0 my-auto">
                                 <select className="form-select shadow-none" ref={desplegableCompeticionesRef} required>
 
                                 </select>
@@ -177,9 +177,32 @@ export default function Estadisticas(){
                         </div>
                     </form>
                 </div>
-                <div className="row mt-3 mx-4">
-                    <div className="col-2">
-                        <button className="text-center p-3 btn1 w-100 mt-2 mb-3" onClick={() => handleChangeCriterioOrdenacion('goles')}> <IconBallFootball size={'42'} /> </button>
+                <div className="row">
+                    <div className="col-12 d-lg-none mx-auto mt-4">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-6 col-sm-3">
+                                    <button className="text-center p-3 btn1 w-100" onClick={() => handleChangeCriterioOrdenacion('goles')}> <IconBallFootball size={'42'} /> </button>
+                                </div>
+                                <div className="col-6 col-sm-3">
+                                    <button className="text-center p-3 btn1 w-100" onClick={() => handleChangeCriterioOrdenacion('asistencias')}> <IconShoe size={'42'} /> </button>
+                                </div>
+                                <div className="col-6 col-sm-3 mt-3 mt-sm-0">
+                                    <button className="text-center p-1 btn1 w-100" onClick={() => handleChangeCriterioOrdenacion('tarjetas_amarillas')}> 
+                                            <img src={tarjeta_amarilla}  className="mt-2" width={'55px'} height={'58px'} alt="Yellow Card" />
+                                        </button>                                
+                                </div>
+                                <div className="col-6 col-sm-3 mt-3 mt-sm-0">
+                                    <button className="text-center p-1 btn1 w-100" onClick={() => handleChangeCriterioOrdenacion('tarjetas_rojas')}> 
+                                        <img src={tarjeta_roja} className="mt-2" width={'55px'} height={'58px'} alt="Red Card" />
+                                    </button>  
+                                </div>                                
+                            </div>
+                        </div>                           
+                    </div>
+                     {/* Para pantallas grandes */}
+                     <div className="d-none d-lg-block col-lg-2 col-xl-2 p-0 mt-lg-4  ms-lg-auto">
+                        <button className="text-center p-3 btn1 w-100 mt-2 mt-lg-5 mt-xl-3 mb-3" onClick={() => handleChangeCriterioOrdenacion('goles')}> <IconBallFootball size={'42'} /> </button>
                         <button className="text-center p-3 btn1 w-100 mb-3" onClick={() => handleChangeCriterioOrdenacion('asistencias')}> <IconShoe size={'42'} /> </button>
                         <button className="text-center p-1 btn1 w-100 mb-3" onClick={() => handleChangeCriterioOrdenacion('tarjetas_amarillas')}> 
                             <img src={tarjeta_amarilla}  className="mt-2" width={'55px'} height={'55px'} alt="Yellow Card" />
@@ -187,9 +210,9 @@ export default function Estadisticas(){
                         <button className="text-center p-1 btn1 w-100 mb-3" onClick={() => handleChangeCriterioOrdenacion('tarjetas_rojas')}> 
                             <img src={tarjeta_roja} className="mt-2" width={'55px'} height={'55px'} alt="Red Card" />
                         </button>            
-                    </div>
-                    <div className="col-10">
-                        <table className="table p-0 d-none" ref={tableRef}>
+                    </div>                    
+                    <div className="col-12 col-lg-10 p-0 p-md-1 me-lg-auto">
+                        <table className="table p-1 d-none mx-auto" ref={tableRef}>
                             <thead>
                                 <tr>
                                     <th className="text-center">Jugador</th>
@@ -197,15 +220,23 @@ export default function Estadisticas(){
                                     <th className="text-center">Posición</th>
                                     <th className="text-center">Goles</th>
                                     <th className="text-center">Asistencias</th>
-                                    <th className="text-center">Tarj. amarillas </th>
-                                    <th className="text-center">Tarj. rojas</th>
+                                    {/* <th className="text-center">
+                                        <img src={tarjeta_amarilla}  className="mt-2" width={'55px'} height={'55px'} alt="Yellow Card" />
+                                    </th>
+                                    <th className="text-center">
+                                        <img src={tarjeta_roja} className="mt-2" width={'55px'} height={'55px'} alt="Red Card" />
+                                    </th> */}
+                                    <th className="text-center">Tar. amarilla</th>
+                                    <th className="text-center">Tar. rojas</th>
                                 </tr>
                             </thead>
                             <tbody ref={tbodyRef}>
 
                             </tbody>
-                        </table>                       
+                        </table>    
                     </div>
+                                           
+                    
                 </div>
             </div>
             <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />                

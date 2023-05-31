@@ -11,9 +11,25 @@ function NavItem({ info }) {
     //Variables de estado
     const linkRef = useRef(null);
 
+    const changeFocus = ( () => {
+
+        //Obtenemos la ul que contiene todos li y eliminamos la clase isFocuses de aquel li que lo contenga.
+        let siblings = Array.from(linkRef.current.parentNode.children);
+        siblings.forEach(sibling => {
+            if (sibling.className.includes('isFocused')){
+                console.log("lo contiene");
+                sibling.classList.remove('isFocused');
+            }
+        });
+        linkRef.current.classList.add('isFocused');
+    });
+
+
     return (
-            <li key={info.id} className="nav-item" ref={linkRef}>
-                <Link
+            <li key={info.id} className={`nav-item ${info.url === '/inicio' ? 'isFocused' : ''}`} ref={linkRef}
+                onClick={changeFocus}
+            >
+                    <Link
                     className='nav-link' 
                     id={info.id}
                     to={info.url}>{info.titulo}

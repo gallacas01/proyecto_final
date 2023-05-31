@@ -31,7 +31,7 @@ nav{
 } */
 
 .navbar-brand:hover,.nav-link:hover, .navbar-brand:active,.nav-link:active,.navbar-brand:focus,.nav-link:focus{
-    border-bottom: 0.23rem solid rgb(252, 224, 179);
+    /* border-bottom: 0.23rem solid rgb(252, 224, 179); */
     color: white;
 }
 
@@ -130,7 +130,7 @@ input[type="text"]::placeholder {
 
 .card{
     border: 2.5px solid #182E3E;
-    max-height: 100%;
+    height: 100%;
 }
 
 .card img{

@@ -159,16 +159,16 @@ export default function Clasificacion (){
             <div className="row p-0">
                 <form className="col-lg-6 mx-auto my-3 p-0">
                     <div className="row mx-auto">
-                        <div className="col-2 text-start p-1">                        
+                        <div className="col-auto text-start p-1">                        
                             <label className="form-label m-auto">Competición</label>
                         </div>
-                        <div className="col-8 p-0 my-auto">
+                        <div className="col-8 mx-2 p-0 my-auto">
                             <select className="form-select shadow-none" ref={desplegableCompeticionesRef} required>
 
                             </select>
                         </div>
-                        <div className='col ms-3 p-0'>                    
-                            <button className="btn1 w-75" onClick={getClasificacion}><i className="bi bi-search fs-4"></i></button>  
+                        <div className='col ms-1 p-0'>                    
+                            <button className="btn1 w-100" onClick={getClasificacion}><i className="bi bi-search fs-4"></i></button>  
                         </div>
                     </div>
                 </form>
