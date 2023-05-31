@@ -15,9 +15,9 @@ export default function App() {
     <>
       <NavBar />      
         <Routes>
-          <Route path="/" element={<LoginScreen />}/>
-          <Route path="/inicio" element={<Inicio />} />
+          <Route path="/login" element={<LoginScreen />}/>
           <Route path="/register" element={<SignUpScreen />} />
+          <Route path="/inicio" element={<Inicio />} />
           <Route path="/ver_jugadores" element={<VerJugadores />} />
           <Route path="/ver_equipos" element={<Equipos />} />
           <Route path="/clasificacion" element={<Clasificacion />} />

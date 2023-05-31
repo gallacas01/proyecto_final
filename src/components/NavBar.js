@@ -17,7 +17,6 @@ function NavItem({ info }) {
         let siblings = Array.from(linkRef.current.parentNode.children);
         siblings.forEach(sibling => {
             if (sibling.className.includes('isFocused')){
-                console.log("lo contiene");
                 sibling.classList.remove('isFocused');
             }
         });
@@ -51,7 +50,7 @@ function BarraNavegacion({ datosNavBar }) {
       const cerrarSesion = ( () => {
 
         if  (window.confirm('¿Estás seguro/a de que quieres cerrar la sesión?')){
-            navigate("/inicio");
+            navigate("/login");
             auth.logOut();
             window.location.reload();
         }
@@ -64,7 +63,8 @@ function BarraNavegacion({ datosNavBar }) {
     });
 
     return (
-        <nav className={`navbar navbar-expand-md p-0 ${currentPath === '/' || currentPath === '/register' ? 'd-none' : ''}`}>
+            <nav className={`navbar navbar-expand-md p-0 ${currentPath === '/inicio' ||currentPath ===  '/ver_jugadores' || currentPath ===  '/ver_equipos' ||
+            currentPath === '/clasificacion' || currentPath === '/estadisticas' || currentPath === '/panel_de_registro' ? '' : 'd-none'}`}>
             <div className="container-fluid p-1">
                 <button className="navbar-toggler mb-2 text-light mt-2" style={{backgroundColor : "#f0f0f0"}} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"/>
@@ -91,7 +91,7 @@ export default function NavBar() {
     useEffect ( () => {
 
         if (!user &&auth.checkedSession){
-            navigate("/");
+            navigate("/login");
         }
       },[user, auth.checkedSession]);
 
@@ -130,6 +130,11 @@ export default function NavBar() {
                     id: "panelDeregistro",
                     titulo: "Panel de registro"
                 } : {},
+            // {
+            //     id: "cerrarSesion",
+            //     titulo: "Cerrar sesión",
+            //     url : "/login"
+            // },
         ]
     };
 

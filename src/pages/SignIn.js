@@ -32,7 +32,7 @@ function FrmLogin(){
     },[user]);
 
     return(
-        <form className="frmAcceso rounded-2">
+        <form className="rounded-2 mx-auto">
             <h2 className="text-center mt-2">Bienvenido /a</h2>
             <div className="my-2 row mx-0">
                 <label className="form-label">Email</label>
@@ -44,7 +44,7 @@ function FrmLogin(){
                 <input type="password" className="form-control shadow-none" onChange={(event) => setPassword(event.target.value)} required />
             </div>
             <button className="btn1 w-100 p-2" onClick={handleLogin}>INICIAR SESIÓN</button>
-            <button className="btn1 w-100 mt-2 p-2"><i className="bi bi-google p-1"></i>Iniciar sesión con Google</button>
+            {/* <button className="btn1 w-100 mt-2 p-2"><i className="bi bi-google p-1"></i>Iniciar sesión con Google</button> */}
         </form>      
           
     );

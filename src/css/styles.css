@@ -89,7 +89,6 @@ input[type="text"]::placeholder {
     color: white;
 }
 
-
 /* Botones del componente Panel de control */
 .btnShowFrm{
     border: 2px solid#182E3E;

@@ -222,6 +222,11 @@ export default function Card({ info, getJugadores }) {
                             <div className="row mx-auto p-1 fs-5">
                                 <p className='text-start my-auto'>Dorsal: {datos.dorsal}</p>
                             </div> 
+                            {!user.uid !== "CPifWKxzLqPFg3N8hIauBdhf3lT2" &&
+                            <div className='row mx-auto'>
+                                 <div className='col m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleOcultarDatos}><i className="bi bi-arrow-left-circle-fill"></i></button></div>
+                             </div>   
+                            }
                             
                             {!user.uid === "CPifWKxzLqPFg3N8hIauBdhf3lT2" &&
                                 <div className='row mx-auto'>

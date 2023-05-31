@@ -201,7 +201,7 @@ export default function Estadisticas(){
                         </div>                           
                     </div>
                      {/* Para pantallas grandes */}
-                     <div className="d-none d-lg-block col-lg-2 col-xl-2 p-0 mt-lg-4  ms-lg-auto">
+                     <div className="d-none d-lg-block col-lg-2 col-xl-2 p-0 mt-lg-4 p-lg-3  ms-lg-auto">
                         <button className="text-center p-3 btn1 w-100 mt-2 mt-lg-5 mt-xl-3 mb-3" onClick={() => handleChangeCriterioOrdenacion('goles')}> <IconBallFootball size={'42'} /> </button>
                         <button className="text-center p-3 btn1 w-100 mb-3" onClick={() => handleChangeCriterioOrdenacion('asistencias')}> <IconShoe size={'42'} /> </button>
                         <button className="text-center p-1 btn1 w-100 mb-3" onClick={() => handleChangeCriterioOrdenacion('tarjetas_amarillas')}> 
