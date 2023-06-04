@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { IconBallFootball } from '@tabler/icons-react';
 import { IconShoe } from '@tabler/icons-react';
-import '../css/bootstrap.css';
-import '../css/styles.css';
 import tarjeta_amarilla from '../img/tarjeta_amarilla.png';
 import tarjeta_roja from '../img/tarjeta_roja.png';
+import tarjeta_amarilla_sin_mano from '../img/yellow_card_wo_hand.png';
+import tarjeta_roja_sin_mano from '../img/red_card_wo_hand.png';
 import MyModal from "../components/Modal";
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
@@ -29,8 +29,9 @@ export default function Estadisticas(){
     const [modalError, setModalError] = useState(false);
     const desplegableCompeticionesRef = useRef(null);
     //Referencias al DOM
-    const tbodyRef = useRef(null);
-    const tableRef = useRef(null);
+    const tbodyRef1 = useRef(null);
+    const bigTableRef = useRef(null);
+    const smallTableRef = useRef(null);
      
     useEffect ( () => {
 
@@ -76,12 +77,15 @@ export default function Estadisticas(){
                 let respuesta = await response.json();
                 if(!respuesta.error && respuesta.datos.length > 0){
     
-                    tableRef.current.classList.remove('d-none');
-                    tbodyRef.current.innerHTML = "";
+                    bigTableRef.current.classList.remove('d-none');
+                    tbodyRef1.current.innerHTML = "";
+                    smallTableRef.current.classList.remove('d-none');
+                    // smallTableContent.current.innerHTML = "";
                     //Recorremos el array que contiene los jugadores y montamos la tabla.
                     let contadorJugadores = 1;
                     for (let jugador of respuesta.datos){
                         
+                        // Tabla grande
                         let tr = document.createElement('tr');
                         tr.key = "jugador" + contadorJugadores;
                         let backgroundColor = contadorJugadores % 2 === 0 ? "#182E3E" : "rgb(252, 224, 179)";
@@ -96,9 +100,8 @@ export default function Estadisticas(){
                         imagen.src = urlImagenJugador;
                         // let borderColor = contadorEquipos % 2 === 0 ? "rgb(252, 224, 179)" : "#182E3E";   
                         imagen.classList.add('img-fluid');
-                        imagen.style.width = '100%';
+                        imagen.style.width = '3.5em';
                         imagen.style.height = '4em';
-                        // imagen.style.border = '3px solid ' + borderColor;
                         td.appendChild(imagen);
                         tr.appendChild(td);
     
@@ -108,7 +111,17 @@ export default function Estadisticas(){
                         tr.appendChild(td);
     
                         td = document.createElement('td');
-                        td.textContent = jugador.posicion;
+                        let pos
+                        if (jugador.posicion === "Portero"){
+                            pos = "POR";
+                        }else if(jugador.posicion === "Defensas"){
+                            pos = "DEF";
+                        }else if(jugador.posicion === "Centrocampista"){
+                            pos = "CEN";
+                        }else {
+                            pos = "DEL";
+                        } 
+                        td.textContent = pos;                       
                         td.classList.add('text-center');
                         tr.appendChild(td);
     
@@ -131,8 +144,89 @@ export default function Estadisticas(){
                         td.textContent = jugador.tarjetas_rojas;
                         td.classList.add('text-center');
                         tr.appendChild(td);
-    
-                        tbodyRef.current.appendChild(tr);
+
+                        tbodyRef1.current.appendChild(tr);
+
+                        //Tabla pequeña
+                        let rowPrincipal = document.createElement('div');
+                        let backgroundColor2 = contadorJugadores % 2 === 0 ? "#182E3E" : "rgb(252, 224, 179)";
+                        let fontColor2 = contadorJugadores % 2 === 0 ? "rgb(252, 224, 179)" : "#182E3E";   
+                        rowPrincipal.style.backgroundColor = backgroundColor2;
+                        rowPrincipal.style.color = fontColor2;
+                        rowPrincipal.style.borderBottom = "4px solid white";
+                        rowPrincipal.classList.add('row', 'fs-6');
+
+                        //Columna donde se mostará la imagen 
+                        let col = document.createElement('div');
+                        col.classList.add('col-3','p-0');
+                        col.key = "jugador" + contadorJugadores;
+                        let imagen2 = document.createElement('img');
+                        imagen2.src = urlImagenJugador; //Usamos la url de generada en la línea 99
+                        imagen2.classList.add('img-fluid','my-auto');
+                        imagen2.style.width = '100%';
+                        imagen2.style.height = '80px';
+                        col.appendChild(imagen2);
+                        rowPrincipal.appendChild(col);
+
+                        //Columna donde se mostarán los datos del jugador.
+                        let colDatos = document.createElement('div');
+                        colDatos.classList.add('col-8','p-1');
+
+                        let containerDatos = document.createElement('div');
+                        containerDatos.classList.add('container-fluid');
+
+                        let row = document.createElement('div');
+                        row.classList.add('row');
+                        containerDatos.appendChild(row);
+
+                        col = document.createElement('col');
+                        col.classList.add('col-12', 'p-0');
+                        col.textContent = "Nombre: " + jugador.nombre_completo;
+                        row.appendChild(col);
+
+                        col = document.createElement('col');
+                        col.classList.add('col-3', 'p-0');
+                        col.textContent = "G: " + jugador.goles;
+                        row.appendChild(col);
+
+                        col = document.createElement('col');
+                        col.classList.add('col-3', 'p-0', 'text-center');
+                        col.textContent = "As: " + jugador.asistencias;
+                        row.appendChild(col);
+
+                        col = document.createElement('div');
+                        col.classList.add('col-3','p-0');
+                        imagen = document.createElement('img');
+                        imagen.src = tarjeta_amarilla_sin_mano; 
+                        imagen.classList.add('img-fluid','my-auto');
+                        imagen.style.width = '16px';
+                        imagen.style.height = '20px';
+                        col.appendChild(imagen);
+
+                        let span = document.createElement('span');
+                        span.textContent = jugador.tarjetas_amarillas;
+                        col.appendChild(span);
+                        row.appendChild(col);
+
+                        col = document.createElement('div');
+                        col.classList.add('col-3','p-0');
+                        imagen = document.createElement('img');
+                        imagen.src = tarjeta_roja_sin_mano; 
+                        imagen.classList.add('img-fluid','my-auto');
+                        imagen.style.width = '20px';
+                        imagen.style.height = '20px';
+                        col.appendChild(imagen);
+
+                        span = document.createElement('span');
+                        span.textContent = jugador.tarjetas_rojas;  
+                        col.appendChild(span);                   
+                        row.appendChild(col);
+
+                        //Insertamos el container con los datos en la columna donde se muestran los datos.
+                        colDatos.appendChild(containerDatos);
+                        rowPrincipal.append(colDatos);                      
+
+                        smallTableRef.current.appendChild(rowPrincipal);
                         contadorJugadores++;
                     };
 
@@ -162,23 +256,24 @@ export default function Estadisticas(){
 
     return (
         <>
-            <div className="container">
+            <div className="container-fluid">
                 <div className="row">
-                    <form className="col-11 col-md-8 col-lg-7 mx-auto mt-3 p-0">
-                        <div className="row m-auto">
+                    <form className="col-12 col-sm-10 col-lg-7 mx-auto mt-4 p-0">
+                        <div className="row m-sm-auto me-md-4">
                             <div className="col-12 col-sm-3 text-center p-0">                        
                                 <label className="form-label my-auto">Competición</label>
                             </div>
-                            <div className="col-12 col-sm-9 p-0 my-auto">
-                                <select className="form-select shadow-none" ref={desplegableCompeticionesRef} required>
+                            <div className="col-10 col-sm-9 p-0 mx-auto mx-sm-0 my-auto">
+                                <select className="form-select shadow-none p-1" ref={desplegableCompeticionesRef} required>
 
                                 </select>
                             </div>
                         </div>
                     </form>
                 </div>
+                {/* Botones para pantallas de resolución en md e inferior */}
                 <div className="row">
-                    <div className="col-12 d-lg-none mx-auto mt-4">
+                    <div className="col-12 col-sm-11 col-md-10 d-lg-none mx-auto mt-4 p-0">
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-6 col-sm-3">
@@ -200,8 +295,8 @@ export default function Estadisticas(){
                             </div>
                         </div>                           
                     </div>
-                     {/* Para pantallas grandes */}
-                     <div className="d-none d-lg-block col-lg-2 col-xl-2 p-0 mt-lg-4 p-lg-3  ms-lg-auto">
+                     {/* Botones para pantallas grandes */}
+                     <div className="d-none d-lg-block col-lg-2 col-xl-aut2 p-0 mt-3 p-lg-3 ms-auto">
                         <button className="text-center p-3 btn1 w-100 mt-2 mt-lg-5 mt-xl-3 mb-3" onClick={() => handleChangeCriterioOrdenacion('goles')}> <IconBallFootball size={'42'} /> </button>
                         <button className="text-center p-3 btn1 w-100 mb-3" onClick={() => handleChangeCriterioOrdenacion('asistencias')}> <IconShoe size={'42'} /> </button>
                         <button className="text-center p-1 btn1 w-100 mb-3" onClick={() => handleChangeCriterioOrdenacion('tarjetas_amarillas')}> 
@@ -210,32 +305,39 @@ export default function Estadisticas(){
                         <button className="text-center p-1 btn1 w-100 mb-3" onClick={() => handleChangeCriterioOrdenacion('tarjetas_rojas')}> 
                             <img src={tarjeta_roja} className="mt-2" width={'55px'} height={'55px'} alt="Red Card" />
                         </button>            
-                    </div>                    
-                    <div className="col-12 col-lg-10 p-0 p-md-1 me-lg-auto">
-                        <table className="table p-1 d-none mx-auto" ref={tableRef}>
+                    </div>      
+                    {/* Tabla para pantallas de resolución sm en adelante */}
+                    <div className="d-none d-sm-block col-sm-11 col-md-10 col-lg-8 col-xl-7 p-0 p-md-1 mx-sm-auto mx-lg-0 me-lg-auto">
+                        <table className="table p-0 d-none mx-auto" ref={bigTableRef}>
                             <thead>
                                 <tr>
                                     <th className="text-center">Jugador</th>
                                     <th className="text-center">Nombre</th>
-                                    <th className="text-center">Posición</th>
+                                    <th className="text-center">Pos</th>
                                     <th className="text-center">Goles</th>
                                     <th className="text-center">Asistencias</th>
-                                    {/* <th className="text-center">
-                                        <img src={tarjeta_amarilla}  className="mt-2" width={'55px'} height={'55px'} alt="Yellow Card" />
+                                    <th className="text-center">
+                                        <img src={tarjeta_amarilla}  className="mt-2" width={'50px'} height={'50px'} alt="Yellow Card" />
                                     </th>
                                     <th className="text-center">
-                                        <img src={tarjeta_roja} className="mt-2" width={'55px'} height={'55px'} alt="Red Card" />
-                                    </th> */}
-                                    <th className="text-center">Tar. amarilla</th>
-                                    <th className="text-center">Tar. rojas</th>
+                                        <img src={tarjeta_roja}  className="mt-2" width={'50px'} height={'50px'} alt="Yellow Card" />
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody ref={tbodyRef}>
+                            <tbody ref={tbodyRef1} className="fs-5">
 
                             </tbody>
                         </table>    
                     </div>
-                                           
+                    {/* Tabla para pantallas de tamaño menor a sm */}
+                    <div className="col-11 d-sm-none mx-auto mt-2 p-0">
+                        <div className="d-none container-fluid mx-auto" ref={smallTableRef}>
+                            <div className="row m-auto">
+                                <div className="col-6 p-0">Jugador</div>
+                                <div className="col-6 p-0">Datos</div>
+                            </div>                           
+                        </div>
+                    </div>                      
                     
                 </div>
             </div>

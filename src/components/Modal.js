@@ -1,5 +1,3 @@
-import '../css/bootstrap.css';
-import '../css/styles.css';
 import Modal from 'react-bootstrap/Modal';
 
 export default function MyModal({showModal, setShowModal, tipo, texto}) {

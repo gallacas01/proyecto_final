@@ -1,4 +1,4 @@
-import React, { useEffect,useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import MyModal from "./Modal";
 
@@ -22,115 +22,82 @@ export default function RegistrarFichaje() {
     const [modalError, setModalError] = useState(false);
 
     //Referencias al DOM del componente
-    const equiposCompeticionEquipoAnteriorRef = useRef(null);
+    const equiposDeLaCompeticionDelEquipoAnteriorRef = useRef(null);
     const competicionesEquipoAnteriorRef = useRef(null);
     const desplegableJugadoresRef = useRef(null);
     const competicionesEquipoNuevoRef = useRef(null);
-    const equiposCompeticionEquipoNuevoRef = useRef(null);
+    const equiposDeLaCompeticionDelEquipoNuevoRef = useRef(null);
     const frmRegistrarMovimiento = useRef(null);
-    
-    const rellenarDesplegableCompeticiones = ( async (desplegable) => {
+
+    const rellenarDesplegableCompeticiones = (async (desplegable) => {
 
         let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getCompeticiones.php");
-        if (response.ok){
+        if (response.ok) {
 
             let respuesta = await response.json();
-            if (!respuesta.error && respuesta.datos.length > 0){
+            if (!respuesta.error && respuesta.datos.length > 0) {
 
                 //Recuperamos el desplegable de competiciones y añadimos el primer elemento, cuyo valor será '-'.
                 desplegable.current.innerHTML = " ";
-                let optionVacio = createOptionElement("-","-");
+                let optionVacio = createOptionElement("-", "-");
                 desplegable.current.appendChild(optionVacio);
-                
+
                 //Recorremos el array de competiciones anyadiendo cada una al desplegable de competiciones.
-                for (let competicion of respuesta.datos){
+                for (let competicion of respuesta.datos) {
                     let option = createOptionElement(competicion.id_competicion, competicion.nombre + ", Temp " + competicion.temporada);
                     desplegable.current.appendChild(option);
                 }
             }
-        }            
+        }
     });
 
-    //Método que obtiene los equipos de una competición
-    async function getEquipos(desplegableEquipos,idCompeticion) {
+    async function rellenarDesplegableEquipos(idCompeticion, desplegableEquiposRef) {
 
         let parametros = new FormData();
         parametros.append("id_competicion", idCompeticion);
         let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getEquiposDeUnaCompeticion.php",
             {
-                method : 'POST',
-                body : parametros
+                method: 'POST',
+                body: parametros
             });
 
-        if (response.ok){
+        if (response.ok) {
 
             let respuesta = await response.json();
-            if (!respuesta.error && respuesta.datos.length > 0){
+            if (!respuesta.error && respuesta.datos.length > 0) {
 
-                desplegableEquipos.current.innerHTML = " ";
-                let optionVacio = createOptionElement("-","-");
-                optionVacio.select = true;
-                desplegableEquipos.current.appendChild(optionVacio);
+                desplegableEquiposRef.current.innerHTML = " ";
+                let optionVacio = createOptionElement("-", "-");
+                desplegableEquiposRef.current.appendChild(optionVacio);
 
                 //Recorremos el array de equipos anyadiendo cada una al desplegable de competiciones.
-                for (let equipo of respuesta.datos){
+                for (let equipo of respuesta.datos) {
                     let option = createOptionElement(equipo.id_equipo, equipo.nombre);
-                    desplegableEquipos.current.appendChild(option);
+                    desplegableEquiposRef.current.appendChild(option);
                 }
+                
             }
-        }     
+        }
     }
 
     useEffect(() => {
 
         rellenarDesplegableCompeticiones(competicionesEquipoAnteriorRef);
         rellenarDesplegableCompeticiones(competicionesEquipoNuevoRef);
-    }, [])
+    }, []);
 
-    useEffect( () => {
+    const handleChangeCompeticionDelEquipoAnterior = ( (event) => {
 
-        async function getEquiposCompeticionAnterior() {
-
-                let parametros = new FormData();
-                parametros.append("id_competicion", idCompeticionEquipoAnterior);
-                let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getEquiposDeUnaCompeticion.php",
-                    {
-                        method : 'POST',
-                        body : parametros
-                    });
-
-                if (response.ok){
-
-                    let respuesta = await response.json();
-                    if (!respuesta.error && respuesta.datos.length > 0){
-
-                        equiposCompeticionEquipoAnteriorRef.current.innerHTML = " ";
-                        let optionVacio = createOptionElement("-","-");
-                        equiposCompeticionEquipoAnteriorRef.current.appendChild(optionVacio);
-
-                        //Recorremos el array de equipos anyadiendo cada una al desplegable de competiciones.
-                        for (let equipo of respuesta.datos){
-                            let option = createOptionElement(equipo.id_equipo, equipo.nombre);
-                            equiposCompeticionEquipoAnteriorRef.current.appendChild(option);
-                        }
-                }
-            }     
+        let idCompeticion = event.target.value;
+        setIdCompeticionEquipoAnterior(idCompeticion);
+        if (idCompeticion !== "-"){
+            rellenarDesplegableEquipos(idCompeticion, equiposDeLaCompeticionDelEquipoAnteriorRef);
         }
-        getEquiposCompeticionAnterior();
-    }, [idCompeticionEquipoAnterior]);
+    });
 
-    useEffect( () => {
+    useEffect(() => {
 
-        if (idCompeticionEquipoAnterior !== "-"){
-            //Rellenamos el desplegable de equipos de la competición donde se encontraba el equipo anterior de jugador
-            getEquipos(equiposCompeticionEquipoAnteriorRef, idCompeticionEquipoAnterior);
-        }
-    }, [idCompeticionEquipoAnterior]);
-
-
-    useEffect( () => {
-
-        async function getJugadoresDeUnEquipo() {        
+        async function getJugadoresDeUnEquipo() {
 
             let parametros = new FormData();
             parametros.append("id_equipo", idEquipoAnterior);
@@ -143,14 +110,14 @@ export default function RegistrarFichaje() {
 
                 let respuesta = await response.json();
                 if (!respuesta.error && !respuesta.datos.length >= 0) {
-                    
+
                     desplegableJugadoresRef.current.innerHTML = " ";
-                    let optionVacio = createOptionElement("-","-");
+                    let optionVacio = createOptionElement("-", "-");
                     optionVacio.select = true;
                     desplegableJugadoresRef.current.appendChild(optionVacio);
 
                     //Recorremos el array de equipos anyadiendo cada una al desplegable de competiciones.
-                    for (let jugador of respuesta.datos){
+                    for (let jugador of respuesta.datos) {
                         let option = createOptionElement(jugador.dni_jugador, jugador.nombre_completo);
                         desplegableJugadoresRef.current.appendChild(option);
                     }
@@ -158,88 +125,91 @@ export default function RegistrarFichaje() {
             }
         }//Fin de la función
 
-        if (idEquipoAnterior !== "-"){
+        if (idEquipoAnterior !== "-") {
             getJugadoresDeUnEquipo();
         }
     }, [idEquipoAnterior]);
 
-    useEffect( () => {
+    const handleChangeCompeticionDelEquipoNuevo = ( (event) => {
 
-        if (idCompeticionEquipoNuevo !== "-"){
-            getEquipos(equiposCompeticionEquipoNuevoRef, idCompeticionEquipoNuevo);
+        let idCompeticion = event.target.value;
+        setIdCompeticionEquipoNuevo(idCompeticion);
+        if (idCompeticion !== "-"){
+            rellenarDesplegableEquipos(idCompeticion, equiposDeLaCompeticionDelEquipoNuevoRef);
         }
-    }, [idCompeticionEquipoNuevo]);
+    });
 
-    const updateEquipoDelJugador = ( async (event) => {
+    const updateEquipoDelJugador = (async (event) => {
 
+        console.log(idCompeticionEquipoAnterior + " ", idEquipoAnterior + " ", dniJugador + " ", idCompeticionEquipoNuevo + " ",idEquipoNuevo + " ", )
         event.preventDefault();
-        if (idEquipoAnterior === idEquipoNuevo){
-            setModalError(true);
-            setTextoModal("El equipo anterior y el nuevo equipo no pueden ser el mismo.");
-            setShowModal(true);
-        }else if (idCompeticionEquipoAnterior === "-" || idEquipoAnterior === "-" || dniJugador === "-" 
-            || idCompeticionEquipoNuevo === "-" || idEquipoNuevo === "-"){
+        if (idCompeticionEquipoAnterior === "-" || idEquipoAnterior === "-" || dniJugador === "-"
+            || idCompeticionEquipoNuevo === "-" || idEquipoNuevo === "-") {
             setModalError(true);
             setTextoModal('Por favor, rellena todos los campos.');
             setShowModal(true);
-        }else{
+        } else if (idEquipoAnterior === idEquipoNuevo) {
+            setModalError(true);
+            setTextoModal("El equipo anterior y el nuevo equipo no pueden ser el mismo.");
+            setShowModal(true);
+        } else {
 
             let parametros = new FormData();
             parametros.append("dni_jugador", dniJugador);
             parametros.append("id_equipo_antiguo", idEquipoAnterior);
             parametros.append("id_equipo_nuevo", idEquipoNuevo);
             // parametros.append("fecha", fechaTraspaso);
-            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarMovimiento.php",{
-                method : 'POST',
-                body : parametros        
+            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarMovimiento.php", {
+                method: 'POST',
+                body: parametros
             });
 
-            if (response.ok){
+            if (response.ok) {
 
                 let respuesta = await response.json();
-                if (!respuesta.error){
+                if (!respuesta.error) {
 
                     setModalError(false);
                     setTextoModal(respuesta.datos);
                     setShowModal(true);
                     frmRegistrarMovimiento.current.reset();
-                    
+
                 }
             }
         }
     });
 
-    return(
+    return (
         <>
-            <form  className="mb-3" ref={frmRegistrarMovimiento}>
+            <form className="mb-3" ref={frmRegistrarMovimiento}>
                 <h2 className="text-center mt-1 fs-2">Datos del fichaje</h2>
                 <div className="my-2 row mx-0">
-                    <label className="form-label my-auto">Liga del equipo anterior</label>             
-                    <select className="form-control shadow-none" ref={competicionesEquipoAnteriorRef} onChange={(event ) => setIdCompeticionEquipoAnterior(event.target.value)} required>
-
-                    </select>
-                </div>           
-                <div className="my-2 row mx-0">
-                    <label className="form-label my-auto">Equipo anterior</label>   
-                    <select className="form-control shadow-none" ref={equiposCompeticionEquipoAnteriorRef} onChange={(event) => setIdEquipoAnterior(event.target.value)} required>
+                    <label className="form-label my-auto">Liga del equipo anterior</label>
+                    <select className="form-control shadow-none" ref={competicionesEquipoAnteriorRef} onChange={(event) => handleChangeCompeticionDelEquipoAnterior(event)} required>
 
                     </select>
                 </div>
                 <div className="my-2 row mx-0">
-                    <label className="form-label my-auto">Jugador traspasado</label>   
+                    <label className="form-label my-auto">Equipo anterior</label>
+                    <select className="form-control shadow-none" ref={equiposDeLaCompeticionDelEquipoAnteriorRef} onChange={(event) => setIdEquipoAnterior(event.target.value)} required>
+
+                    </select>
+                </div>
+                <div className="my-2 row mx-0">
+                    <label className="form-label my-auto">Jugador traspasado</label>
                     <select className="form-control shadow-none" ref={desplegableJugadoresRef} onChange={(event) => setDniJugador(event.target.value)} required>
 
                     </select>
                 </div>
                 <div className="my-2 row mx-0">
-                    <label className="form-label my-auto">Liga del nuevo equipo</label>   
-                    <select className="form-control shadow-none" ref={competicionesEquipoNuevoRef} onChange={(event) => setIdCompeticionEquipoNuevo(event.target.value)} required>
+                    <label className="form-label my-auto">Liga del nuevo equipo</label>
+                    <select className="form-control shadow-none" ref={competicionesEquipoNuevoRef} onChange={(event) => handleChangeCompeticionDelEquipoNuevo(event)} required>
 
                     </select>
                 </div>
                 <div className="my-2 row mx-0">
-                    <label className="form-label my-auto">Equipo nuevo</label>   
-                    <select className="form-control shadow-none" ref={equiposCompeticionEquipoNuevoRef} onChange={(event) => setIdEquipoNuevo(event.target.value)} required>
+                    <label className="form-label my-auto">Equipo nuevo</label>
+                    <select className="form-control shadow-none" ref={equiposDeLaCompeticionDelEquipoNuevoRef} onChange={(event) => setIdEquipoNuevo(event.target.value)} required>
 
                     </select>
                 </div>
@@ -248,9 +218,9 @@ export default function RegistrarFichaje() {
                         <button className="btn1 text-truncate p-1 w-100 p-lg-2" onClick={updateEquipoDelJugador}>ACEPTAR </button>
                     </div>
                 </div>
-                <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />   
+                <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />
             </form>
-        </>             
+        </>
 
     );
 }

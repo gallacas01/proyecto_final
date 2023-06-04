@@ -1,6 +1,5 @@
 import { useRef,useState } from "react";
-import '../css/bootstrap.css';
-import '../css/styles.css';
+
 import MyModal from "./Modal";
 
 export default function FrmRegistrarCompeticion (){

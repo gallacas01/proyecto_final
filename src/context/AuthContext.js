@@ -55,8 +55,13 @@ export function AuthProvider({children}){
             console.log(response);
         }catch (error){    
 
-            if (error.message === "FirebaseError: Firebase: Error (auth/email-already-in-use)."){
+            console.log("MENSAJE DE ERROR:", error.message);
+            if (error.message.includes("Error (auth/email-already-in-use).")){
                 setTextoModal("El correo " + email + " ya está en uso.");
+            }else if (error.message.includes("(auth/invalid-email).")){
+                setTextoModal("El correo " + email + " no es válido.");
+            }else if (error.message.includes("Password should be at least 6 characters (auth/weak-password).")){
+                setTextoModal("La contraseña debe contener mínimo 6 caracteres.");
             }else {
                 setTextoModal("Se ha producido un error: " + error);
             }

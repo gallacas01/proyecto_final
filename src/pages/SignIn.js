@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import '../css/bootstrap.css';
-import '../css/styles.css';
 
 function FrmLogin(){
 

@@ -1,8 +1,6 @@
 import {useEffect } from 'react';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
-import '../css/bootstrap.css';
-import '../css/styles.css';
 import { useRef } from 'react';
 
 //Componente NavItem
@@ -63,14 +61,14 @@ function BarraNavegacion({ datosNavBar }) {
     });
 
     return (
-            <nav className={`navbar navbar-expand-md p-0 ${currentPath === '/inicio' ||currentPath ===  '/ver_jugadores' || currentPath ===  '/ver_equipos' ||
+        <nav className={`navbar navbar-expand-md p-0 ${currentPath === '/inicio' ||currentPath ===  '/ver_jugadores' || currentPath ===  '/ver_equipos' ||
             currentPath === '/clasificacion' || currentPath === '/estadisticas' || currentPath === '/panel_de_registro' ? '' : 'd-none'}`}>
-            <div className="container-fluid p-1">
-                <button className="navbar-toggler mb-2 text-light mt-2" style={{backgroundColor : "#f0f0f0"}} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <div className="container-fluid p-0">
+                <button className="navbar-toggler my-2 text-light m-1" style={{backgroundColor : "#f0f0f0"}} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"/>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul className="navbar-nav me-auto mb-lg-0 p-2">
                         {listaNavItem}
                         <li className='nav-item'>
                             <button className='p-0 mt-2 fs-4' onClick={cerrarSesion} id='btnCerrarSesion'><i className="fa-solid fa-right-from-bracket"/></button>
@@ -130,11 +128,6 @@ export default function NavBar() {
                     id: "panelDeregistro",
                     titulo: "Panel de registro"
                 } : {},
-            // {
-            //     id: "cerrarSesion",
-            //     titulo: "Cerrar sesión",
-            //     url : "/login"
-            // },
         ]
     };
 

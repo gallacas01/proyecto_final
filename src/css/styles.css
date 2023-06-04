@@ -25,13 +25,7 @@ nav{
     background-color: #182E3E;
 }
 
-/* .navbar-brand:hover,.nav-link:hover{
-    border-bottom: 0.23rem solid rgb(252, 224, 179);
-    color: white;
-} */
-
 .navbar-brand:hover,.nav-link:hover, .navbar-brand:active,.nav-link:active,.navbar-brand:focus,.nav-link:focus{
-    /* border-bottom: 0.23rem solid rgb(252, 224, 179); */
     color: white;
 }
 
@@ -42,9 +36,10 @@ nav{
 }
 
 /* Color del borde de los input */
-.form-control, .form-select{
+.form-control,.form-select{
     border: 0.6px solid #182E3E;
     color: #182E3E;
+    font-size: 0.70em;
 }
 
 .form-control:focus, .form-select:focus{
@@ -55,6 +50,15 @@ nav{
 input[type="text"]::placeholder {
     color: #182E3E;
     opacity:0.7;
+}
+
+/* Tamaño de la letra cuando se muestra la info en el cardJugador. */
+.datoJugador{
+    font-size: 0.8em;
+}
+
+.labelCardJugador{
+    font-size: 0.85em;
 }
 
 .btn1, .btnAceptarEvento, .btnEliminarEvento{
@@ -127,14 +131,19 @@ input[type="text"]::placeholder {
     border: 1.7px solid #182E3E;
 }
 
-.card{
+.cardJugador{
     border: 2.5px solid #182E3E;
-    height: 100%;
+    max-height: 100%;
 }
 
-.card img{
+.cardJugador img{
     width: 100%;
-    height: 13em;
+    height: 250px;
+}
+
+.cardEquipo{
+    border: 2.5px solid #182E3E;
+    max-height: 100%;
 }
 
 .datoEquipo{

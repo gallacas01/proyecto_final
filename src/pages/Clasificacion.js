@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import '../css/bootstrap.css';
-import '../css/styles.css';
 import MyModal from "../components/Modal";
+import MyFooter from "../components/Footer";
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {
     let option = document.createElement("option");
     option.value = value;
     option.textContent = textContent;
+    option.style.fontSize = "0.9rem";
     return option;
 }
 
@@ -17,6 +17,7 @@ export default function Clasificacion (){
     const desplegableCompeticionesRef = useRef(null);
     const tablaRef = useRef(null);
     const tbodyRef = useRef(null);
+    const [showFooter, setShowFooter] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [textoModal, setTextoModal] = useState('');
     const [modalError, setModalError] = useState(false);
@@ -107,6 +108,7 @@ export default function Clasificacion (){
                         tbodyRef.current.appendChild(tr);
                         contadorEquipos++;
                     }//Fin del bucle for.    
+                    setShowFooter(true);
                     
                 }else{
                     if (respuesta.datos.length === 0){
@@ -157,44 +159,50 @@ export default function Clasificacion (){
     return (
         <div className="container-fluid">
             <div className="row p-0">
-                <form className="col-lg-6 mx-auto my-3 p-0">
+                <form className="col-12 col-sm-10 col-md-8 col-lg-6 col-xxl-6 mx-auto my-3 p-0">
                     <div className="row mx-auto">
-                        <div className="col-auto text-start p-1">                        
+                        <div className="col-12 col-sm-auto text-start p-1 ms-2 ms-sm-0">                        
                             <label className="form-label m-auto">Competición</label>
                         </div>
-                        <div className="col-8 mx-2 p-0 my-auto">
-                            <select className="form-select shadow-none" ref={desplegableCompeticionesRef} required>
+                        <div className="col-9 col-sm-7 col-md-8 col-xx-6 mx-2 p-0 my-auto">
+                            <select className="form-select shadow-none p-1" ref={desplegableCompeticionesRef} required>
 
                             </select>
                         </div>
-                        <div className='col ms-1 p-0'>                    
+                        <div className='col-2 col-sm col-xxl-1 ms-1 p-0'>                    
                             <button className="btn1 w-100" onClick={getClasificacion}><i className="bi bi-search fs-4"></i></button>  
                         </div>
                     </div>
                 </form>
             </div>
             <div className="row mt-3 d-none" ref={tablaRef}>
-                <div className="col-lg-9 p-0 m-0 mx-auto">
+                <div className="col-12 col-sm-11 col-lg-10 p-0 m-0 ms-1 mx-sm-auto d-block overflow-x-auto">
                     <table className="table">
                         <thead>
-                            <tr>
+                            <tr className="fs-4">
                                 <th className="text-center">Pos</th>
                                 <th className="text-center">Equipo</th>
                                 <th className="text-center">Puntos</th>
-                                <th className="text-center">P. J.</th>
+                                <th className="text-center">PJ</th>
                                 <th className="text-center">V </th>
                                 <th className="text-center">E</th>
                                 <th className="text-center">D</th>
-                                <th className="text-center">G.F.</th>
-                                <th className="text-center">G.C.</th>
+                                <th className="text-center">GF</th>
+                                <th className="text-center">GC</th>
                             </tr>
                         </thead>
-                        <tbody ref={tbodyRef}>
+                        <tbody className="fs-5" ref={tbodyRef}>
 
                         </tbody>
                     </table>  
                 </div>          
             </div>
+            <div className="row">
+                <div className={showFooter ? "col-12 p-0" : 'd-none'}>
+                    <MyFooter />   
+                </div>    
+            </div>
+              
             <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />                
         </div>
        

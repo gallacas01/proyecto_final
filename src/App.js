@@ -1,5 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, BrowserRouter } from "react-router-dom";
-import ErrorPage from "./components/ErrorPage";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import VerJugadores from "./pages/VerJugadores";
 import Equipos from "./pages/VerEquipos";
 import Estadisticas from "./pages/Estadisticas";
@@ -9,6 +8,9 @@ import LoginScreen from "./pages/SignIn";
 import SignUpScreen from "./pages/SignUp";
 import Inicio from "./pages/Inicio";
 import NavBar from "./components/NavBar";
+import './css/bootstrap.css';
+import './css/styles.css';
+
 
 export default function App() {
   return (

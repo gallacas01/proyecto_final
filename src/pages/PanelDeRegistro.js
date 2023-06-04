@@ -4,8 +4,7 @@ import FrmRegistrarJugador from "../components/FrmRegistrarJugador";
 import FrmRegistrarPartido from "../components/FrmRegistrarPartido";
 import FrmRegistrarCompeticion from "../components/FrmRegistrarCompeticion";
 import FrmRegistrarMovimiento from "../components/FrmRegistrarFichaje";
-import '../css/bootstrap.css';
-import '../css/styles.css';
+
 import MyFooter from "../components/Footer";
 
 export default function Panel(){

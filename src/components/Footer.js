@@ -1,6 +1,3 @@
-import '../css/bootstrap.css';
-import '../css/styles.css';
-
 export default function MyFooter() {
     return (
         <div className='container-fluid fs-5' id='footer'>

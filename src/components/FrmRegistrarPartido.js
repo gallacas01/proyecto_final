@@ -1,6 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import '../css/bootstrap.css';
-import '../css/styles.css';
 import MyModal from "./Modal";
 import { SettingsPhoneSharp } from "@mui/icons-material";
 
@@ -90,12 +88,12 @@ function Evento({ info }) {
 
                 {eventoAceptado === false &&
                     <div className="row">
-                        <div className="col-7 m-auto p-1">
+                        <div className="col-7 col-md-5 m-auto p-1">
                             <select className="form-select shadow-none" onChange={handleNombreJugador} ref={desplegableJugadoresRef} required>
 
                             </select>
                         </div>
-                        <div className="col-5 m-auto p-1">
+                        <div className="col-5 col-md-4 m-auto p-1">
                             <select className="form-select shadow-none" onChange={handleTipoEvento} defaultValue="-" required>
                                 <option value="-">-</option>
                                 <option value="Gol">Gol</option>
@@ -104,10 +102,10 @@ function Evento({ info }) {
                                 <option value="tarjetaRoja">Tarjeta roja</option>
                             </select>
                         </div>
-                        <div className="col-6 ms-auto m-sm-0 col-sm p-1"> 
+                        <div className="col-6 col-md ms-auto m-sm-0 col-sm p-1"> 
                             <button className="btnAceptarEvento w-100" onClick={(event) => handleEventoAceptado(event)}><i className="fa-solid fa-circle-check fs-3"></i></button> 
                         </div>
-                        <div className="col-6 me-auto m-sm-0 col-sm p-1"> 
+                        <div className="col-6 col-md me-auto m-sm-0 col-sm p-1"> 
                             <button className="btnEliminarEvento w-100" onClick={info.eliminarEvento}><i className="fa-sharp fa-solid fa-circle-xmark fs-3"></i></button>
                         </div>
                     </div>
@@ -341,12 +339,7 @@ export default function FrmRegistrarPartido() {
 
             let respuesta = await response.json();
             if (!respuesta.error) {
-
-                console.log("ÚLTIMO ID DE PARTIDO: ", respuesta.datos.id_partido);
                 return respuesta.datos.id_partido;
-                // let ultimoId = parseInt(respuesta.datos.id_partido) + 1;
-                // console.log("Último id: ", ultimoId);
-                // setIdPartidoActual(ultimoId);
             }
         }
     }
@@ -463,7 +456,7 @@ export default function FrmRegistrarPartido() {
                     <input type="date" className="form-control shadow-none" ref={fechaPartidoRef} min={0} required />
                 </div>
                 <div className="my-2 row mx-auto">
-                    <div className="col-11 col-sm-4 mx-auto text-sm-center p-0 mb-2 mb-sm-0"><p className="form-label my-auto">Resultado del partido</p> </div>
+                    <div className="col-11 col-sm-3 mx-auto text-sm-center p-0 mb-2 mb-sm-0"><p className="form-label my-auto">Resultado del partido</p> </div>
                     <div className="col-5 col-sm-3 mx-auto p-0 my-auto">
                         <input type="number" className="form-control shadow-none" ref={golesEquipoLocalRef} min={0} max={999} minLength={0} maxLength={3} required />
                     </div>
@@ -475,8 +468,8 @@ export default function FrmRegistrarPartido() {
                     </div>
                 </div>
                 <div className="my-2 row mx-auto">
-                    <div className="col-12 p-0">
-                        <label className="form-label ms-3 text-center">Estadio del partido : {estadioEquipoLocal}</label>
+                    <div className="col-12 mx-auto p-0">
+                        <label className="form-label ms-2 text-center">Estadio del partido : {estadioEquipoLocal}</label>
                     </div>
                 </div>
 
@@ -494,11 +487,11 @@ export default function FrmRegistrarPartido() {
 
                 <div className="my-2 row mx-0">
                     <div className="col-5 mx-auto col-sm-4 col-md-3 col-lg-3 p-0">
-                        <button className="btn1 text-truncate p-0 p-sm-1 w-100 p-lg-2" onClick={registrarPartido}>ACEPTAR </button>
+                        <button className="btn1 text-truncate p-1 p-sm-1 w-100 p-lg-2" onClick={registrarPartido}>ACEPTAR </button>
                     </div>
                     <div className="col"></div>
                     <div className="col-5 col-sm-4 col-md-3 col-lg-3 p-0">
-                        <button className="btn1 text-truncate p-0 p-sm-1 w-100 p-lg-2" onClick={(event) => incNumEventos(event)}>EVENTO <i className="fa-solid fa-flag ms-lg-1"></i></button>
+                        <button className="btn1 text-truncate p-1 p-sm-1 w-100 p-lg-2" onClick={(event) => incNumEventos(event)}>EVENTO <i className="fa-solid fa-flag ms-lg-1"></i></button>
                     </div>
                 </div>
             </form>

@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import CardJugador from '../components/CardJugador';
-import '../css/bootstrap.css';
-import '../css/styles.css';
 import MyModal from '../components/Modal';
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
@@ -9,7 +7,7 @@ function createOptionElement(value, textContent) {
     let option = document.createElement("option");
     option.value = value;
     option.textContent = textContent;
-    option.style.fontSize = "1.1rem";
+    option.style.fontSize = "0.9rem";
     return option;
 }
 
