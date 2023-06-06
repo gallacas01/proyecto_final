@@ -75,12 +75,7 @@ export default function Card({ info, getJugadores }) {
             let base64Imagen = reader.result.replace('data:', '').replace(/^.+,/, '');
 
             //Convertimos la imagen en formato base64 para insertarla en la bbdd.
-            setImagenJugador(base64Imagen);
-            const name = event.target.name;  // "nombre" o "apellidos"  
-            console.log("nombre: ", name);
-            console.log("value: ", base64Imagen);
-            console.log("NUEVA IMAGEN: ", base64Imagen);
-            
+            setImagenJugador(base64Imagen);        
             let img = "data:image/png;base64," + base64Imagen;
             const blob = await fetch(img).then((res) => res.blob());
             let urlImagen = URL.createObjectURL(blob);
@@ -134,9 +129,9 @@ export default function Card({ info, getJugadores }) {
     const updateDatosJugador = ( async (event) => {
 
         event.preventDefault();
+        //Comprobamos si hay imagen para enviar un valor u otro en función de eso a la BBDD.
         let noHayImagen = imagenRef.current.files.length === 0;
-            // console.log("Dorsal: ", datos.posicion);
-            // console.log("Datos anteriores", datosAnteriores.posicion);
+        // console.log("Datos anteriores", datosAnteriores.posicion);
         let parametros = new FormData();
         parametros.append("id_jugador", datos.id_jugador);
         parametros.append("dni_jugador", datos.dni_jugador);

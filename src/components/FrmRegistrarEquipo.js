@@ -21,48 +21,55 @@ export default function FrmRegistrarEquipo() {
     async function guardarEquipoEnBD(event) {
 
         event.preventDefault();
-        //Si el archivo es una imagen, se introducirá en la base de datos.
-        if (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.png') || file.name.endsWith('.webp') || file.name.endsWith('.jpe')) {
-           
-            const reader = new FileReader();
-            reader.onloadend = async () => {
-                let base64Imagen = reader.result.replace('data:', '').replace(/^.+,/, '');
+        console.log("File:" , file);
+        let nombreEquipo = nombreEquipoRef.current.value;
+        let estadio = estadioRef.current.value;
+        let fechaFundacion = fechaFundacionRef.current.value;
+        
+        if (nombreEquipo !== "" && estadio !== "" && fechaFundacion !== "" && file !== null){
+            //Si el archivo es una imagen, se registrará el equipo en la base de datos.
+            if (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.png') || file.name.endsWith('.webp') || file.name.endsWith('.jpe')) {
+            
+                const reader = new FileReader();
+                reader.onloadend = async () => {
+                    let base64Imagen = reader.result.replace('data:', '').replace(/^.+,/, '');
+                    let parametros = new FormData();
+                    parametros.append("nombre", nombreEquipo);
+                    parametros.append("estadio", estadio);
+                    parametros.append("fecha_fundacion", fechaFundacion);
+                    parametros.append("escudo", base64Imagen);
 
-                let nombreEquipo = nombreEquipoRef.current.value;
-                let estadio = estadioRef.current.value;
-                let fechaFundacion = fechaFundacionRef.current.value;
-                let parametros = new FormData();
-                parametros.append("nombre", nombreEquipo);
-                parametros.append("estadio", estadio);
-                parametros.append("fecha_fundacion", fechaFundacion);
-                parametros.append("escudo", base64Imagen);
+                    let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarEquipo.php",
+                        {
+                            body: parametros,
+                            method: 'POST'
+                        });
 
-                let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarEquipo.php",
-                    {
-                        body: parametros,
-                        method: 'POST'
-                    });
+                    if (response.ok) {
+                        
+                        let respuesta = await response.json();
+                        if (!respuesta.error){
+                            setTextoModal(respuesta.datos);
+                            setModalError(false);
+                            frmRegistrarEquipoRef.current.reset();
+                        }else{
+                            setTextoModal(respuesta.datos);
+                            setModalError(false);
+                        }
 
-                if (response.ok) {
-                    
-                    let respuesta = await response.json();
-                    if (!respuesta.error){
-                        setTextoModal(respuesta.datos);
-                        setModalError(false);
-                        frmRegistrarEquipoRef.current.reset();
+                        setShowModal(true);
                     }else{
-                        setTextoModal(respuesta.datos);
+                        setTextoModal(response.statusText);
                         setModalError(false);
+                        setShowModal(true);
                     }
-
-                    setShowModal(true);
-                }else{
-                    setTextoModal(response.statusText);
-                    setModalError(false);
-                    setShowModal(true);
                 }
+                reader.readAsDataURL(file);
             }
-            reader.readAsDataURL(file);
+        }else if(nombreEquipo === "" || estadio === "" || fechaFundacion === "" || file === null){
+            setTextoModal("Por favor, rellena todos los campos del formulario.");
+            setModalError(true);
+            setShowModal(true);
         }
         
     }//Fin de la función

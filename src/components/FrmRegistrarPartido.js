@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import MyModal from "./Modal";
-import { SettingsPhoneSharp } from "@mui/icons-material";
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {
@@ -146,7 +145,6 @@ export default function FrmRegistrarPartido() {
     const [showModal, setShowModal] = useState(false);
     const [textoModal, setTextoModal] = useState('');
     const [modalError, setModalError] = useState(false);
-    // const [idPartidoActual, setIdPartidoActual] = useState('');
 
     //Referencias al DOM
     const formRef = useRef(null);
@@ -157,6 +155,43 @@ export default function FrmRegistrarPartido() {
     const golesEquipoLocalRef = useRef(null);
     const golesEquipoVisitanteRef = useRef(null);
     const encabezadoEventosRef = useRef(null);
+
+         //Función que rellena los dos campos select con los nombres de los equipos.
+         async function rellenarDesplegableEquipos() {
+
+            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getEquiposDeUnaCompeticion.php");
+            if (response.ok) {
+
+                let respuesta = await response.json();
+                desplegableEquipoLocalRef.current.innerHTML = " ";
+                desplegableEquipoVisitanteRef.current.innerHTML = " ";
+
+                //Creamos el primer option de cada select, el cual estará vacío.
+                let optionSinValor1 = createOptionElement("-", "-");
+                let optionSinValor2 = createOptionElement("-", "-");
+
+                // Anidamos los elementos option a los dos select.
+                desplegableEquipoLocalRef.current.appendChild(optionSinValor1);
+                desplegableEquipoVisitanteRef.current.appendChild(optionSinValor2);
+
+                for (let equipo of respuesta.datos) {
+                    // Creamos un elemento de tipo option por cada equipo.
+                    let optionLocal = createOptionElement(equipo.id_equipo, equipo.nombre);
+                    let optionVisitante = createOptionElement(equipo.id_equipo, equipo.nombre);
+
+                    desplegableEquipoLocalRef.current.appendChild(optionLocal);
+                    desplegableEquipoVisitanteRef.current.appendChild(optionVisitante);
+                }
+            }
+        }//Fin de la función.
+
+    const handleChangeCompeticion = ( async (idCompeticion) => {
+
+        if (idCompeticion !== "-"){
+            rellenarDesplegableEquipos();
+        }
+
+    });
 
     async function getJugadoresDeUnEquipo(idEquipo) {
 
@@ -274,6 +309,7 @@ export default function FrmRegistrarPartido() {
                 let respuesta = await response.json();
                 desplegableCompeticionesRef.current.innerHTML = " ";
                 let primerOption = createOptionElement("-", "-");
+                primerOption.selected = true;
                 desplegableCompeticionesRef.current.appendChild(primerOption);
 
                 for (let competicion of respuesta.datos) {
@@ -283,38 +319,9 @@ export default function FrmRegistrarPartido() {
             }
         }//Fin de la función.
 
-        //Función que rellena los dos campos select con los nombres de los equipos.
-        async function rellenarDesplegableEquipos() {
-
-            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getEquipos.php");
-            if (response.ok) {
-
-                let respuesta = await response.json();
-
-                desplegableEquipoLocalRef.current.innerHTML = " ";
-                desplegableEquipoVisitanteRef.current.innerHTML = " ";
-
-                //Creamos el primer option de cada select, el cual estará vacío.
-                let optionSinValor1 = createOptionElement("-", "-");
-                let optionSinValor2 = createOptionElement("-", "-");
-
-                // Anidamos los elementos option a los dos select.
-                desplegableEquipoLocalRef.current.appendChild(optionSinValor1);
-                desplegableEquipoVisitanteRef.current.appendChild(optionSinValor2);
-
-                for (let equipo of respuesta.datos) {
-                    // Creamos un elemento de tipo option por cada equipo.
-                    let optionLocal = createOptionElement(equipo.id_equipo, equipo.nombre);
-                    let optionVisitante = createOptionElement(equipo.id_equipo, equipo.nombre);
-
-                    desplegableEquipoLocalRef.current.appendChild(optionLocal);
-                    desplegableEquipoVisitanteRef.current.appendChild(optionVisitante);
-                }
-            }
-        }//Fin de la función.
+   
 
         rellenarDesplegableCompeticiones();
-        rellenarDesplegableEquipos();
     }, []);
 
     //UseEffect que hará que se renderice el componente sólo cuando cuando se produzca un cambio en alguna
@@ -416,7 +423,7 @@ export default function FrmRegistrarPartido() {
                         setInfoEventos([]);
                         setTextoModal("El partido ha sido registrado correctamente.");
                         setModalError(false);
-                        SettingsPhoneSharp(true);
+                        setShowModal(true);
                         formRef.current.reset();
                     }
                 }
@@ -435,7 +442,7 @@ export default function FrmRegistrarPartido() {
                 <h2 className="text-center mt-1 fs-2">Datos del partido</h2>
                 <div className="my-2 row mx-0">
                     <label className="form-label">Competición</label>
-                    <select className="form-select shadow-none" ref={desplegableCompeticionesRef} id="txtCompeticion" name="txtCompeticion" required >
+                    <select className="form-select shadow-none" ref={desplegableCompeticionesRef} onChange={(event) => handleChangeCompeticion(event.target.value)}  required >
 
                     </select>
                 </div>
@@ -480,7 +487,7 @@ export default function FrmRegistrarPartido() {
                     </div>
 
                     {eventos.map((evento, i) =>
-                        <div className="col-12" key={i}>{evento}</div>
+                        <div className="col-12 p-0" key={i}>{evento}</div>
                     )}
 
                 </div>

@@ -156,10 +156,10 @@ export default function FrmRegistrarJugador() {
 
         } else {
 
-            if (dniJugadorRef1.current.value === "" || nombreCompletoRef1.current.value === "" || fechaNacimientoRef1.current.value
-                === "" || pesoRef1.current.value === "" || alturaRef1.current.value === "" || posicionRef1.current.value === "-"
-                || dorsalRef1.current.value === "" || paisRef1.current.value === "" || idEquipo1 === ""
-                || imagenJugador === null) {
+            if  (dniJugadorRef1.current.value !== "" && nombreCompletoRef1.current.value !== "" && fechaNacimientoRef1.current.value
+            !== "" && pesoRef1.current.value !== "" && alturaRef1.current.value !== "" && posicionRef1.current.value !== "-"
+            && dorsalRef1.current.value !== "" && paisRef1.current.value !== "" && idEquipo1 !== ""
+            && imagenJugador !== null && dorsalRef1.current.value.length <= 2 && alturaRef1.current.value.length === 3) {
                 setTextoModal("Por favor, rellena todos los campos.");
             } else if (alturaRef1.current.value.length !== 3) {
                 setTextoModal("Por favor, introduce un valor válido para la altura.");
@@ -176,9 +176,9 @@ export default function FrmRegistrarJugador() {
         // console.log(imagenJugador);
         event.preventDefault();
         if (dniJugadorRef2.current.value !== "" && nombreCompletoRef2.current.value !== "" && fechaNacimientoRef2.current.value
-            !== "" && pesoRef2.current.value !== "" && alturaRef2.current.value !== "" && posicionRef2.current.value !== "-"
-            && dorsalRef2.current.value !== "" && paisRef2.current.value !== "" && idEquipo2 !== ""
-            && imagenJugador !== null) {
+        !== "" && pesoRef2.current.value !== "" && alturaRef2.current.value !== "" && posicionRef2.current.value !== "-"
+        && dorsalRef2.current.value !== "" && paisRef2.current.value !== "" && idEquipo2 !== ""
+        && imagenJugador !== null && dorsalRef2.current.value.length <= 2 && alturaRef2.current.value.length === 3) {
 
             //Si el archivo es una imagen, se introducirá en la base de datos.
             if (imagenJugador.name.endsWith('.jpg') || imagenJugador.name.endsWith('.jpeg') || imagenJugador.name.endsWith('.png') || imagenJugador.name.endsWith('.webp') || imagenJugador.name.endsWith('.jpe')) {
@@ -269,7 +269,7 @@ export default function FrmRegistrarJugador() {
                 setTextoModal("Por favor, introduce un valor válido para la altura.");
             } else if (dorsalRef2.current.value.length > 2) {
                 setTextoModal("El dorsal no puede ser mayor que 99.");
-            } 
+            }
             setModalError(true);
             setShowModal(true);
         }

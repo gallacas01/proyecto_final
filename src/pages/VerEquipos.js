@@ -20,6 +20,7 @@ export default function Equipos(){
     const desplegableCompeticionesRef = useRef(null);
     const encabezadoCompeticionRef = useRef(null);
     const contenedorEquiposRef = useRef(null);
+    
 
     useEffect ( () => {
 

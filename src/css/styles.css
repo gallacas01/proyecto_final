@@ -54,11 +54,15 @@ input[type="text"]::placeholder {
 
 /* Tamaño de la letra cuando se muestra la info en el cardJugador. */
 .datoJugador{
-    font-size: 0.8em;
+    font-size: 0.89em;
 }
 
 .labelCardJugador{
     font-size: 0.85em;
+}
+
+.labelCardEquipo{
+    font-size: 0.89em;
 }
 
 .btn1, .btnAceptarEvento, .btnEliminarEvento{
@@ -109,6 +113,12 @@ input[type="text"]::placeholder {
     color: #182E3E;
     border-color: #182E3E;
     text-decoration: none;
+}
+
+.btnShowFormFocus{
+    border: 2px solidwhite;
+    color: #182E3E;
+    background-color: white;
 }
 
 /* Titulo de la posición de los jugadores en Ver Jugadores */
