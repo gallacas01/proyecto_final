@@ -180,7 +180,7 @@ export default function Card({ info, getJugadores }) {
                     {verDatos === false && activarEdicion === false &&
                         <div ref={estadoInicialRef}>                
                             <div className="row my-2">
-                                {console.log("Imagen en el estado inicial", datos.imagen)}
+                                {/* {console.log("Imagen en el estado inicial", datos.imagen)} */}
                                 <img src={datos.imagen} className="img-fluid" alt="..." />
                             </div>
 
@@ -192,8 +192,7 @@ export default function Card({ info, getJugadores }) {
 
                     {verDatos === true &&                      
                         <>    
-                            {/* {nombreJugadorRef.current.textContent = datos.nombre_completo.split(" ")[0]} */}
-                            {console.log("Imagen cuando se ven los datos", datos.imagen)}       
+                            {/* {console.log("Imagen cuando se ven los datos", datos.imagen)}*/}
                             <div className="row mx-auto datoJugador my-0">
                                 <p className='text-start my-0'>DNI / INE: {datos.dni_jugador}</p>
                             </div>
@@ -246,7 +245,7 @@ export default function Card({ info, getJugadores }) {
                             </div>
                             <div className='row mx-auto my-2'>
                                 <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto labelCardJugador">F. nac</label></div>
-                                <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="text" className="form-control shadow-none p-1" defaultValue={datos.fecha_nacimiento} onChange={handleChangeNuevoDato} name='fecha_nacimiento' readOnly={!activarEdicion} minLength={10} maxLength={10}  /></div>
+                                <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="date" className="form-control shadow-none p-1" defaultValue={datos.fecha_nacimiento} onChange={handleChangeNuevoDato} name='fecha_nacimiento' readOnly={!activarEdicion} minLength={10} maxLength={10}  /></div>
                             </div>
                             <div className='row mx-auto my-2'>
                                 <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto labelCardJugador">Peso </label></div>

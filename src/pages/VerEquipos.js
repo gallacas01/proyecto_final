@@ -80,7 +80,7 @@ export default function Equipos(){
 
                         let info = { "id_equipo" : equipo.id_equipo, "nombre" : equipo.nombre, "estadio" : equipo.estadio
                         , "fecha_fundacion" : equipo.fecha_fundacion, "escudo" : urlImagen}
-                        arrayEquipos.push(<CardEquipo key={equipo.id_equipo} info={info} />);
+                        arrayEquipos.push(<CardEquipo key={equipo.id_equipo} info={info} getEquipos={getEquipos}/>);
                     }
                     setEquipos(arrayEquipos);
                 }
