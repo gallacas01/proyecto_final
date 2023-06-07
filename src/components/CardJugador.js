@@ -170,7 +170,7 @@ export default function Card({ info, getJugadores }) {
     });
 
     return (
-        <div className='col-10 col-sm-5 col-md-4 col-lg-3 p-1 my-1 mx-auto m-sm-0' ref={cardRef}>
+        <div className='col-10 col-sm-6 col-md-4 col-lg-3 p-1 my-1 mx-auto m-sm-0' ref={cardRef}>
             <div className="card cardJugador my-0 border-2 rounded-3">
                 <div className="card-body p-0">
                     <div className="row mb-2 mx-auto text-center fs-5 p-lg-1 text-white" style={{ backgroundColor: '#182E3E' }}>

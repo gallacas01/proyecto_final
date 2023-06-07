@@ -139,7 +139,7 @@ export default function CardEquipo({ info, getEquipos }) {
                 setModalError(true);
                 setShowModal(true);
             }
-            alert(respuesta.datos);
+            console.log(respuesta.datos);
         }
     });
 
@@ -176,7 +176,7 @@ export default function CardEquipo({ info, getEquipos }) {
     });
 
     return (
-        <div className='col-10 col-sm-5 col-md-4 col-lg-3 p-1 my-1 mx-auto m-sm-0' ref={cardRef}>
+        <div className='col-10 col-sm-6 col-md-4 col-lg-3 p-1 my-1 mx-auto m-sm-0' ref={cardRef}>
             <div className="card cardEquipo my-0 rounded-3">
                 <div className="card-body fs-5 p-0">
 
@@ -239,6 +239,11 @@ export default function CardEquipo({ info, getEquipos }) {
 
                     {activarEdicion === true &&
                         <>
+                            <div className="row mx-auto mb-2">
+                                <div className="col-12 p-0">
+                                    <p className="text-center fs-4 m-0" style={{ backgroundColor: '#182E3E' , color : "white"}} >Modificación</p>
+                                </div>
+                            </div>
                             <form className='p-1'>
                                 <div className='row mx-auto'>
                                     <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto labelCardEquipo" >Nombre</label></div>

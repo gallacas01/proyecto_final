@@ -175,7 +175,7 @@ export default function VerJugadores() {
     return (
         <div className='container-fluid'>
             <div className='row'>
-                <form className="col-9 col-sm-12 col-md-9 col-lg-9 my-4 mx-auto ms-sm-1 ms-md-auto">
+                <form className="col-10 col-sm-12 col-md-9 col-lg-9 my-4 mx-auto ms-sm-1 ms-md-auto">
                     <div className="row">
                         <div className='col-12 col-sm-auto col-md-auto fs-4 ms-lg-4 text-start text-sm-end'>
                             <label className='my-auto'>Competición</label>
@@ -201,7 +201,7 @@ export default function VerJugadores() {
             </div>
 
             <div className='row'>
-                <div className='col-9 m-auto p-1 d-none' ref={containerJugadoresRef}>
+                <div className='col-10 col-sm-9 m-auto p-1 d-none' ref={containerJugadoresRef}>
                     <div className='row m-auto'> 
                         <div className='col-12 p-0'>
                             <h1 className="text-center mt-lg-1 p-2" ref={nombreEquipoRef} style={{color : 'rgb(252, 224, 179)', backgroundColor : "#182E3E"}}></h1>

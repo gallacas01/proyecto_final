@@ -95,7 +95,7 @@ export default function Equipos(){
     return (
         <div className="container-fluid">
             <div className="row p-0">
-                <form className="col-lg-6 mx-auto my-3 p-0">
+                <form className="col-md-9 col-lg-7 mx-auto my-3 p-0">
                     <div className="row m-auto">
                         <div className="col-auto p-1">                        
                             <label className="form-label m-auto">Competición</label>
@@ -113,14 +113,14 @@ export default function Equipos(){
             </div>
             <div className='row d-none p-0' ref={contenedorEquiposRef}>
                 
-                <div className='col-9 text-center mx-auto p-0'>
+                <div className='col-12 col-md-9 text-center mx-auto p-1'>
                     <h1 className="text-center mt-lg-1 p-2" ref={encabezadoCompeticionRef} style={{color : 'rgb(252, 224, 179)', backgroundColor : "#182E3E"}}></h1>
                 </div>       
             </div>            
             <div className='row p-0'>
-                <div className='col-9 mx-auto p-0'>
+                <div className='col-10 col-sm-8 col-md-9 mx-auto p-0'>
                     <div className='container-fluid p-0 m-auto'>
-                        <div className='row p-0 m-auto'>
+                        <div className='row p-0 mx-auto'>
                             {equipos}
                         </div>
                     </div>
