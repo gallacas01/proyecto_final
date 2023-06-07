@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import MyModal from "./Modal";
+import Select from 'react-select'
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {
@@ -14,19 +15,19 @@ function Evento({ info }) {
     const [tipoEvento, setTipoEvento] = useState('');
     const [nombreJugador, setNombreJugador] = useState('');
     const [idJugador, setIdJugador] = useState(false);
-    const desplegableJugadoresRef = useRef('');
+    const [jugadores, setJugadores] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [textoModal, setTextoModal] = useState('');
     const [modalError, setModalError] = useState(false);
-
-    function handleNombreJugador(event) {
-        //El value del option del campo select tiene la siguiente estructura: nombre-id
-        let nombre = event.target.value.split("-")[0];
-        setNombreJugador(nombre);
-
-        let id = event.target.value.split("-")[1];
-        setIdJugador(id);
-    }
+    const styleSelect = {
+        control: (provided, state) => ({
+            ...provided,
+            border: state.isFocused ? '2px solid #182E3E' : '1px solid #182E3E',
+            '&:hover': {
+                border: '2px solid #182E3E',
+            },
+        }),
+    };
 
     function handleTipoEvento(event) {
         //Recuperamos el textContent de la etiqueta option del select que contiene los tipos de eventos.
@@ -56,30 +57,19 @@ function Evento({ info }) {
             //Añadimos al array de datos de evento del componente paddre los datos de s
             const datosEvento = { "idJugador": idJugador, "tipo": tipoEvento };
             info.infoEventos.push(datosEvento);
+            console.log("DATOS DEL NUEVO EVENTO: ", datosEvento);
         }
     }
 
-    async function rellenarDesplegableJugadores() {
-
-
-        desplegableJugadoresRef.current.innerHTML = "";
-        //Anidamos a nuestro select una primera opción, que tendrá el valor '-'
-        desplegableJugadoresRef.current.appendChild(createOptionElement("-", "-"));
-
-        for (let jugador of info.jugadores) {
-            //Creamos un elemento de tipo option por cada jugador y lo anidamos al select.
-            let idJugador = jugador.id_jugador;
-            let nombreJugador = jugador.nombre_completo;
-            let option = createOptionElement((nombreJugador + "-" + idJugador), nombreJugador);
-            desplegableJugadoresRef.current.appendChild(option);
-        }
-    }
-
-    //useEffect que se ejecutará cuando se produzca un cambio en algunos de los equipos seleccionados.
+    ///Cuuando se produzca un cambio en algunos de los equipos seleccionados, actualizamos la variable de estado de los jugadores.
     useEffect(() => {
 
-        rellenarDesplegableJugadores();
-    }, [info.jugadores]); //Si se produce un cambio en la variable info.jugadores que pasa del componente padre al hijo, se ejecuta el useState.
+        //Creamos le JSON con la información del jugador para rellenar el desplegable de jugadores.
+        let allPlayers = info.jugadores.map((jugador, i) =>
+            ({ value: jugador.id_jugador, label: jugador.nombre_completo })
+        );
+        setJugadores(allPlayers);
+    }, [info.jugadores]); //Si se produce un cambio en la variable info.jugadores que pasa del componente padre al hijo, se ejecuta el useEffect.
 
     return (
         <div className="my-2 row mx-0" id={info.numEvento}>
@@ -88,9 +78,13 @@ function Evento({ info }) {
                 {eventoAceptado === false &&
                     <div className="row">
                         <div className="col-7 col-md-5 m-auto p-1">
-                            <select className="form-select shadow-none" onChange={handleNombreJugador} ref={desplegableJugadoresRef} required>
-
-                            </select>
+                            <Select
+                                className="shadow-none fs-6 m-0 p-0"
+                                options={jugadores} styles={styleSelect}
+                                onChange={(selectedOption) => {setIdJugador(selectedOption.value); setNombreJugador(selectedOption.label)}}
+                                isSearchable={true}
+                                placeholder="Buscar" 
+                            />
                         </div>
                         <div className="col-5 col-md-4 m-auto p-1">
                             <select className="form-select shadow-none" onChange={handleTipoEvento} defaultValue="-" required>
@@ -157,9 +151,15 @@ export default function FrmRegistrarPartido() {
     const encabezadoEventosRef = useRef(null);
 
          //Función que rellena los dos campos select con los nombres de los equipos.
-         async function rellenarDesplegableEquipos() {
+         async function rellenarDesplegableEquipos(idCompeticion) {
 
-            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getEquiposDeUnaCompeticion.php");
+            let parametros = new FormData();
+            parametros.append("id_competicion", idCompeticion);
+            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getEquiposDeUnaCompeticion.php",{
+                body : parametros,
+                method : 'POST'
+            });
+
             if (response.ok) {
 
                 let respuesta = await response.json();
@@ -188,9 +188,11 @@ export default function FrmRegistrarPartido() {
     const handleChangeCompeticion = ( async (idCompeticion) => {
 
         if (idCompeticion !== "-"){
-            rellenarDesplegableEquipos();
+            rellenarDesplegableEquipos(idCompeticion);
+        }else if (idCompeticion === "-"){
+            desplegableEquipoLocalRef.current.innerHTML = "";
+            desplegableEquipoVisitanteRef.current.innerHTML = "";
         }
-
     });
 
     async function getJugadoresDeUnEquipo(idEquipo) {
@@ -241,12 +243,12 @@ export default function FrmRegistrarPartido() {
         if (idEquipo !== "-") {
 
             setIdEquipoLocal(idEquipo);
-            //Obtenemos los jugadores
+            //Obtenemos los jugadores y el estadio del equipo local.
             let jugadoresLocales = await getJugadoresDeUnEquipo(idEquipo);
+            console.log("Jugadores locales", jugadoresLocales);
             setJugadoresEquipoLocal(jugadoresLocales);
-
+            
             let estadio = await getEstadioDeUnEquipo(idEquipo);
-            // console.log(estadio);
             setEstadioEquipoLocal(estadio);
         }
     }//Fin de la función.
@@ -259,7 +261,7 @@ export default function FrmRegistrarPartido() {
             //Obtenemos los jugadores.
             let jugadoresVisitantes = await getJugadoresDeUnEquipo(idEquipo);
             setJugadoresEquipoVisitante(jugadoresVisitantes);
-            // console.log("Jugadores visitantes actualizados.");
+           
         }
     }//Fin de la función.
 
@@ -289,7 +291,6 @@ export default function FrmRegistrarPartido() {
     //Encargado de mostrar u ocultar el título según el número de eventos.
     useEffect(() => {
 
-        // console.log("El número de eventos es ", eventos.length);
         let encabezadoEventos = encabezadoEventosRef.current;
         if (eventos.length === 0) {
             encabezadoEventos.classList.add('d-none');
@@ -319,7 +320,6 @@ export default function FrmRegistrarPartido() {
             }
         }//Fin de la función.
 
-   
 
         rellenarDesplegableCompeticiones();
     }, []);
@@ -356,7 +356,6 @@ export default function FrmRegistrarPartido() {
         let idPartido = await getUltimoIdPartido();
         for (let evento of infoEventos) {
 
-            console.log("DATOS DEL EVENTO: ", evento);
             let parametros = new FormData();
             parametros.append("id_partido", idPartido);
             parametros.append("id_jugador", evento.idJugador);
@@ -371,7 +370,7 @@ export default function FrmRegistrarPartido() {
 
                 let respuesta = await response.json();
                 if (!respuesta.error) {
-                    console.log(respuesta.datos);
+                    // console.log(respuesta.datos);
                 } else {
                     setTextoModal(respuesta.datos);
                     setModalError(true);
@@ -390,7 +389,7 @@ export default function FrmRegistrarPartido() {
         let golesEquipoLocal = golesEquipoLocalRef.current.value;
         let golesEquipoVisitante = golesEquipoVisitanteRef.current.value;
 
-        if (idCompeticion !== "-" && idEquipoLocal !== "-" && idEquipoVisitante !== "-" && fecha !== "-"
+        if (idCompeticion !== "-" && idEquipoLocal !== "-" && idEquipoVisitante !== "-" && fecha !== ""
             && golesEquipoLocal !== "-" && golesEquipoVisitante !== "-") {
 
             if (idEquipoLocal === idEquipoVisitante) {

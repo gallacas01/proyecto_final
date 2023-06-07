@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useRef } from "react";
 import MyModal from "./Modal";
@@ -20,11 +20,33 @@ export default function CardEquipo({ info, getEquipos }) {
     const [verDatos, setVerDatos] = useState(false);
     const [activarEdicion, setActivarEdicion] = useState(false);
     const [imagenEquipo, setImagenEquipo] = useState(null);
+    const [numJugadores, setNumJugadores] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [textoModal, setTextoModal] = useState('');
     const [modalError, setModalError] = useState(false);
     const imagenRef = useRef(null);
     const cardRef = useRef(null);
+
+    useEffect ( () => {
+
+        //Obtenemos el número de jugadores del equipo la primera vez que se renderice el componente.
+        const getNumJugadores = ( async () => {
+
+            let parametros = new FormData();
+            parametros.append("id_equipo", info.id_equipo);
+            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/GET/getJugadoresDeUnEquipo.php", {
+                method: 'POST',
+                body: parametros
+            });
+
+            if (response.ok){
+
+                let respuesta  = await response.json();
+                setNumJugadores(respuesta.datos.length);
+            }
+        });
+        getNumJugadores();
+    },[]);
 
     const handleVerdatos = (() => {
 
@@ -172,7 +194,12 @@ export default function CardEquipo({ info, getEquipos }) {
                     {verDatos === true &&
                         <>
                             {/* {console.log("datos", datos)} */}
-                            <div className="row mx-auto p-1">
+                            <div className="row mx-auto">
+                                <div className="col-12 p-0">
+                                    <p className="text-center fs-4 m-0" style={{ backgroundColor: '#182E3E' , color : "white"}} >Información</p>
+                                </div>
+                            </div>
+                            <div className="row mx-auto p-1 mt-0">
                                 <div className="col-12">
                                     <p className="m-auto">Nombre: {datos.nombre}</p>
                                 </div>
@@ -185,6 +212,11 @@ export default function CardEquipo({ info, getEquipos }) {
                             <div className="row mx-auto p-1">
                                 <div className="col-12">
                                     <p className="m-auto">Fundación: {datos.fecha_fundacion}</p>
+                                </div>
+                            </div>
+                            <div className="row mx-auto p-1">
+                                <div className="col-12">
+                                    <p className="m-auto">Nº de jugadores: {numJugadores }</p>
                                 </div>
                             </div>
 

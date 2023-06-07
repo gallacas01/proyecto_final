@@ -1,8 +1,9 @@
 import Footer from "../components/Footer";
-import img_balon from "../img/imagen_balon.png";
+// import img_balon from "../img/imagen_balon.png";
 import jugadores_andando from "../img/jugadores_andando.jpg";
 import football_pitch from "../img/footabll_pitch.jpg";
 import player_celebrating from "../img/player_celebrating.jpg";
+import img_inicial from "../img/img_principal.jpg";
 import { Link } from "react-router-dom";
 
 export default function Inicio() {
@@ -11,7 +12,7 @@ export default function Inicio() {
         <div className="container-fluid">
             <div className="row">
                 <div className="col-12 p-0">
-                    <img src={img_balon} className="img-fluid w-100" height={'550px'} alt="..." />
+                    <img src={img_inicial} className="img-fluid w-100" height={'250px'} alt="..." />
                 </div>
             </div>
             <div className="row text-center" style={{ borderTop: "0.4rem solid rgb(252, 224, 179)" }}>

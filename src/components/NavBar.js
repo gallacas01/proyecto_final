@@ -55,6 +55,10 @@ function BarraNavegacion({ datosNavBar }) {
      });
    
     let listaNavItem = datosNavBar.listaItems.map((elemInfo, i) => {
+
+        if (!elemInfo.url){
+            return null;
+        }
         return (
             <NavItem key={i} info={elemInfo} />
         );       
