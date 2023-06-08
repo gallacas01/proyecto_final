@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import MyModal from "./Modal";
+import MyFooter from "./Footer";
 
 function createOptionElement(value, textContent) {
     let option = document.createElement("option");
@@ -12,11 +13,11 @@ function createOptionElement(value, textContent) {
 export default function RegistrarFichaje() {
 
     //Variables de estado
-    const [idCompeticionEquipoAnterior, setIdCompeticionEquipoAnterior] = useState('');
-    const [idEquipoAnterior, setIdEquipoAnterior] = useState('');
-    const [dniJugador, setDniJugador] = useState('');
-    const [idCompeticionEquipoNuevo, setIdCompeticionEquipoNuevo] = useState('');
-    const [idEquipoNuevo, setIdEquipoNuevo] = useState('');
+    const [idCompeticionEquipoAnterior, setIdCompeticionEquipoAnterior] = useState('-');
+    const [idEquipoAnterior, setIdEquipoAnterior] = useState('-');
+    const [dniJugador, setDniJugador] = useState('-');
+    const [idCompeticionEquipoNuevo, setIdCompeticionEquipoNuevo] = useState('-');
+    const [idEquipoNuevo, setIdEquipoNuevo] = useState('-');
     const [showModal, setShowModal] = useState(false);
     const [textoModal, setTextoModal] = useState('');
     const [modalError, setModalError] = useState(false);
@@ -184,7 +185,7 @@ export default function RegistrarFichaje() {
             <form className="mb-3" ref={frmRegistrarMovimiento}>
                 <h2 className="text-center mt-1 fs-2">Datos del fichaje</h2>
                 <div className="my-2 row mx-0">
-                    <label className="form-label my-auto">Liga del equipo anterior</label>
+                    <label className="form-label my-auto">Competición del equipo anterior</label>
                     <select className="form-control shadow-none" ref={competicionesEquipoAnteriorRef} onChange={(event) => handleChangeCompeticionDelEquipoAnterior(event)} required>
 
                     </select>
@@ -202,7 +203,7 @@ export default function RegistrarFichaje() {
                     </select>
                 </div>
                 <div className="my-2 row mx-0">
-                    <label className="form-label my-auto">Liga del nuevo equipo</label>
+                    <label className="form-label my-auto">Competición del nuevo equipo</label>
                     <select className="form-control shadow-none" ref={competicionesEquipoNuevoRef} onChange={(event) => handleChangeCompeticionDelEquipoNuevo(event)} required>
 
                     </select>

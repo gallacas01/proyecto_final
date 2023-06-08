@@ -6,6 +6,7 @@ import tarjeta_roja from '../img/tarjeta_roja.png';
 import tarjeta_amarilla_sin_mano from '../img/yellow_card_wo_hand.png';
 import tarjeta_roja_sin_mano from '../img/red_card_wo_hand.png';
 import MyModal from "../components/Modal";
+import MyFooter from "../components/Footer";
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {
@@ -338,9 +339,9 @@ export default function Estadisticas(){
                             </div>                           
                         </div>
                     </div>                      
-                    
                 </div>
             </div>
+            <MyFooter />
             <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />                
         </>
     );
