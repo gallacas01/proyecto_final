@@ -159,7 +159,7 @@ export default function Clasificacion (){
     return (
         <div className="container-fluid">
             <div className="row p-0">
-                <form className="col-12 col-sm-10 col-md-8 col-lg-6 col-xxl-6 mx-auto my-3 p-0">
+                <form className="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto my-3 p-0">
                     <div className="row mx-auto">
                         <div className="col-12 col-sm-auto text-start p-1 ms-2 ms-sm-0">                        
                             <label className="form-label m-auto">Competición</label>

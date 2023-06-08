@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useRef } from "react";
 import MyModal from "./Modal";
+import MyConfirm from "./Confirm";
 
 export default function CardEquipo({ info, getEquipos }) {
 
@@ -24,6 +25,8 @@ export default function CardEquipo({ info, getEquipos }) {
     const [showModal, setShowModal] = useState(false);
     const [textoModal, setTextoModal] = useState('');
     const [modalError, setModalError] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [messageConfirm, setMessageConfirm] = useState('');
     const imagenRef = useRef(null);
     const cardRef = useRef(null);
 
@@ -77,9 +80,10 @@ export default function CardEquipo({ info, getEquipos }) {
 
     const handleChangeNuevoDato = ((event) => {
 
+        //Actualizamos valor del atributo del objeto que según el name.
         const name = event.target.name;  // por ej: dorsal
-        const value = event.target.value;
-        console.log("Name y value del nuevo dato: ", name, value);
+        const value = event.target.value; // por ej: 7
+        // console.log("Name y value del nuevo dato: ", name, value);
         setDatos({ ...datos, [name]: value });
     });
 
@@ -145,34 +149,55 @@ export default function CardEquipo({ info, getEquipos }) {
 
     const eliminarEquipo = (() => {
 
-        if (window.confirm("Al eliminar el equipo, se eliminarán sus jugadores. ¿Quieres continuar?")){
+        cardRef.current.classList.add("animate__animated" ,"animate__fadeOut");
+        cardRef.current.addEventListener("animationend", async () => {
+            cardRef.current.classList.remove("animate__animated" ,"animate__fadeOut");
+            
+            //Mostramos el elemento.
+            cardRef.current.classList.add('d-none');
 
-            cardRef.current.classList.add("animate__animated" ,"animate__fadeOut");
-            cardRef.current.addEventListener("animationend", async () => {
-                cardRef.current.classList.remove("animate__animated" ,"animate__fadeOut");
-                
-                //Eliminamos el elemento del DOM cuando se termine la animación.
-                cardRef.current.classList.add('d-none');
+            //Borramos los jugadores que pertenecen al equipo que va a ser borrado.
+            let parametros = new FormData();
+            parametros.append("id_equipo", datos.id_equipo);
+            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/DELETE/eliminarJugadoresDeUnEquipo.php", 
 
-                //Borramos el jugador de la BD.
-                let parametros = new FormData();
-                parametros.append("id_equipo", datos.id_equipo);
-                let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/DELETE/eliminarEquipo.php", 
-                {
-                    method :'POST',
-                    body : parametros
-                });
-
-                if (response.ok){
-
-                    let respuesta = await response.json();
-                    if (respuesta.datos.includes('correctamente')){
-                        getEquipos();
-                    }
-                }
+            {
+                method :'POST',
+                body : parametros
             });
-        }      
 
+            if (response.ok){
+
+                let respuesta = await response.json();
+                if (respuesta.datos.includes('correctamente')){
+
+                    //Eliminamos el equipo de la BD.
+                    let parametros = new FormData();
+                    parametros.append("id_equipo", datos.id_equipo);
+                    let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/DELETE/eliminarEquipo.php", 
+                    {
+                        method :'POST',
+                        body : parametros
+                    });
+
+                    if (response.ok){
+
+                        let respuesta = await response.json();
+                        //Refrescamos la página con los equipos para que no se muestre el que acaba de ser borrado.
+                        getEquipos();
+                        console.log(respuesta.datos);
+                    }
+                }else{
+                    console.log(respuesta.datos);
+                }
+            }
+        });
+    });
+
+    const handleEliminarEquipo = ( () => {
+
+        setMessageConfirm('Al eliminar el equipo, se eliminarán también sus jugadores. ¿Continuar de todos modos?');
+        setShowConfirm(true);
     });
 
     return (
@@ -231,7 +256,7 @@ export default function CardEquipo({ info, getEquipos }) {
                                 <div className='row mx-auto'>
                                     <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleOcultarDatos}><i className="bi bi-arrow-left-circle-fill"></i></button></div>
                                     <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleActivarEdicion}><i className="bi bi-pencil-square m-auto"></i></button></div>
-                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={eliminarEquipo}><i className="bi bi-trash3-fill"></i></button></div>
+                                    <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleEliminarEquipo}><i className="bi bi-trash3-fill"></i></button></div>
                                 </div>
                             }
                         </>
@@ -273,6 +298,7 @@ export default function CardEquipo({ info, getEquipos }) {
                 </div>
             </div>
             <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />
+            <MyConfirm showConfirm={showConfirm} setShowConfirm={setShowConfirm} msg={messageConfirm} accion={eliminarEquipo}/>
         </div>
     );
 }

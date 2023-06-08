@@ -135,9 +135,9 @@ export default function VerJugadores() {
         }else{
 
             if (idCompeticion === "-"){
-                setTextoModal("Selecciona una competición.");
+                setTextoModal("Por favor, selecciona una competición.");
             }else if (idEquipo === "-" ){
-                setTextoModal("Selecciona un equipo.");
+                setTextoModal("Por favor, selecciona un equipo.");
             }
             setModalError(true);
             setShowModal(true);

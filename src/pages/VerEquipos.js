@@ -95,25 +95,40 @@ export default function Equipos(){
     return (
         <div className="container-fluid">
             <div className="row p-0">
-                <form className="col-md-9 col-lg-7 mx-auto my-3 p-0">
+                <form className="col-12 col-sm-10 col-md-9 col-lg-6 my-3 p-0 mx-auto">
                     <div className="row m-auto">
-                        <div className="col-auto p-1">                        
+                        <div className="col-12 col-sm-auto text-start p-1 ms-2 ms-sm-0">                        
                             <label className="form-label m-auto">Competición</label>
                         </div>
-                        <div className="col-8 p-0 my-auto mx-2">
+                        <div className="col-9 col-sm-7 col-md-8 col-xx-6 mx-2 p-0 my-auto">
                             <select className="form-select shadow-none p-1" ref={desplegableCompeticionesRef} onChange={(event) => setIdCompeticion(event.target.value)} required>
 
                             </select>
                         </div>
-                        <div className='col ms-1 p-0'>                    
+                        <div className='col-2 col-sm col-xxl-1 ms-1 p-0'>                    
                             <button className="btn1 w-100" onClick={getEquipos} ><i className="bi bi-search fs-4"></i></button>  
                         </div>
                     </div>
                 </form>
+                 {/* <form className="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto my-3 p-0">
+                    <div className="row mx-auto">
+                        <div className="col-12 col-sm-auto text-start p-1 ms-2 ms-sm-0">                        
+                            <label className="form-label m-auto">Competición</label>
+                        </div>
+                        <div className="col-9 col-sm-7 col-md-8 col-xx-6 mx-2 p-0 my-auto">
+                            <select className="form-select shadow-none p-1" ref={desplegableCompeticionesRef} required>
+
+                            </select>
+                        </div>
+                        <div className='col-2 col-sm col-xxl-1 ms-1 p-0'>                    
+                            <button className="btn1 w-100" onClick={getClasificacion}><i className="bi bi-search fs-4"></i></button>  
+                        </div>
+                    </div>
+                </form> */}
             </div>
             <div className='row d-none p-0' ref={contenedorEquiposRef}>
                 
-                <div className='col-12 col-md-9 text-center mx-auto p-1'>
+                <div className='col-12 col-sm-11 col-md-9 text-center mx-auto p-1'>
                     <h1 className="text-center mt-lg-1 p-2" ref={encabezadoCompeticionRef} style={{color : 'rgb(252, 224, 179)', backgroundColor : "#182E3E"}}></h1>
                 </div>       
             </div>            
