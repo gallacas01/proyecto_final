@@ -99,7 +99,8 @@ export function AuthProvider({children}){
     //Función de logOut
     const logOut = async () => {
         const response = await signOut(auth);
-        console.log(response);
+        window.location.reload();
+        // console.log(response);
     }
 
     //La propiedad value sirve para exportar por defecto las funciones y el contenido (como el valor del usaurio y la contraseña) que se indiquen en el value.

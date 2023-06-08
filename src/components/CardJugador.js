@@ -2,6 +2,7 @@ import { useState,useRef } from 'react';
 import { useAuth } from "../context/AuthContext";
 import 'animate.css';
 import MyModal from './Modal';
+import MyConfirm from './Confirm';
 
 export default function Card({ info, getJugadores }) {
 
@@ -22,7 +23,8 @@ export default function Card({ info, getJugadores }) {
     const [showModal, setShowModal] = useState(false);
     const [textoModal, setTextoModal] = useState('');
     const [modalError, setModalError] = useState(false);
-
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [messageConfirm, setMessageConfirm] = useState('');
     //Referencias al DOM del componente.
     const cardRef = useRef(null);
     const estadoInicialRef = useRef(null);
@@ -96,34 +98,38 @@ export default function Card({ info, getJugadores }) {
 
     const eliminarJugador = ( () => {
 
-        if (window.confirm("¿Eliminar jugador?")){
 
-            cardRef.current.classList.add("animate__animated" ,"animate__fadeOut");
-            cardRef.current.addEventListener("animationend", async () => {
-                cardRef.current.classList.remove("animate__animated" ,"animate__fadeOut");
-                
-                //Eliminamos el elemento del DOM cuando se termine la animación.
-                cardRef.current.classList.add('d-none');
 
-                //Borramos el jugador de la BD.
-                let parametros = new FormData();
-                parametros.append("id_jugador", datos.id_jugador)
-                let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/DELETE/eliminarJugador.php", 
-                {
-                    method :'POST',
-                    body : parametros
-                });
+        cardRef.current.classList.add("animate__animated" ,"animate__fadeOut");
+        cardRef.current.addEventListener("animationend", async () => {
+            cardRef.current.classList.remove("animate__animated" ,"animate__fadeOut");
+            
+            //Eliminamos el elemento del DOM cuando se termine la animación.
+            cardRef.current.classList.add('d-none');
 
-                if (response.ok){
-
-                    let respuesta = await response.json();
-                    if (respuesta.datos.includes('correctamente')){
-                        getJugadores();
-                    }
-                }
+            //Borramos el jugador de la BD.
+            let parametros = new FormData();
+            parametros.append("id_jugador", datos.id_jugador)
+            let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/DELETE/eliminarJugador.php", 
+            {
+                method :'POST',
+                body : parametros
             });
-        }      
 
+            if (response.ok){
+
+                let respuesta = await response.json();
+                if (respuesta.datos.includes('correctamente')){
+                    getJugadores();
+                }
+            }
+        });
+    });
+
+    const handleEliminarJugador = ( () => {
+
+        setMessageConfirm('¿Deseas eliminar el jugador?');
+        setShowConfirm(true);
     });
 
     const updateDatosJugador = ( async (event) => {
@@ -226,7 +232,7 @@ export default function Card({ info, getJugadores }) {
                             <div className='row mx-auto'>
                                 <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleOcultarDatos}><i className="bi bi-arrow-left-circle-fill"></i></button></div>
                                 <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleActivarEdicion}><i className="bi bi-pencil-square m-auto"></i></button></div>
-                                <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={eliminarJugador}><i className="bi bi-trash3-fill"></i></button></div>
+                                <div className='col-4 m-0 fs-4 p-1'><button className='btn1 w-100 p-0' onClick={handleEliminarJugador}><i className="bi bi-trash3-fill"></i></button></div>
                             </div>      
                             }                                
                         </>             
@@ -287,7 +293,9 @@ export default function Card({ info, getJugadores }) {
                             </div>
                         </form>
                     }
-                    <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} />   
+                    <MyModal showModal={showModal} setShowModal={setShowModal} tipo={modalError} texto={textoModal} /> 
+                    {/* //Pasamos al confirm el método de eliminarJugador */}
+                    <MyConfirm showConfirm={showConfirm} setShowConfirm={setShowConfirm} msg={messageConfirm} accion={eliminarJugador}/>
                 </div>
             </div>
         </div>

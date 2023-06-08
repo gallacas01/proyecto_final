@@ -2,6 +2,8 @@ import {useEffect } from 'react';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
 import { useRef } from 'react';
+import MyConfirm from "./Confirm";
+import { useState } from 'react';
 
 //Componente NavItem
 function NavItem({ info }) {
@@ -38,21 +40,20 @@ function NavItem({ info }) {
 
 function BarraNavegacion({ datosNavBar }) {
 
-      //Constantes
-      const auth = useAuth();
-      const navigate = useNavigate();
-      const location = useLocation();
-      const currentPath = location.pathname;
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [messageConfirm, setMessageConfirm] = useState('');
 
-      //Función que cierra la sesión
-      const cerrarSesion = ( () => {
+    //Constantes
+    const auth = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const currentPath = location.pathname;
 
-        if  (window.confirm('¿Estás seguro/a de que quieres cerrar la sesión?')){
-            navigate("/login");
-            auth.logOut();
-            window.location.reload();
-        }
-     });
+    const handleCerrarSesion = ( () => {
+
+        setMessageConfirm("¿Estás seguro/a de que quieres cerrar sesión?");
+        setShowConfirm(true);
+     });     
    
     let listaNavItem = datosNavBar.listaItems.map((elemInfo, i) => {
 
@@ -65,22 +66,25 @@ function BarraNavegacion({ datosNavBar }) {
     });
 
     return (
-        <nav className={`navbar navbar-expand-md p-0 ${currentPath === '/inicio' ||currentPath ===  '/ver_jugadores' || currentPath ===  '/ver_equipos' ||
-            currentPath === '/clasificacion' || currentPath === '/estadisticas' || currentPath === '/panel_de_registro' ? '' : 'd-none'}`}>
-            <div className="container-fluid p-0">
-                <button className="navbar-toggler my-2 text-light m-1" style={{backgroundColor : "#f0f0f0"}} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"/>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav me-auto mb-lg-0 p-2">
-                        {listaNavItem}
-                        <li className='nav-item'>
-                            <button className='p-0 mt-2 fs-5 fs-sm-4' onClick={cerrarSesion} id='btnCerrarSesion'><i className="fa-solid fa-right-from-bracket"/></button>
-                        </li>
-                    </ul>
+        <>
+            <nav className={`navbar navbar-expand-md p-0 ${currentPath === '/inicio' ||currentPath ===  '/ver_jugadores' || currentPath ===  '/ver_equipos' ||
+                currentPath === '/clasificacion' || currentPath === '/estadisticas' || currentPath === '/panel_de_registro' ? '' : 'd-none'}`}>
+                <div className="container-fluid p-0">
+                    <button className="navbar-toggler my-2 text-light m-1" style={{backgroundColor : "#f0f0f0"}} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"/>
+                    </button>
+                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul className="navbar-nav me-auto mb-lg-0 p-2">
+                            {listaNavItem}
+                            <li className='nav-item'>
+                                <button className='p-0 mt-2 fs-5 fs-sm-4' onClick={handleCerrarSesion} id='btnCerrarSesion'><i className="fa-solid fa-right-from-bracket"/></button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+            <MyConfirm showConfirm={showConfirm} setShowConfirm={setShowConfirm} msg={messageConfirm} accion={auth.logOut}/>
+        </>
     );
 }
 
@@ -136,6 +140,7 @@ export default function NavBar() {
     };
 
     return (
-        <BarraNavegacion datosNavBar={estructuraDatosNavBar} />
+    
+        <BarraNavegacion datosNavBar={estructuraDatosNavBar} />   
     );
 }

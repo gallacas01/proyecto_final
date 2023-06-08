@@ -18,15 +18,15 @@ export default function Inicio() {
             <div className="row text-center" style={{ borderTop: "0.2rem solid rgb(252, 224, 179)" }}>
                 <div className="col-12 col-md-4 col-lg-4 p-2" style={{ backgroundColor: "#182E3E", color: "white" }} >
                     <h4 className="p-0 p-sm-1">Echa un vistazo a las plantillas de todos los equipos</h4>
-                    <Link to="/ver_jugadores"><img src={jugadores_andando} className="img-fluid" height={'78%'} alt="Players waking" /></Link>
+                    <Link to="/ver_jugadores"><img src={jugadores_andando}className="w-100" height={'300px'} alt="Players waking" /></Link>
                  </div>
                 <div className="col-12 col-md-4 col-lg-4 p-2" style={{ backgroundColor: "white", color: "#182E3E" }}> 
                     <h4 className="p-0 p-sm-1">Las estadísticas de tus jugadores favoritos en un click </h4>
-                    <img src={player_celebrating} className="img-fluid" height={'78%'} alt="Player celebrating" />
+                    <img src={player_celebrating} className="w-100" height={'300px'} alt="Player celebrating" />
                 </div>
                 <div className="col-12 col-md-4 col-lg-4 p-2" style={{ backgroundColor: "#182E3E", color: "white" }}>                    
                     <h4 className="p-0 p-sm-1">Consulta la clasificación y mantente actualizado/a en todo momento </h4>
-                    <img src={football_pitch} className="img-fluid" height={'78%'} alt="Football pitch" />
+                    <img src={football_pitch}className="w-100" height={'300px'} alt="Football pitch" />
                 </div>
             </div>
             <div className="row" style={{ borderTop: "0.2rem solid rgb(252, 224, 179)" }}><Footer /></div>
