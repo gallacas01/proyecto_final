@@ -85,7 +85,7 @@ export default function FrmInscribirEquipo() {
             if (response.ok){
 
                 let respuesta = await response.json();
-                 setTextoModal(respuesta.datos);
+                    setTextoModal(respuesta.datos);
                 if (!respuesta.error){
                    setModalError(false);
                    frmRef.current.reset();

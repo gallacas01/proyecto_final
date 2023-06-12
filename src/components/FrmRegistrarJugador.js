@@ -230,6 +230,7 @@ export default function FrmRegistrarJugador() {
                             if (!respuesta2.error) {
                                 setTextoModal("El jugador ha sido registrado correctamente.");
                                 setModalError(false);
+                                setShowModal(true);
                                 setImagenJugador(null);
                                 frmRegistrarJugadorRef2.current.reset();
                                 equipoRef2.current.clearValue();
@@ -268,7 +269,7 @@ export default function FrmRegistrarJugador() {
             } else if (alturaRef2.current.value.length !== 3) {
                 setTextoModal("Por favor, introduce un valor válido para la altura.");
             } else if (dorsalRef2.current.value.length > 2) {
-                setTextoModal("El dorsal no puede ser mayor que 99.");
+                setTextoModal("El dorsal no puede ser un número mayor que 99.");
             }
             setModalError(true);
             setShowModal(true);

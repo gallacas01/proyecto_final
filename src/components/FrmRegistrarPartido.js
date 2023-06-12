@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import MyModal from "./Modal";
-import Select from 'react-select'
+import Select from 'react-select';
+import tarjeta_amarilla_sin_mano from '../img/yellow_card_wo_hand.png';
+import tarjeta_roja_sin_mano from '../img/red_card_wo_hand.png';
 
 //Método que crea un elemento de tipo option cuyo valor y textContent se pasan por parámetro.
 function createOptionElement(value, textContent) {
@@ -34,6 +36,7 @@ function Evento({ info }) {
         let optionSeleccionado = event.target.options[event.target.selectedIndex];
         let tipoEvento = optionSeleccionado.text;
         setTipoEvento(tipoEvento);
+        console.log("TIpo de evento");
     }
 
     function handleEventoAceptado(event) {
@@ -106,14 +109,23 @@ function Evento({ info }) {
                 {eventoAceptado === true &&
 
                     <div className="row">
-                        <div className="col-8 col-sm-9 p-1 rounded-2 fs-5" id="infoEvento">
+                        <div className="col-8 col-sm-8 p-1 rounded-2 fs-5" id="infoEvento">
                              {nombreJugador}
                            </div>
                         <div className="col">
 
                         </div>
-                        <div className="col-2 p-1 rounded-2 fs-5" id="infoEvento">
-                            {tipoEvento}
+                        <div className="col-3 p-1 rounded-2 fs-5 text-center" id="infoEvento">
+                            {tipoEvento === "Tarjeta amarilla" &&
+                                <img src={tarjeta_amarilla_sin_mano} width={'25pxx'} height={'35px'} alt="tarjeta_amarilla" />
+                            }
+                            {tipoEvento === "Tarjeta roja" &&
+                                <img src={tarjeta_roja_sin_mano}  width={'25px'} height={'35px'} alt="tarjeta_roja" />
+                            }
+                            {tipoEvento !== "Tarjeta roja" && tipoEvento !== "Tarjeta amarilla" &&
+                                tipoEvento
+                            }
+                               
                         </div>
                     </div>
                 }
@@ -421,6 +433,7 @@ export default function FrmRegistrarPartido() {
                         setEventos([]);
                         setInfoEventos([]);
                         setTextoModal("El partido ha sido registrado correctamente.");
+                        setEstadioEquipoLocal('');
                         setModalError(false);
                         setShowModal(true);
                         formRef.current.reset();

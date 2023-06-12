@@ -80,9 +80,12 @@ export default function Estadisticas(){
     
                     bigTableRef.current.classList.remove('d-none');
                     tbodyRef1.current.innerHTML = "";
+                    //Si ya se han añadido jugadores al DOM, se eliminan para poder mostrar únicamente los nuevos que
+                    //sean anyadidos.
+                    if (smallTableRef.current.firstElementChild.nextElementSibling !== null){
+                        smallTableRef.current.firstElementChild.nextElementSibling.innerHTML = "";
+                    }
                     smallTableRef.current.classList.remove('d-none');
-                    // smallTableContent.current.innerHTML = "";
-                    //Recorremos el array que contiene los jugadores y montamos la tabla.
                     let contadorJugadores = 1;
                     for (let jugador of respuesta.datos){
                         
@@ -214,7 +217,7 @@ export default function Estadisticas(){
                         imagen = document.createElement('img');
                         imagen.src = tarjeta_roja_sin_mano; 
                         imagen.classList.add('img-fluid','my-auto');
-                        imagen.style.width = '20px';
+                        imagen.style.width = '16px';
                         imagen.style.height = '20px';
                         col.appendChild(imagen);
 

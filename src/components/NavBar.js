@@ -1,40 +1,24 @@
 import {useEffect } from 'react';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
-import { useRef } from 'react';
 import MyConfirm from "./Confirm";
 import { useState } from 'react';
 
 //Componente NavItem
 function NavItem({ info }) {
-
-    //Variables de estado
-    const linkRef = useRef(null);
-
-    const changeFocus = ( () => {
-
-        //Obtenemos la ul que contiene todos li y eliminamos la clase isFocuses de aquel li que lo contenga.
-        let siblings = Array.from(linkRef.current.parentNode.children);
-        siblings.forEach(sibling => {
-            if (sibling.className.includes('isFocused')){
-                sibling.classList.remove('isFocused');
-            }
-        });
-        linkRef.current.classList.add('isFocused');
-    });
-
+    //Si la url de la sección donde se encuentra el usuario coincide con la url del navitem, se le añade la clase isFocused.
+    const location  = useLocation();
+    const seccionActual = location.pathname === info.url;
 
     return (
-            <li key={info.id} className={`nav-item ${info.url === '/inicio' ? 'isFocused' : ''}`} ref={linkRef}
-                onClick={changeFocus}
-            >
+            <li key={info.id} className={`nav-item ${seccionActual ? 'isFocused' : ''}`} >
+                {console.log(seccionActual)}
                     <Link
                     className='nav-link' 
                     id={info.id}
                     to={info.url}>{info.titulo}
                 </Link>
             </li>
-         /*El evento onBlur se desencadena cuando un elemento pierde el foco */
     );
 }
 
@@ -45,7 +29,6 @@ function BarraNavegacion({ datosNavBar }) {
 
     //Constantes
     const auth = useAuth();
-    const navigate = useNavigate();
     const location = useLocation();
     const currentPath = location.pathname;
 

@@ -8,7 +8,7 @@ body{
 /*Selector css que para que cambie el cursor a una mano cuando haya un enlace cuya atributo href no esté difido y el cursos esté sobre el enlace (se usa en e login) */ 
 .link{
     text-decoration: none;
-    color: #182E3E;
+    color: #132232;
 }
 
 .link:hover{
@@ -16,17 +16,17 @@ body{
 }
 
 nav{
-    background-color: #182E3E;
+    background-color: #132232;
     color: white;
 }
 
 .navbar-brand,.nav-link,.dropdown-menu, .nav-item{
     color: white;
-    background-color: #182E3E;
+    background-color: #132232;
 }
 
 .navbar-brand:hover,.nav-link:hover, .navbar-brand:active,.nav-link:active,.navbar-brand:focus,.nav-link:focus{
-    color: white;
+    color: #ffffff;
 }
 
 /*Clase que controla que el elemento seleccionado de la navbar mantenga su border-bottom */
@@ -37,18 +37,18 @@ nav{
 
 /* Color del borde de los input */
 .form-control,.form-select{
-    border: 0.6px solid #182E3E;
-    color: #182E3E;
+    border: 0.6px solid #132232;
+    color: #132232;
     font-size: 0.70em;
 }
 
 .form-control:focus, .form-select:focus{
-    border: 2px solid #182E3E;
+    border: 2px solid #132232;
 }
 
 /* Opacidad de los placeholder */
 input[type="text"]::placeholder {
-    color: #182E3E;
+    color: #132232;
     opacity:0.7;
 }
 
@@ -69,7 +69,7 @@ input[type="text"]::placeholder {
     border-color: transparent;
     border-radius: 6px;
     color: rgb(252, 224, 179);
-    background-color: #182E3E;
+    background-color: #132232;
 }
 
 .btn1:hover{
@@ -78,8 +78,8 @@ input[type="text"]::placeholder {
 
 .btn1:active{
     background-color: rgb(252, 224, 179);
-    color: #182E3E;
-    border: 1.7px solid #182E3E;
+    color: #132232;
+    border: 1.7px solid #132232;
     text-decoration: none;
 }
 
@@ -99,9 +99,9 @@ input[type="text"]::placeholder {
 
 /* Botones del componente Panel de control */
 .btnShowFrm{
-    border: 2px solid#182E3E;
+    border: 2px solid#132232;
     color: white;
-    background-color: #182E3E;
+    background-color: #132232;
 }
 
 .btnShowFrm:hover{
@@ -110,39 +110,38 @@ input[type="text"]::placeholder {
 
 .btnShowFrm:focus{
     background-color: white;
-    color: #182E3E;
-    border-color: #182E3E;
+    color: #132232;
+    border-color: #132232;
     text-decoration: none;
 }
 
 .btnShowFormFocus{
     border: 2px solidwhite;
-    color: #182E3E;
+    color: #132232;
     background-color: white;
 }
 
 /* Titulo de la posición de los jugadores en Ver Jugadores */
 #tituloPosicion{
-    color: #182E3E;
-    border-bottom: 10px solid rgb(252, 224, 179);
+    color: #132232;
+    border-bottom: 10px solid #fce0b3;
 }
 
 /* Título que se muestra cuando se añade algún evento en el componente RegistrarPartido.btn1 */
 #encabezadoEventos{
-    background-color: #182E3E;
+    background-color: #132232;
     color: rgb(252, 224, 179);
-    /* border: 1.7px solid #182E3E; */
 }
 
 /* Se muestran cuando se guarda un evento en el componente Registrarpartido, son el jugador y el evento. */
 #infoEvento{
-    background-color: #182E3E;
-    color: whitesmoke;
-    border: 1.7px solid #182E3E;
+    background-color: #132232;
+    color: #f5f5f5;
+    border: 1.7px solid #132232;
 }
 
 .cardJugador{
-    border: 2.5px solid #182E3E;
+    border: 2.5px solid #132232;
     max-height: 100%;
 }
 
@@ -152,7 +151,7 @@ input[type="text"]::placeholder {
 }
 
 .cardEquipo{
-    border: 2.5px solid #182E3E;
+    border: 2.5px solid #132232;
     max-height: 100%;
 }
 
@@ -163,20 +162,20 @@ input[type="text"]::placeholder {
 }
 
 .datoEquipo{
-    background-color: #182E3E;
+    background-color: #132232;
     color: white;
 }
 
 /* Modal */
 #modalTitle{
-    background-color: #182E3E;
+    background-color: #132232;
     color: white;
 }
 
 /* Footer */
 #footer{
     color: white;
-    background-color: #182E3E;
+    background-color: #132232;
 }
 
 #footer a{
@@ -192,3 +191,65 @@ input[type="text"]::placeholder {
 #footer i{
     color: rgb(252, 224, 179);
 }
+/* Tamaño de las imágenes que aparecen en la pantalla de inicio. */
+@media (max-width: 321px) {
+    .imagenInicio {
+      width: 94%;
+      height: 180px;
+    }
+    .imagenInicial {
+        width: 100%;
+        height: 180px;
+    }
+  }
+
+  @media (min-width: 321px) and (max-width: 575px) {
+    .imagenInicio {
+      width: 95%;
+      height: 250px;
+    }
+    .imagenInicial {
+        width: 100%;
+        height: 250px;
+    }
+  }
+  
+  @media (min-width: 576px) and (max-width: 766px) {
+    .imagenInicio {
+      width: 100%;
+      height: 300px;
+    }
+    .imagenInicial {
+        width: 100%;
+        height: 350px;
+    }
+  }
+
+  @media (min-width: 766px) and (max-width: 992px) {
+    .imagenInicio {
+      width: 100%;
+      height: 200px;
+    }
+    .imagenInicial {
+        width: 100%;
+        height: 350px;
+    }
+  }
+    
+  @media (min-width: 993px) and (max-width: 1200px) {
+    .imagenInicio {
+      width: 100%;
+      height: 250px;
+    }
+  }
+  
+  @media (min-width: 1201px){
+    .imagenInicio {
+      width: 100%;
+      height: 300px;
+    }
+    .imagenInicial {
+        width: 100%;
+        height: 500px;
+    }
+  }

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import MyModal from "./Modal";
-import MyFooter from "./Footer";
 
 function createOptionElement(value, textContent) {
     let option = document.createElement("option");

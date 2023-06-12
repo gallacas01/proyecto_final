@@ -192,14 +192,14 @@ export default function VerJugadores() {
                             </div>
                             <div className='col-12 col-sm-2 text-start text-sm-end fs-4'>
                                 <label className="form-label my-auto">Equipo</label>
-                            </div>                        
+                            </div>
                             <div className="col-12 col-sm-3 p-0 my-auto">
                                 <select className="form-select shadow-none p-1" ref={desplegableEquiposRef} required>
 
                                 </select>
                             </div>
-                            <div className='col-12 col-sm-1 mx-auto mt-2 mt-sm-0 ms-sm-3 p-0'>                    
-                                <button className="btn1 w-100" onClick={(event) =>getJugadores(event)} ><i className="bi bi-search fs-4"></i></button>  
+                            <div className='col-12 col-sm-1 mx-auto mt-2 mt-sm-0 ms-sm-3 p-0'>
+                                <button className="btn1 w-100" onClick={(event) => getJugadores(event)} ><i className="bi bi-search fs-4"></i></button>
                             </div>
                         </div>
                     </form>
@@ -207,11 +207,9 @@ export default function VerJugadores() {
 
                 <div className='row'>
                     <div className='col-10 col-sm-9 m-auto p-1 d-none' ref={containerJugadoresRef}>
-                        <div className='row m-auto'> 
+                        <div className='row m-auto'>
                             <div className='col-12 p-0'>
-                                <h1 className="text-center mt-lg-1 p-2" ref={nombreEquipoRef} style={{color : 'rgb(252, 224, 179)', backgroundColor : "#182E3E"}}> <div className={showFooter ? 'd-block' : 'd-none'}>
-                <MyFooter />
-            </div></h1>
+                                <h1 className="text-center mt-lg-1 p-2" ref={nombreEquipoRef} style={{ color: 'rgb(252, 224, 179)', backgroundColor: "#182E3E" }}></h1> 
                             </div>
                         </div>
                         <div className='row p-0 mx-auto'>
@@ -219,27 +217,27 @@ export default function VerJugadores() {
                                 <>
                                     <div className='col-12 p-0 mx-auto m-sm-0'>
                                         <h5 className='p-1 fs-4' id='tituloPosicion'>Porteros</h5>
-                                    </div>                                
-                                    {jugadores[0]}                                
+                                    </div>
+                                    {jugadores[0]}
 
                                     <div className='col-12 p-0 mx-auto m-sm-0'>
                                         <h5 className='p-1 fs-4' id='tituloPosicion'>Defensas</h5>
-                                    </div>                                
-                                    {jugadores[1]}                                
+                                    </div>
+                                    {jugadores[1]}
 
                                     <div className='col-12 p-0 mx-auto m-sm-0'>
                                         <h5 className='p-1 fs-4' id='tituloPosicion'>Centrocampistas</h5>
-                                    </div>                               
-                                    {jugadores[2]}                             
+                                    </div>
+                                    {jugadores[2]}
 
                                     <div className='col-12 p-0 mx-auto m-sm-0'>
                                         <h5 className='p-1 fs-4' id='tituloPosicion'>Delanteros</h5>
-                                    </div>                               
-                                    {jugadores[3]} 
-                                    
-                                </>                      
+                                    </div>
+                                    {jugadores[3]}
+
+                                </>
                             }
-                        
+
                         </div>
                     </div>
                 </div>

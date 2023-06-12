@@ -80,7 +80,7 @@ export function AuthProvider({children}){
 
         }catch (error){            
             if (error.message === "Firebase: Error (auth/user-not-found)."){
-                setTextoModal("El correo no es correcto.");
+                setTextoModal("El correo introducido no es correcto.");
             }else if (error.message === "Firebase: Error (auth/wrong-password)."){
                 setTextoModal("La contraseña no es correcta.");
             }else {

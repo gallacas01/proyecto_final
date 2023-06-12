@@ -120,7 +120,7 @@ export default function Equipos(){
                 </div>
                 <div className='row d-none p-0' ref={contenedorEquiposRef}>
                     
-                    <div className='col-12 col-sm-11 col-md-9 text-center mx-auto p-1'>
+                    <div className='col-12 col-sm-10 col-md-9 text-center mx-auto p-1'>
                         <h1 className="text-center mt-lg-1 p-2" ref={encabezadoCompeticionRef} style={{color : 'rgb(252, 224, 179)', backgroundColor : "#182E3E"}}> </h1>
                     </div>       
                 </div>            

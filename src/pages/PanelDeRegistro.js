@@ -3,7 +3,6 @@ import FrmRegistrarJugador from "../components/FrmRegistrarJugador";
 import FrmRegistrarPartido from "../components/FrmRegistrarPartido";
 import FrmRegistrarCompeticion from "../components/FrmRegistrarCompeticion";
 import FrmRegistrarMovimiento from "../components/FrmRegistrarFichaje";
-
 import MyFooter from "../components/Footer";
 import GestionarEquipo from "../components/GestionarEquipo";
 import { useRef } from "react";

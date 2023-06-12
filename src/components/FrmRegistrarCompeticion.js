@@ -1,13 +1,12 @@
 import { useRef,useState } from "react";
-
 import MyModal from "./Modal";
 
 export default function FrmRegistrarCompeticion (){
 
     //Variables de estado
     const frmRegistrarCompeticionRef = useRef (null);
-    const nombreCompeticionRef = useRef(null);
-    const temporadaCompeticionRef = useRef(null);
+    const nombreCompeticionRef = useRef('');
+    const temporadaCompeticionRef = useRef('');
     const [showModal, setShowModal] = useState(false);
     const [textoModal, setTextoModal] = useState('');
     const [modalError, setModalError] = useState(false);
@@ -15,7 +14,7 @@ export default function FrmRegistrarCompeticion (){
     const guardarCompeticion = ( async (event) => {
 
         event.preventDefault();
-        if (nombreCompeticionRef.current.value !== "" && /^\d{4}\d{4}$/.test(temporadaCompeticionRef.current.value)){
+        if (nombreCompeticionRef.current.value !== "" && /^\d{4}-\d{4}$/.test(temporadaCompeticionRef.current.value)){
 
             let parametros = new FormData();
             parametros.append("nombre", nombreCompeticionRef.current.value);
@@ -44,11 +43,11 @@ export default function FrmRegistrarCompeticion (){
             }
         }else{
             
-            if (nombreCompeticionRef.current.value === " " || temporadaCompeticionRef.current.value === ""){
+            if (nombreCompeticionRef.current.value === "" || temporadaCompeticionRef.current.value === ""){
                 setTextoModal("Por favor, rellena todos los campos.");
                     
             }else  if (!/^\d{4}-\d{4}$/.test(temporadaCompeticionRef.current.value)) {
-                setTextoModal("El texto que introduzcas en el campo temporada debe seguir el siguiente patrón: 2022-2023");
+                setTextoModal("El valor que introduzcas en el campo 'Temporada' debe seguir el siguiente patrón: 2022-2023");
             }
             setModalError(true);
             setShowModal(true);
