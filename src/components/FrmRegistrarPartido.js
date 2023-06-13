@@ -146,8 +146,8 @@ export default function FrmRegistrarPartido() {
     const [jugadoresEquipoVisitante, setJugadoresEquipoVisitante] = useState([]);
     const [jugadores, setJugadores] = useState([]);
     const [estadioEquipoLocal, setEstadioEquipoLocal] = useState('');
-    const [idEquipoLocal, setIdEquipoLocal] = useState('');
-    const [idEquipoVisitante, setIdEquipoVisitante] = useState('');
+    const [idEquipoLocal, setIdEquipoLocal] = useState('-');
+    const [idEquipoVisitante, setIdEquipoVisitante] = useState('-');
     const [showModal, setShowModal] = useState(false);
     const [textoModal, setTextoModal] = useState('');
     const [modalError, setModalError] = useState(false);
@@ -402,7 +402,7 @@ export default function FrmRegistrarPartido() {
         let golesEquipoVisitante = golesEquipoVisitanteRef.current.value;
 
         if (idCompeticion !== "-" && idEquipoLocal !== "-" && idEquipoVisitante !== "-" && fecha !== ""
-            && golesEquipoLocal !== "-" && golesEquipoVisitante !== "-") {
+            && golesEquipoLocal !== "" && golesEquipoVisitante !== "" && golesEquipoLocal >= 0 && golesEquipoVisitante >= 0) {
 
             if (idEquipoLocal === idEquipoVisitante) {
                 setModalError(true);
@@ -415,8 +415,8 @@ export default function FrmRegistrarPartido() {
                 parametros.append("id_equipo_visitante", idEquipoVisitante);
                 parametros.append("id_competicion", idCompeticion);
                 parametros.append("estadio", estadioEquipoLocal);
-                parametros.append("goles_equipo_local", golesEquipoLocal);
-                parametros.append("goles_equipo_visitante", golesEquipoVisitante);
+                parametros.append("goles_equipo_local", golesEquipoLocal.trim());
+                parametros.append("goles_equipo_visitante", golesEquipoVisitante.trim());
                 parametros.append("fecha", fecha);
 
                 let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/INSERT/registrarPartido.php", {
@@ -441,8 +441,15 @@ export default function FrmRegistrarPartido() {
                 }
             }
         } else {
+
+            if(idCompeticion === "-" || idEquipoLocal === "-" || idEquipoVisitante === "-" || fecha === ""
+                || golesEquipoLocal === "" || golesEquipoVisitante === ""){
+                setTextoModal("Por favor, rellena todos los campos del formulario correctamente.");
+
+            }else if (golesEquipoLocal.startsWith('-') || golesEquipoVisitante.startsWith('-')){
+                setTextoModal("Los números negativos no son válidos.");
+            }
             setModalError(true);
-            setTextoModal("Por favor, rellena todos los campos del formulario.");
             setShowModal(true);
         }
 
@@ -472,18 +479,18 @@ export default function FrmRegistrarPartido() {
                 </div>
                 <div className="my-2 row mx-0">
                     <label className="form-label">Fecha del partido</label>
-                    <input type="date" className="form-control shadow-none" ref={fechaPartidoRef} min={0} required />
+                    <input type="date" className="form-control shadow-none" ref={fechaPartidoRef} min={'1930-06-06'} required />
                 </div>
                 <div className="my-2 row mx-auto">
                     <div className="col-11 col-sm-3 mx-auto text-sm-center p-0 mb-2 mb-sm-0"><p className="form-label my-auto">Resultado del partido</p> </div>
                     <div className="col-5 col-sm-3 mx-auto p-0 my-auto">
-                        <input type="number" className="form-control shadow-none" ref={golesEquipoLocalRef} min={0} max={999} minLength={0} maxLength={3} required />
+                        <input type="number" className="form-control shadow-none" ref={golesEquipoLocalRef} min={0} max={200} pattern="[0-9]*" required />
                     </div>
                     <div className="col-1 col-sm-2 mx-auto text-center my-auto">
                         <span className="w-100">-</span>
                     </div>
                     <div className="col-5 col-sm-3 mx-auto p-0 my-auto">
-                        <input type="number" className="form-control shadow-none" ref={golesEquipoVisitanteRef} min={0} minLength={0} maxLength={3} required />
+                        <input type="number" className="form-control shadow-none" ref={golesEquipoVisitanteRef} min={0} max={200} required />
                     </div>
                 </div>
                 <div className="my-2 row mx-auto">

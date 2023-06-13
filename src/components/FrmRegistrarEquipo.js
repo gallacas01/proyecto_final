@@ -93,7 +93,7 @@ export default function FrmRegistrarEquipo() {
                 </div>
                 <div className="my-2 row mx-0">
                     <label className="form-label my-auto col-12">Fecha de fundación </label>
-                    <input type="date" className="form-control shadow-none col-12" ref={fechaFundacionRef} min={0} maxLength={10} required />
+                    <input type="date" className="form-control shadow-none col-12" ref={fechaFundacionRef} min={'1930-06-06'} required />
                 </div>
                 <div className="my-2 row mx-0">
                     <label className="form-label my-auto col-12">Escudo</label>

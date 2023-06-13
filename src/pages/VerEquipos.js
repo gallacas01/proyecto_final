@@ -102,7 +102,7 @@ export default function Equipos(){
         <>
             <div className="container-fluid">
                 <div className="row p-0">
-                    <form className="col-12 col-sm-10 col-md-9 col-lg-6 my-3 p-0 mx-auto">
+                    <form className="col-12 col-sm-9 col-md-9 col-lg-6 my-3 p-0 mx-auto">
                         <div className="row m-auto">
                             <div className="col-12 col-sm-auto text-start p-1 ms-2 ms-sm-0">                        
                                 <label className="form-label m-auto">Competición</label>

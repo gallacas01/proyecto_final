@@ -280,7 +280,7 @@ export default function CardEquipo({ info, getEquipos }) {
                                 </div>
                                 <div className='row mx-auto my-2'>
                                     <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'> <label className="form-label my-auto labelCardEquipo">Fundación </label></div>
-                                    <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="date" className="form-control shadow-none p-1" defaultValue={datos.fecha_fundacion} onChange={handleChangeNuevoDato} name='fecha_fundacion' readOnly={!activarEdicion} minLength={10} maxLength={10} /></div>
+                                    <div className='col-8 p-0 d-flex align-items-center justify-content-center'><input type="date" className="form-control shadow-none p-1" defaultValue={datos.fecha_fundacion} onChange={handleChangeNuevoDato} name='fecha_fundacion' readOnly={!activarEdicion} min={'1930-06-06'} /></div>
                                 </div>
                                 <div className="row mx-0">
                                     <div className='col-4 p-0 text-center d-flex align-items-center justify-content-center'><label className="form-label labelCardEquipo">Imagen</label></div>

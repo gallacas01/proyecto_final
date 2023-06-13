@@ -63,20 +63,39 @@ export default function FrmRegistrarJugador() {
                 setEquipos(equiposBD);
             }
         }
-
         getEquipos();
     }, []);
 
     async function guardarJugadorEnBD1(event) {
 
-        // console.log(imagenJugador);
         event.preventDefault();
-        if (dniJugadorRef1.current.value !== "" && nombreCompletoRef1.current.value !== "" && fechaNacimientoRef1.current.value
-            !== "" && pesoRef1.current.value !== "" && alturaRef1.current.value !== "" && posicionRef1.current.value !== "-"
-            && dorsalRef1.current.value !== "" && paisRef1.current.value !== "" && idEquipo1 !== ""
-            && imagenJugador !== null && dorsalRef1.current.value.length <= 2 && alturaRef1.current.value.length === 3) {
+        if (dniJugadorRef1.current.value === "" || nombreCompletoRef1.current.value === "" || fechaNacimientoRef1.current.value
+            === "" || pesoRef1.current.value === "" || alturaRef1.current.value === "" || posicionRef1.current.value === "-"
+            || dorsalRef1.current.value === "" || paisRef1.current.value === "" || idEquipo1 === ""
+            || imagenJugador === null) {
+            setTextoModal("Por favor, rellena todos los campos correctamente.");
+            setModalError(true);
+            setShowModal(true);
 
-            //Si el archivo es una imagen, se introducirá en la base de datos.
+        } else if (dorsalRef1.current.value < 0 || pesoRef1.current.value < 0 ||
+            alturaRef1.current.value < 0) {
+            setTextoModal("Los números negativos no son válidos.");
+            setModalError(true);
+            setShowModal(true);
+        } else if (dorsalRef1.current.value.length > 2 && dorsalRef1.current.value > 0) {
+            setTextoModal("El número correspondiente al dorsal no puede ser mayor que 99.");
+            setModalError(true);
+            setShowModal(true);
+        } else if (alturaRef1.current.value.length !== 3) {
+            setTextoModal("Por, favor introduce un número de tres cifras en el campo 'altura'.");
+            setModalError(true);
+            setShowModal(true);
+        } else if (dniJugadorRef1.current.value.match(/[A-Za-z]$/i) === null) {
+            setTextoModal("El último carácter del campo 'DNI' debe ser una letra.");
+            setModalError(true);
+            setShowModal(true);
+        } else {
+
             if (imagenJugador.name.endsWith('.jpg') || imagenJugador.name.endsWith('.jpeg') || imagenJugador.name.endsWith('.png') || imagenJugador.name.endsWith('.webp') || imagenJugador.name.endsWith('.jpe')) {
 
                 const reader = new FileReader();
@@ -153,34 +172,39 @@ export default function FrmRegistrarJugador() {
                 setModalError(true);
                 setShowModal(true);
             }
-
-        } else {
-
-            if  (dniJugadorRef1.current.value !== "" && nombreCompletoRef1.current.value !== "" && fechaNacimientoRef1.current.value
-            !== "" && pesoRef1.current.value !== "" && alturaRef1.current.value !== "" && posicionRef1.current.value !== "-"
-            && dorsalRef1.current.value !== "" && paisRef1.current.value !== "" && idEquipo1 !== ""
-            && imagenJugador !== null && dorsalRef1.current.value.length <= 2 && alturaRef1.current.value.length === 3) {
-                setTextoModal("Por favor, rellena todos los campos.");
-            } else if (alturaRef1.current.value.length !== 3) {
-                setTextoModal("Por favor, introduce un valor válido para la altura.");
-            } else if (dorsalRef1.current.value.length > 2) {
-                setTextoModal("El dorsal no puede ser mayor que 99.");
-            }
-            setModalError(true);
-            setShowModal(true);
         }
     }//Fin de la función.
 
     async function guardarJugadorEnBD2(event) {
 
-        // console.log(imagenJugador);
         event.preventDefault();
-        if (dniJugadorRef2.current.value !== "" && nombreCompletoRef2.current.value !== "" && fechaNacimientoRef2.current.value
-        !== "" && pesoRef2.current.value !== "" && alturaRef2.current.value !== "" && posicionRef2.current.value !== "-"
-        && dorsalRef2.current.value !== "" && paisRef2.current.value !== "" && idEquipo2 !== ""
-        && imagenJugador !== null && dorsalRef2.current.value.length <= 2 && alturaRef2.current.value.length === 3) {
+        if (dniJugadorRef2.current.value === "" || nombreCompletoRef2.current.value === "" || fechaNacimientoRef2.current.value
+            === "" || pesoRef2.current.value === "" || alturaRef2.current.value === "" || posicionRef2.current.value === "-"
+            || dorsalRef2.current.value === "" || paisRef2.current.value === "" || idEquipo2 === ""
+            || imagenJugador === null) {
+            setTextoModal("Por favor, rellena todos los campos correctamente.");
+            setModalError(true);
+            setShowModal(true);
 
-            //Si el archivo es una imagen, se introducirá en la base de datos.
+        } else if (dorsalRef2.current.value < 0 || pesoRef2.current.value < 0 ||
+            alturaRef2.current.value < 0) {
+            setTextoModal("Los números negativos no son válidos.");
+            setModalError(true);
+            setShowModal(true);
+        } else if (dorsalRef2.current.value.length > 2 && dorsalRef2.current.value > 0) {
+            setTextoModal("El número correspondiente al dorsal no puede ser mayor que 99.");
+            setModalError(true);
+            setShowModal(true);
+        } else if (alturaRef2.current.value.length !== 3) {
+            setTextoModal("Por, favor introduce un número de tres cifras en el campo 'altura'.");
+            setModalError(true);
+            setShowModal(true);
+        } else if (dniJugadorRef2.current.value.match(/[A-Za-z]$/i) === null) {
+            setTextoModal("El último carácter del campo 'DNI' debe ser una letra.");
+            setModalError(true);
+            setShowModal(true);
+        } else {
+
             if (imagenJugador.name.endsWith('.jpg') || imagenJugador.name.endsWith('.jpeg') || imagenJugador.name.endsWith('.png') || imagenJugador.name.endsWith('.webp') || imagenJugador.name.endsWith('.jpe')) {
 
                 const reader = new FileReader();
@@ -215,7 +239,7 @@ export default function FrmRegistrarJugador() {
                             //Parámetros para la inserción del movimiento (la primera vez que se inserte un jugador,
                             //no tendrá equipo antiguo).
                             let parametrosMovimiento = new FormData();
-                            parametrosMovimiento.append("dni_jugador", dniJugadorRef2.current.value.trim());
+                            parametrosMovimiento.append("dni_jugador", dniJugadorRef2.current.value);
                             parametrosMovimiento.append("id_equipo_antiguo", 0);
                             parametrosMovimiento.append("id_equipo_nuevo", idEquipo2);
                             parametrosMovimiento.append("fecha", null);
@@ -257,22 +281,6 @@ export default function FrmRegistrarJugador() {
                 setModalError(true);
                 setShowModal(true);
             }
-            //Cuando se introduce texto en un campo numérico, al recoger su valor con un .value
-            //se interpreta como una cadena vacía.
-        } else {
-
-            if (dniJugadorRef2.current.value === "" || nombreCompletoRef2.current.value === "" || fechaNacimientoRef2.current.value
-                === "" || pesoRef2.current.value === "" || alturaRef2.current.value === "" || posicionRef2.current.value === "-"
-                || dorsalRef2.current.value === "" || paisRef2.current.value === "" || idEquipo2 === ""
-                || imagenJugador === null) {
-                setTextoModal("Por favor, rellena todos los campos.");
-            } else if (alturaRef2.current.value.length !== 3) {
-                setTextoModal("Por favor, introduce un valor válido para la altura.");
-            } else if (dorsalRef2.current.value.length > 2) {
-                setTextoModal("El dorsal no puede ser un número mayor que 99.");
-            }
-            setModalError(true);
-            setShowModal(true);
         }
     }//Fin de la función.
 
@@ -313,13 +321,13 @@ export default function FrmRegistrarJugador() {
                 </div>
                 <div className="row mt-2">
                     <div className="col-4">
-                        <input type="date" className="form-control shadow-none" ref={fechaNacimientoRef1} min={0} required />
+                        <input type="date" className="form-control shadow-none" ref={fechaNacimientoRef1} min={'1930-06-06'} required />
                     </div>
                     <div className="col-4">
                         <input type="number" className="form-control shadow-none" ref={alturaRef1} min={0} required />
                     </div>
                     <div className="col-4">
-                        <input type="number" className="form-control shadow-none" ref={pesoRef1} minLength={2} maxLength={5} step="0.1" min={50} required />
+                        <input type="number" className="form-control shadow-none" ref={pesoRef1} min={50} max={300} step="0.1" required />
                     </div>
                 </div>
                 <div className="row mt-2">
@@ -399,7 +407,7 @@ export default function FrmRegistrarJugador() {
                 </div>
                 <div className="my-2 row mx-0">
                     <label className="form-label my-auto">Fecha de nacimiento </label>
-                    <input type="date" className="form-control shadow-none" ref={fechaNacimientoRef2} min={0} required />
+                    <input type="date" className="form-control shadow-none" ref={fechaNacimientoRef2} min={'1930-06-06'} required />
                 </div>
                 <div className="my-2 row mx-0">
                     <label className="form-label my-auto">Peso (Kg)</label>
@@ -430,13 +438,13 @@ export default function FrmRegistrarJugador() {
                 <div className="my-2 row mx-0">
                     <label className="form-label my-auto">Equipo</label>
                     <Select
-                            className="shadow-none fs-6 m-0 p-0"
-                            options={equipos} styles={styleSelect}
-                            ref={equipoRef2}
-                            onChange={(selectedOption) => setIdEquipo2(selectedOption.value)}
-                            isSearchable={true}
-                            placeholder="Buscar" />
-                </div>               
+                        className="shadow-none fs-6 m-0 p-0"
+                        options={equipos} styles={styleSelect}
+                        ref={equipoRef2}
+                        onChange={(selectedOption) => setIdEquipo2(selectedOption.value)}
+                        isSearchable={true}
+                        placeholder="Buscar" />
+                </div>
                 <div className="my-2 row mx-0">
                     <label className="form-label">Imagen</label>
                     <input className="form-control shadow-none" type="file" ref={imagenJugador} onChange={(event) => handleChangeFile(event.target.files[0])} required />
