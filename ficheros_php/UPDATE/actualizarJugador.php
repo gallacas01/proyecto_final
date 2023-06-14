@@ -16,7 +16,6 @@ $dorsal = $_POST['dorsal'];
 $pais = $_POST['pais'];
 $imagen = $_POST['imagen'];
 
-
 $sql = "UPDATE jugador set dni_jugador='$dni_jugador', nombre_completo='$nombre_completo', fecha_nacimiento='$fecha_nacimiento',
 peso=$peso, altura=$altura, posicion='$posicion', pais ='$pais', dorsal=$dorsal";
 

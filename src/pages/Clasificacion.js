@@ -84,14 +84,14 @@ export default function Clasificacion (){
                         td.textContent = equipo.partidos_ganados;
                         td.classList.add('text-center');
                         tr.appendChild(td);
-    
-                        td = document.createElement('td');
-                        td.textContent = equipo.partidos_perdidos;
-                        td.classList.add('text-center');
-                        tr.appendChild(td);
-    
+        
                         td = document.createElement('td');
                         td.textContent = equipo.partidos_empatados;
+                        td.classList.add('text-center');
+                        tr.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.textContent = equipo.partidos_perdidos;
                         td.classList.add('text-center');
                         tr.appendChild(td);
     

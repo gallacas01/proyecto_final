@@ -108,7 +108,7 @@ export default function Card({ info, getJugadores }) {
 
             //Borramos el jugador de la BD.
             let parametros = new FormData();
-            parametros.append("id_jugador", datos.id_jugador)
+            parametros.append("id_jugador", datos.id_jugador);
             let response = await fetch("https://localhost/DAM_2022-2023/proyecto_final/DELETE/eliminarJugador.php",
                 {
                     method: 'POST',
