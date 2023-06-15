@@ -102,10 +102,11 @@ export default function Estadisticas(){
                         let urlImagenJugador = await convertirImagenDB(jugador.imagen);
                         let imagen = document.createElement('img');
                         imagen.src = urlImagenJugador;
-                        // let borderColor = contadorEquipos % 2 === 0 ? "rgb(252, 224, 179)" : "#182E3E";   
+
                         imagen.classList.add('img-fluid');
                         imagen.style.width = '3.5em';
                         imagen.style.height = '4em';
+                        imagen.style.backgroundColor = 'white';
                         td.appendChild(imagen);
                         tr.appendChild(td);
     
@@ -169,6 +170,7 @@ export default function Estadisticas(){
                         imagen2.classList.add('img-fluid','my-auto');
                         imagen2.style.width = '100%';
                         imagen2.style.height = '80px';
+                        imagen2.style.backgroundColor = 'white';
                         col.appendChild(imagen2);
                         rowPrincipal.appendChild(col);
 
