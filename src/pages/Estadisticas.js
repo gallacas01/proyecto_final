@@ -119,7 +119,7 @@ export default function Estadisticas(){
                         let pos
                         if (jugador.posicion === "Portero"){
                             pos = "POR";
-                        }else if(jugador.posicion === "Defensas"){
+                        }else if(jugador.posicion === "Defensa"){
                             pos = "DEF";
                         }else if(jugador.posicion === "Centrocampista"){
                             pos = "CEN";
